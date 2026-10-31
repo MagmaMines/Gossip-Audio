@@ -265,6 +265,10 @@ jobs:
             echo "====== sdk.txt ======"
             cat ci-logs/sdk.txt 2>/dev/null || true
           } > ci-logs/failure.txt
+          # keep the audio that failed the quality gate, so the next commit can be
+          # measured instead of guessed at
+          cp app/build/test-samples/voice-quality.wav ci-logs/failing-audio.wav 2>/dev/null || true
+          cp app/build/test-samples/layout.txt ci-logs/layout.txt 2>/dev/null || true
           rm -f ci-logs/*.log
           git add -f ci-logs/failure.txt ci-logs/sdk.txt 2>/dev/null || true
           git rm -r --cached --ignore-unmatch ci-logs > /dev/null 2>&1 || true

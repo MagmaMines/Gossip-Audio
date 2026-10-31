@@ -266,20 +266,10 @@ class PipelineTest {
             frameStart += hop
             index++
         }
-        assertTrue("not enough voiced frames: ${ratios.size}", ratios.size > 20)
-        val median = ratios.sorted()[ratios.size / 2]
-        assertTrue("harmonic ratio $median is noise-like (ticks!), expected > 0.65", median > 0.65)
-        // A buzzer has ~all of its energy under 300 Hz. Speech puts real power in
-        // F2/F3 (800-4000 Hz); if that band collapses the engine is a kazoo again.
+        // Report before asserting: when a regression lands, the numbers have to survive
+        // into dist/samples/quality.txt, otherwise the CI log only says "failed".
+        val median = if (ratios.isEmpty()) 0.0 else ratios.sorted()[ratios.size / 2]
         val shares = bandShares(pcm.samples, pcm.sampleRate)
-        assertTrue(
-            "upper formants are missing: ${formatShares(shares)}",
-            shares[2] + shares[3] > 4.0
-        )
-        assertTrue(
-            "all energy sits under 300 Hz: ${formatShares(shares)}",
-            shares[0] < 48.0
-        )
         val report = buildString {
             append("harmonic_ratio_median=").append(String.format("%.3f", median)).append('\n')
             append("voiced_frames=").append(ratios.size).append('\n')
@@ -289,7 +279,20 @@ class PipelineTest {
             append("estimate=").append("v3 parallel formant synthesiser").append('\n')
         }
         File(sampleDir, "quality.txt").writeText(report)
+        File(sampleDir, "voice-quality.wav").writeBytes(Wav.write(AudioFx.trimSilence(pcm, 120, 20)))
         println(report)
+        assertTrue("not enough voiced frames: ${ratios.size}", ratios.size > 20)
+        assertTrue("harmonic ratio $median is noise-like (ticks!), expected > 0.65", median > 0.65)
+        // A buzzer has ~all of its energy under 300 Hz. Speech puts real power in
+        // F2/F3 (800-4000 Hz); if that band collapses the engine is a kazoo again.
+        assertTrue(
+            "upper formants are missing: ${formatShares(shares)}",
+            shares[2] + shares[3] > 4.0
+        )
+        assertTrue(
+            "all energy sits under 300 Hz: ${formatShares(shares)}",
+            shares[0] < 48.0
+        )
     }
 
     /** Energy share per band, so a regression to "one flat buzz" shows up in CI. */

@@ -66,11 +66,16 @@ class ResponsiveLayoutTest {
         for (tab in 0 until 4) {
             shell!!.selectTab(tab, animate = false)
             looper.idle()
-            root.measure(
-                View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(metrics.heightPixels, View.MeasureSpec.EXACTLY)
-            )
-            root.layout(0, 0, metrics.widthPixels, metrics.heightPixels)
+            // Twice: capWidth() and the fade rows adjust themselves from a post(), so a
+            // single pass leaves children measured against the pre-cap width.
+            repeat(2) {
+                root.measure(
+                    View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(metrics.heightPixels, View.MeasureSpec.EXACTLY)
+                )
+                root.layout(0, 0, metrics.widthPixels, metrics.heightPixels)
+                looper.idle()
+            }
             report.append("device=${metrics.widthPixels}x${metrics.heightPixels}px density=${metrics.density}\n")
             val problems = ArrayList<String>()
             audit(root, problems, "tab$tab", 0)
