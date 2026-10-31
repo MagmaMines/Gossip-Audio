@@ -111,28 +111,36 @@ object NanoVoice {
         "Z" to Ph(380.0, 1400.0, 2500.0, av = 0.30, fv = 0.34, amp = 0.95, fc = 5200.0, bwf = 2400.0, dur = 78.0),
         "SH" to Ph(400.0, 1800.0, 2600.0, fv = 0.45, amp = 0.95, fc = 2900.0, bwf = 1900.0, dur = 106.0),
         "ZH" to Ph(400.0, 1800.0, 2600.0, av = 0.30, fv = 0.34, amp = 0.95, fc = 2700.0, bwf = 1900.0, dur = 78.0),
-        "HH" to Ph(500.0, 1500.0, 2500.0, fv = 0.26, amp = 0.85, fc = 1700.0, bwf = 3000.0, dur = 70.0),
+        "HH" to Ph(500.0, 1500.0, 2500.0, fv = 1.10, amp = 0.85, fc = 1700.0, bwf = 3000.0, dur = 70.0),
 
         // closure / aspiration / silence
         "SIL" to Ph(500.0, 1500.0, 2500.0, amp = 0.0, dur = 120.0),
         "CL" to Ph(300.0, 1200.0, 2400.0, amp = 0.0, dur = 40.0),
         "CLV" to Ph(280.0, 1150.0, 2350.0, av = 0.13, amp = 0.50, dur = 34.0),
-        "ASP" to Ph(450.0, 1500.0, 2500.0, fv = 0.30, amp = 0.80, fc = 1900.0, bwf = 3000.0, dur = 24.0),
+        "ASP" to Ph(450.0, 1500.0, 2500.0, fv = 1.60, amp = 0.80, fc = 1900.0, bwf = 3000.0, dur = 24.0),
 
         // plosive bursts
-        "PB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
-        "BB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
-        "TB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
-        "DB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
-        "KB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
-        "GB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
-        "TXB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
-        "DXB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
-        "CHB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0),
-        "JHB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0)
+        "PB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
+        "BB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
+        "TB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
+        "DB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
+        "KB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
+        "GB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
+        "TXB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
+        "DXB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
+        "CHB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0),
+        "JHB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0)
     )
 
     private const val VOICE_GAIN = 8.2
+
+    /**
+     * Noise-path gain. Measured against a sustained vowel, /s/ used to sit +10 dB
+     * *above* the voice, which is both wrong and exactly the kind of hiss people
+     * complain about. At 0.10 /s/ lands ~9 dB and /sh/ ~12 dB below the vowel, and
+     * the burst/aspiration phones carry their own drive values to stay audible.
+     */
+    private const val FRIC_GAIN = 0.10
 
     // -------------------------------------------------------------- public API
 
@@ -343,7 +351,7 @@ object NanoVoice {
                 }
                 val voiced = y * aVoice * VOICE_GAIN
                 val noise = rnd.nextDouble() * 2.0 - 1.0
-                val fric = rf.run(noise) * aFric
+                val fric = rf.run(noise) * aFric * FRIC_GAIN
                 lowpass += 0.22 * (noise - lowpass)
                 val asp = lowpass * o.breathiness * aVoice
                 var x = (voiced + fric + asp) * aGain
