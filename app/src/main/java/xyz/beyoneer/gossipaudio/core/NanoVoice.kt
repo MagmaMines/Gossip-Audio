@@ -333,6 +333,7 @@ object NanoVoice {
         val rnd = java.util.Random(0x5EEDL)
         var phase = 0.0
         var flowPrev = 0.0
+        var radPrev = 0.0
         var lowpass = 0.0
         var zeroX1 = 0.0
         var zeroX2 = 0.0
@@ -358,11 +359,11 @@ object NanoVoice {
             r2.set(ff2, max(60.0, b2[bi]), fs)
             r3.set(ff3, max(80.0, b3[bi]), fs)
             r4.set(ff4, 250.0, fs)
-            p3.setPeak(ff3, max(80.0, b3[bi]), fs)
-            p4.setPeak(ff4, 260.0, fs)
             if (o.mix != 0) {
                 p1.setPeak(ff1, max(50.0, b1[bi]), fs)
                 p2.setPeak(ff2, max(60.0, b2[bi]), fs)
+                p3.setPeak(ff3, max(80.0, b3[bi]), fs)
+                p4.setPeak(ff4, 260.0, fs)
             }
             rf.set(min(max(fc[bi], 500.0), nyq * 0.95), max(600.0, bwf[bi]), fs)
             val aGain = amp[bi]
@@ -392,9 +393,14 @@ object NanoVoice {
                 } * shimmer
                 val rad = flow - flowPrev
                 flowPrev = flow
-                // one differentiation = lip radiation; a second one made the source so
-                // bright that it excited the top formants with nothing but fizz
-                val src = rad
+                // Lip radiation, then a *partial* second difference. Full double
+                // differentiation (k = 0.96) makes the source so bright that F3/F4
+                // turn to fizz; k = 0 is the duvet. 0.55 is a +5 dB/oct tilt above
+                // 1 kHz, which is how the presence band gets there *coherently* —
+                // summing a parallel F3 branch on top of a cascade cancels at F3
+                // instead of adding to it.
+                val src = rad - 0.55 * radPrev
+                radPrev = rad
                 var y = r4.run(r3.run(r2.run(r1.run(src))))
                 if (o.mix != 0) {
                     // same four formants, but each one gets its own path and its own
@@ -405,13 +411,6 @@ object NanoVoice {
                         p3.run(src) * tilt[2] +
                         p4.run(src) * tilt[3]
                 }
-                // Presence band. Measured in one build: cascade alone = 1.8 % of the
-                // energy in 2-4 kHz (muffled); parallel bank = 15.7 % there and 42.8 %
-                // above 4 kHz (hissy). Nor is an EQ enough — the cascade leaves almost
-                // no signal at 2.7 kHz to lift. So keep the cascade for the vowel body
-                // and inject F3/F4 through their own resonators at weights measured
-                // between those two extremes.
-                y += p3.run(src) * 0.35 + p4.run(src) * 0.06
                 // 90 Hz rumble filter: keeps F0, drops the shelf's DC lift and the
                 // thump that makes a formant voice sound like it is in a bucket
                 dcLp = dcCoeff * dcLp + (1.0 - dcCoeff) * y
