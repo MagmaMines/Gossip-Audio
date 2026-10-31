@@ -56,7 +56,9 @@ class PipelineTest {
             assertTrue("${voice.name} too short: $seconds s", seconds > 1.5)
             assertTrue("${voice.name} too long: $seconds s", seconds < 20.0)
             assertTrue("${voice.name} is silent", pcm.peak() > 1800)
-            val wav = Wav.write(pcm)
+            // trim like the app's own finish() does, so the published sample is what a
+            // user actually gets (no 400 ms of dead air at the end)
+            val wav = Wav.write(AudioFx.trimSilence(pcm, 120, 20))
             assertTrue(Wav.looksLikeWav(wav))
             if (voice.id in setOf("riya", "bot", "maya", "arjun")) {
                 File(sampleDir, "voice-${voice.id}.wav").writeBytes(wav)
@@ -279,7 +281,7 @@ class PipelineTest {
         assertTrue("hinglish audio missing", hinglish.durationMs > 800)
         assertEquals("K EY S EY", NanoVoice.phonemize("kaise").joinToString(" "))
         assertTrue(NanoVoice.phonemize("नमस्ते").isNotEmpty())
-        File(sampleDir, "voice-hindi.wav").writeBytes(Wav.write(hindi))
-        File(sampleDir, "voice-hinglish.wav").writeBytes(Wav.write(hinglish))
+        File(sampleDir, "voice-hindi.wav").writeBytes(Wav.write(AudioFx.trimSilence(hindi, 120, 20)))
+        File(sampleDir, "voice-hinglish.wav").writeBytes(Wav.write(AudioFx.trimSilence(hinglish, 120, 20)))
     }
 }

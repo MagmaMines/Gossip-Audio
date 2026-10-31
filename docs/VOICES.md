@@ -45,37 +45,45 @@ All eight are real, measured multipliers applied **before** synthesis, so the ex
 mood. `PipelineTest.stylesChangeRateAndPitchNumerically` checks the table stays within sane bounds and
 that a slower rate genuinely produces longer audio.
 
-## NanoVoice, step by step
+## NanoVoice 2, step by step
 
 ```
-"Hello, bestie!" 
+"Hello, bestie!"
    │  TextKit.sanitize
-   ├─ splitSentences()            → ["Hello, bestie!"], flagged question/exclaim, pause lengths
-   ├─ parseWords()                → tokens: words, punctuation, whitespace → (word, trailingPauseMs)
-   ├─ phonemize(word)             → ["HH","AH","L","OW"]   (letter-to-sound rules + dictionary exceptions)
-   ├─ syllableCount / defaultStress
-   └─ frame timeline              → Frame(durationMs, F1, F2, F3, voicing, noise, amp, F0)
-                                   vowels: vowel-triangle targets + glides
-                                   nasals: low F1, nasal zero
-                                   liquids: F3 ~ 2500 Hz
-                                   fricatives: noise-dominant
-                                   stops: silence + burst
-                                   silences: punctuation
+   ├─ textToEvents()          → (phone, durationMs, stress) list
+   │    English: letter-to-sound rules + 360-entry lexicon + contractions,
+   │             stress landing, unstressed vowels reduced to schwa
+   │    हिन्दी : matras, virama, anusvara, nukta, final schwa deletion + lexicon
+   │    Hinglish: kh/gh/chh/bh/dh/th/ph/jh + aa/ee/oo/ai/au
+   ├─ expand()                → stops: closure → burst → aspiration
+   │                            affricates: closure → burst → long aspiration
+   │                            diphthongs: nucleus → glide target
+   └─ render()                → PCM
 ```
 
-Rendering (`NanoVoice.render`) is a source-filter model:
+`render()` is a source–filter model, and the important part is that **the source never stops**:
 
-1. **Glottal source** — a pulse train at `F0` with harmonics rolled off at 1/f, plus vibrato
-   (`vibrato > 0` → ±0.6 % at 5 Hz) and optional quantisation for the robot.
-2. **Formant filters** — three second-order resonators at F1/F2/F3 per frame, cross-faded between
-   frames so there is no zipper noise.
-3. **Noise** — bandpassed white noise mixed in by the `noise` coefficient (fricatives, breathiness).
-4. **Prosody** — linear declination across the sentence, a +18 % rise at the last syllable of questions,
-   +8 % emphasis on exclamations, and stress-based amplitude bumps.
-5. **Post** — DC removal, normalise to −2 dBFS, 12 ms fade-in / 40 ms fade-out.
+1. **Control-rate tracks** — the event list becomes 1.45 ms blocks of F1–F4, B1–B3, voicing,
+   frication, gain, nasal coupling and F0, each smoothed with a one-pole filter (formants τ = 17–20 ms,
+   voicing 11 ms, frication 7 ms). Filter coefficients are recomputed per block, not per sample.
+2. **One glottal source** — a Rosenberg pulse (open quotient 0.62) runs continuously for the whole
+   utterance, with ±0.2 % period jitter and ±3 % per-period shimmer; radiation is the first difference
+   of the flow. Voicing is a *level*, never a gate.
+3. **Vocal tract** — four cascaded two-pole resonators (70/95/140/250 Hz bandwidths), a 950 Hz
+   anti-resonator for nasals, a band-passed noise generator for fricatives (−9 dB for /s/, −12 dB for
+   /ʃ/ relative to a vowel) and one-pole-filtered noise for breathiness.
+4. **Prosody** — 22 % F0 declination across a sentence, +10 % on stressed syllables, 0.9 Hz
+   micro-melody, optional vibrato, and a 42 Hz ring modulator for the robot voice.
+5. **Master** — 99.9th-percentile normalisation (a single transient cannot squash the sentence),
+   hard clamp, 16-bit PCM.
 
-Output: 22 050 Hz, 16-bit, mono. Roughly **1 ms of CPU per word** on a modern phone (measured in the
-in-app Diagnostics self-test), which is why the butterfly loader is a decoration rather than a necessity.
+Word gap is 30 ms, comma 170 ms, full stop 330 ms; a voiceless closure is 32 ms plus a 9 ms burst and
+22 ms of aspiration, so the rhythm lands around 150–160 words per minute at `1.00×`.
+
+Output: 22 050 Hz, 16-bit, mono, rendered in a few milliseconds per sentence on the CPU.
+
+CI measures the result on every build: **harmonic ratio 0.85–0.92** (energy that lands on F0 harmonics)
+and autocorrelation **0.72–0.80** at the pitch period. `PipelineTest` fails the build below 0.65.
 
 ### Accuracy disclaimer, stated proudly
 
@@ -96,6 +104,8 @@ CI renders four voices with the real engine and commits them to the repo:
 | [`dist/samples/voice-arjun.wav`](../dist/samples/voice-arjun.wav) | Indian-English male |
 | [`dist/samples/voice-bot.wav`](../dist/samples/voice-bot.wav) | the non-human one |
 | [`dist/samples/pipeline-sample.mp3`](../dist/samples/pipeline-sample.mp3) | MP3 + ID3v2.3, straight from the encoder |
+| [`dist/samples/voice-hindi.wav`](../dist/samples/voice-hindi.wav) | Devanagari input, Hindi phonemes |
+| [`dist/samples/voice-hinglish.wav`](../dist/samples/voice-hinglish.wav) | `kaise ho bhai` in romanised Hindi |
 
 Measured with `tools/verify_audio.py`:
 

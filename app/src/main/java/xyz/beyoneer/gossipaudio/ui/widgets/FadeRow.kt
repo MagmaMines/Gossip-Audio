@@ -53,7 +53,7 @@ class FadeRow(context: Context, private val palette: Palette) : FrameLayout(cont
         listOf(leftFade, rightFade).forEach { fade ->
             fade.isClickable = false
             fade.importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_NO
-            addView(fade, LayoutParams(Ui.dp(context, 30f), LayoutParams.MATCH_PARENT))
+            addView(fade, LayoutParams(Ui.dp(context, 34f), LayoutParams.MATCH_PARENT))
         }
         (leftFade.layoutParams as LayoutParams).gravity = Gravity.START
         (rightFade.layoutParams as LayoutParams).gravity = Gravity.END
@@ -61,6 +61,12 @@ class FadeRow(context: Context, private val palette: Palette) : FrameLayout(cont
         rightFade.alpha = 0f
         scroll.setOnScrollChangeListener { _, scrollX, _, _, _ -> updateFades(scrollX) }
         post { updateFades(scroll.scrollX) }
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        // A rotation, a font-scale change or the very first measure all land here.
+        updateFades(scroll.scrollX)
     }
 
     private fun updateFades(scrollX: Int) {

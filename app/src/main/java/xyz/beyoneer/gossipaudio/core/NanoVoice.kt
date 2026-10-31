@@ -563,7 +563,7 @@ object NanoVoice {
     }
 
     private fun stopRun(base: String, voiced: Boolean, aspMs: Double, out: MutableList<Ev>) {
-        out.add(Ev(if (voiced) "CLV" else "CL", if (voiced) 30.0 else 44.0, 0))
+        out.add(Ev(if (voiced) "CLV" else "CL", if (voiced) 22.0 else 32.0, 0))
         out.add(Ev(burstOf(base), 9.0, 0))
         if (aspMs > 0.0) out.add(Ev("ASP", aspMs, 0))
     }
@@ -588,17 +588,17 @@ object NanoVoice {
                     } else {
                         stopRun(base, voiced, 0.0, out)
                     }
-                    out.add(Ev("ASP", if (voiced) 30.0 else 55.0, 0))
+                    out.add(Ev("ASP", if (voiced) 24.0 else 46.0, 0))
                 }
                 p == "CH" -> {
-                    out.add(Ev("CL", 40.0, 0))
+                    out.add(Ev("CL", 30.0, 0))
                     out.add(Ev("CHB", 10.0, 0))
-                    out.add(Ev("ASP", 40.0, 0))
+                    out.add(Ev("ASP", 34.0, 0))
                 }
                 p == "JH" -> {
-                    out.add(Ev("CLV", 30.0, 0))
+                    out.add(Ev("CLV", 22.0, 0))
                     out.add(Ev("JHB", 10.0, 0))
-                    out.add(Ev("ASP", 18.0, 0))
+                    out.add(Ev("ASP", 14.0, 0))
                 }
                 else -> out.add(Ev(p, 0.0, stress))
             }
@@ -1047,7 +1047,7 @@ object NanoVoice {
                     if (pause > 0.0) out.add(Ev("SIL", pause / r, 0))
                 }
                 out.addAll(wordEvents(m.value, mode))
-                out.add(Ev("SIL", 52.0 / r, 0))
+                out.add(Ev("SIL", 30.0 / r, 0))
                 rest = rest.substring(m.range.last + 1)
             }
             out.add(Ev("SIL", 180.0 / r, 0))
