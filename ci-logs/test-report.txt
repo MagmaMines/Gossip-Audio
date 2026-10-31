@@ -1,0 +1,29 @@
+GossipAudio test report
+=======================
+
+AccessibilityTest: 4 tests, 0 failed, 0 skipped  (12.641 s)
+  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  10.813 s
+  [PASS] hapticsSwitchActuallyGatesVibration  0.569 s
+  [PASS] everyTappableControlHasAName  0.811 s
+  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.447 s
+
+PipelineTest: 8 tests, 0 failed, 0 skipped  (0.553 s)
+  [PASS] silenceAndEmptyInputAreHandledGracefully  0.071 s
+  [PASS] mp3EncoderProducesRealFramesAndTags  0.183 s
+  [PASS] stylesChangeRateAndPitchNumerically  0.009 s
+  [PASS] everyVoiceSynthesisesAudibleSpeech  0.2 s
+  [PASS] audioEffectsAreStable  0.02 s
+  [PASS] wavRoundTripPreservesSamples  0.017 s
+  [PASS] textKitEstimatesMatchRenderedAudio  0.051 s
+  [PASS] catalogHasTenVoicesAndEightStyles  0.0 s
+
+StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (5.047 s)
+  [PASS] typingAndTappingGenerateCreatesAPlayableClip  5.047 s
+
+UiSmokeTest: 4 tests, 0 failed, 0 skipped  (4.001 s)
+  [PASS] appBootsIntoShellAndRendersEveryTab  1.715 s
+  [PASS] darkThemeStillUsesBrandYellow  0.428 s
+  [PASS] aboutHelpAndDiagnosticsScreensRender  1.282 s
+  [PASS] playerScreenOpensForARealClip  0.576 s
+
+TOTAL: 17 tests, 0 failed, 0 skipped
