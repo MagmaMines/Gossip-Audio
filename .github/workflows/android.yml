@@ -83,6 +83,37 @@ jobs:
           mkdir -p ci-logs
           gradle --no-daemon --stacktrace --console=plain testDebugUnitTest 2>&1 | tee ci-logs/test.log
 
+      - name: Test report
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > ci-logs/test-report.txt
+          import glob, xml.etree.ElementTree as ET
+          total = failed = skipped = 0
+          print("GossipAudio test report")
+          print("=======================")
+          for path in sorted(glob.glob("app/build/test-results/testDebugUnitTest/*.xml")):
+              tree = ET.parse(path)
+              suite = tree.getroot()
+              name = suite.get("name", path).split(".")[-1]
+              tests = int(suite.get("tests", 0)); fails = int(suite.get("failures", 0)) + int(suite.get("errors", 0))
+              skip = int(suite.get("skipped", 0))
+              total += tests; failed += fails; skipped += skip
+              print(f"\n{name}: {tests} tests, {fails} failed, {skip} skipped  ({suite.get('time', '?')} s)")
+              for case in suite.findall("testcase"):
+                  status = "SKIP" if case.find("skipped") is not None else ("FAIL" if (case.find("failure") is not None or case.find("error") is not None) else "PASS")
+                  print(f"  [{status}] {case.get('name')}  {case.get('time')} s")
+          print(f"\nTOTAL: {total} tests, {failed} failed, {skipped} skipped")
+          PY
+          cat ci-logs/test-report.txt
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET, sys
+          fails = 0
+          for path in glob.glob("app/build/test-results/testDebugUnitTest/*.xml"):
+              root = ET.parse(path).getroot()
+              fails += int(root.get("failures", 0)) + int(root.get("errors", 0))
+          sys.exit(1 if fails else 0)
+          PY
+
       - name: Prepare dist
         run: |
           set -euo pipefail
@@ -92,6 +123,8 @@ jobs:
           mkdir -p dist/samples dist/shots
           cp app/build/ui-shots/*.png dist/shots/ 2>/dev/null || true
           ls -l dist/shots || true
+          test -f dist/shots/01-shell-studio.png || { echo "UI screenshots missing"; exit 1; }
+          cp ci-logs/test-report.txt dist/TEST_REPORT.txt
           cp app/build/test-samples/*.wav dist/samples/ 2>/dev/null || true
           cp app/build/test-samples/*.mp3 dist/samples/ 2>/dev/null || true
           cp app/build/test-samples/pipeline-sample.txt dist/samples/ 2>/dev/null || true
