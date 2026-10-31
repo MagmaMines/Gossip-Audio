@@ -85,6 +85,10 @@ through all three mixing strategies so the numbers above are chosen from measure
 3. **A quality gate** now inspects every system-TTS capture: near-silent or click-only output is thrown
    away and re-rendered with NanoVoice instead of being handed to you.
 
+The full comparison of every free/open-source option — NanoVoice, Pico, eSpeak NG, RHVoice, Piper/sherpa-onnx,
+FreeTTS, MaryTTS — with licences, language counts and why each was or was not bundled, is in
+[`docs/AUDIO-ENGINES.md`](docs/AUDIO-ENGINES.md).
+
 Being honest about it: NanoVoice is a formant synthesiser — it has a deliberate robot-ish charm and it is
 not a 60 MB neural model. The natural-sounding voices come from the engine already on your phone; what we
 guarantee is that *every* path produces actual speech, on every phone, with no download.
