@@ -133,14 +133,17 @@ object NanoVoice {
         "JHB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0)
     )
 
-    private const val VOICE_GAIN = 8.2
+    private const val VOICE_GAIN = 80.0
 
     /**
-     * Noise-path gain, measured against a sustained /ɑ/ with the parallel formant
-     * bank: /s/ lands ~7.5 dB, /ʃ/ ~11 dB and /f/ ~15 dB below the vowel. Any louder
-     * and the file reads as static; any quieter and the fricatives vanish.
+     * Noise-path gain.
+     *
+     * Measured on a full sentence, not on a lone hiss: with the parallel formant bank
+     * the voiced path needs a 80x gain, and at 0.08 the fricatives land a few dB under
+     * the voice. The old numbers were tuned against a peak-normalised noise render and
+     * were 25 dB too hot — that is the "pure hsss" of 1.0.1.
      */
-    private const val FRIC_GAIN = 0.25
+    private const val FRIC_GAIN = 0.08
 
     // -------------------------------------------------------------- public API
 
@@ -382,7 +385,7 @@ object NanoVoice {
                 val noise = rnd.nextDouble() * 2.0 - 1.0
                 val fric = rf.run(noise) * aFric * FRIC_GAIN
                 lowpass += 0.22 * (noise - lowpass)
-                val asp = lowpass * o.breathiness * aVoice
+                val asp = lowpass * o.breathiness * aVoice * VOICE_GAIN * 0.05
                 var x = (voiced + fric + asp) * aGain
                 if (o.roughness > 0.0) {
                     x *= 1.0 + o.roughness * 0.5 * (rnd.nextDouble() - 0.5)
