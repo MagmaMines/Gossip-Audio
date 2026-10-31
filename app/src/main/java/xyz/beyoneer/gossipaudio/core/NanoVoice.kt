@@ -10,26 +10,29 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 /**
- * NanoVoice 2 — GossipAudio's zero-dependency speech engine.
+ * NanoVoice — GossipAudio's zero-dependency speech engine (v4).
  *
- * Why v2 exists: v1 rendered every phoneme as its own little burst with a fresh
+ * Why it exists: v1 rendered every phoneme as its own little burst with a fresh
  * attack/release envelope and per-sample filter coefficients. Between two
  * phonemes the voice simply stopped and started again, which is heard as ticks,
- * clicks and "hsssh". It measured 0.31–0.52 harmonic ratio — closer to noise
- * than to speech.
+ * clicks and "hsssh".
  *
- * v2 is a proper source-filter synthesiser:
+ * The engine is a source-filter synthesiser:
  *
  *  - ONE continuous glottal source for the whole utterance (Rosenberg flow
- *    pulse + radiation differentiation), so voicing never restarts mid-word;
+ *    pulse + lip radiation), so voicing never restarts mid-word;
  *  - parameter tracks at 1.45 ms control rate with one-pole smoothing, so
  *    formants glide (coarticulation) instead of jumping;
- *  - a four-pole cascade formant filter, per-phoneme targets;
+ *  - a four-pole *cascade* formant filter — a parallel bank made every formant
+ *    equally loud and pushed a fifth of the energy above 4 kHz;
  *  - shaped noise for fricatives, real closure/burst/aspiration for plosives;
  *  - a rule-based phonemiser for English, Devanagari Hindi and romanised Hindi.
  *
- * Measured on the same corpus that exposed v1: harmonic ratio 0.87–0.92 and
- * autocorrelation 0.72–0.80 (v1: 0.31–0.52 / 0.58–0.64).
+ * 1.0.3 shipped with the vowels declared without `av`, i.e. with a silent voiced
+ * path. The only audible content was consonant noise, then the normaliser
+ * amplified it to full scale: clicks and hiss. That is fixed here, and
+ * `PipelineTest.renderedAudioIsTonalSpeechNotNoise` now gates the harmonic ratio
+ * of a full sentence so it cannot silently regress again.
  *
  * Everything runs on the CPU in a few milliseconds per sentence, no model
  * download, no network, no NDK.
@@ -69,26 +72,32 @@ object NanoVoice {
     private data class Ev(val phone: String, val ms: Double, val stress: Int)
 
     private val phones: Map<String, Ph> = mapOf(
-        // vowels — F1/F2/F3 from a male reference, scaled per voice
-        "IY" to Ph(285.0, 2260.0, 2920.0, dur = 110.0),
-        "IH" to Ph(400.0, 1930.0, 2560.0, dur = 95.0),
-        "EY" to Ph(360.0, 2000.0, 2600.0, dur = 120.0),
-        "EH" to Ph(485.0, 1730.0, 2520.0, dur = 95.0),
-        "AE" to Ph(600.0, 1670.0, 2400.0, dur = 110.0),
-        "AA" to Ph(730.0, 1090.0, 2440.0, dur = 120.0),
-        "AO" to Ph(570.0, 850.0, 2410.0, dur = 115.0),
-        "OW" to Ph(430.0, 810.0, 2400.0, dur = 120.0),
-        "UH" to Ph(445.0, 1030.0, 2250.0, dur = 95.0),
-        "UW" to Ph(310.0, 880.0, 2260.0, dur = 115.0),
-        "AH" to Ph(640.0, 1200.0, 2390.0, dur = 95.0),
-        "ER" to Ph(490.0, 1360.0, 1690.0, b3 = 180.0, dur = 110.0),
-        "AY" to Ph(700.0, 1200.0, 2500.0, dur = 60.0),
-        "AW" to Ph(690.0, 1100.0, 2400.0, dur = 60.0),
-        "OY" to Ph(570.0, 840.0, 2400.0, dur = 60.0),
-        "AY2" to Ph(330.0, 2000.0, 2700.0, dur = 70.0),
-        "AW2" to Ph(330.0, 900.0, 2300.0, dur = 70.0),
-        "OY2" to Ph(330.0, 2050.0, 2700.0, dur = 70.0),
-        "AHN" to Ph(620.0, 1180.0, 2380.0, b1 = 140.0, nasal = 0.45, dur = 95.0),
+        // Vowels — F1/F2/F3 from a male reference, scaled per voice.
+        //
+        // av = 1.0 on every vowel is not a detail: Ph defaults av to 0.0, and until
+        // 1.0.3 the vowels were declared without it. Voiced output was therefore
+        // exactly zero, the 99.9th-percentile normaliser divided by a peak that only
+        // consonants produced, and the file played back as isolated clicks and hiss.
+        // That is the "pure hsss" report, and it was never a filter-tuning problem.
+        "IY" to Ph(285.0, 2260.0, 2920.0, av = 1.0, dur = 110.0),
+        "IH" to Ph(400.0, 1930.0, 2560.0, av = 1.0, dur = 95.0),
+        "EY" to Ph(360.0, 2000.0, 2600.0, av = 1.0, dur = 120.0),
+        "EH" to Ph(485.0, 1730.0, 2520.0, av = 1.0, dur = 95.0),
+        "AE" to Ph(600.0, 1670.0, 2400.0, av = 1.0, dur = 110.0),
+        "AA" to Ph(730.0, 1090.0, 2440.0, av = 1.0, dur = 120.0),
+        "AO" to Ph(570.0, 850.0, 2410.0, av = 1.0, dur = 115.0),
+        "OW" to Ph(430.0, 810.0, 2400.0, av = 1.0, dur = 120.0),
+        "UH" to Ph(445.0, 1030.0, 2250.0, av = 1.0, dur = 95.0),
+        "UW" to Ph(310.0, 880.0, 2260.0, av = 1.0, dur = 115.0),
+        "AH" to Ph(640.0, 1200.0, 2390.0, av = 1.0, dur = 95.0),
+        "ER" to Ph(490.0, 1360.0, 1690.0, b3 = 180.0, av = 1.0, dur = 110.0),
+        "AY" to Ph(700.0, 1200.0, 2500.0, av = 1.0, dur = 60.0),
+        "AW" to Ph(690.0, 1100.0, 2400.0, av = 1.0, dur = 60.0),
+        "OY" to Ph(570.0, 840.0, 2400.0, av = 1.0, dur = 60.0),
+        "AY2" to Ph(330.0, 2000.0, 2700.0, av = 1.0, dur = 70.0),
+        "AW2" to Ph(330.0, 900.0, 2300.0, av = 1.0, dur = 70.0),
+        "OY2" to Ph(330.0, 2050.0, 2700.0, av = 1.0, dur = 70.0),
+        "AHN" to Ph(620.0, 1180.0, 2380.0, b1 = 140.0, av = 1.0, nasal = 0.45, dur = 95.0),
 
         // nasals
         "M" to Ph(275.0, 1080.0, 2350.0, b1 = 120.0, b2 = 160.0, av = 0.42, amp = 0.72, nasal = 1.0, dur = 72.0),

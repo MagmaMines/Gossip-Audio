@@ -276,7 +276,7 @@ class PipelineTest {
             append("duration_ms=").append(pcm.durationMs).append('\n')
             append("peak=").append(pcm.peak()).append('\n')
             append("bands_percent=").append(formatShares(shares)).append('\n')
-            append("estimate=").append("v3 parallel formant synthesiser").append('\n')
+            append("estimate=").append("v4 cascade formant synthesiser").append('\n')
         }
         File(sampleDir, "quality.txt").writeText(report)
         File(sampleDir, "voice-quality.wav").writeBytes(Wav.write(AudioFx.trimSilence(pcm, 120, 20)))
