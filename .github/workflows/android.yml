@@ -158,6 +158,13 @@ jobs:
             grep -E "^e: " ci-logs/assemble.log 2>/dev/null | sed -e 's|file:///home/runner/work/[^/]*/[^/]*/|src/|' | head -300 || true
             echo "====== warnings that matter ======"
             grep -E "^e: |Unresolved|Type mismatch|none of the following|No value passed|cannot be applied|Overload resolution" ci-logs/test.log ci-logs/assemble.log 2>/dev/null | head -80 || true
+            echo "====== failing tests ======"
+            grep -E "FAILED|AssertionError|expected:|but was:|Tests? .* failed" ci-logs/test.log 2>/dev/null | head -60 || true
+            for f in app/build/test-results/testDebugUnitTest/*.xml; do
+              [ -f "$f" ] || continue
+              echo "--- $f"
+              grep -E "testcase|failure message|AssertionError" "$f" | head -60
+            done
             echo "====== what went wrong ======"
             grep -A 12 "What went wrong" ci-logs/test.log 2>/dev/null | head -60 || true
             grep -A 12 "What went wrong" ci-logs/assemble.log 2>/dev/null | head -60 || true
