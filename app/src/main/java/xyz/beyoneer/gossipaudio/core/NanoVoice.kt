@@ -146,17 +146,6 @@ object NanoVoice {
 
     private const val VOICE_GAIN = 8.0
 
-    /**
-     * High-shelf depth (linear) above [HF_CORNER_HZ].
-     *
-     * A cascade is the right shape but it is dark: with its skirts added, only 0.5 %
-     * of the energy landed in 2-4 kHz against 46 % below 300 Hz, which reads as
-     * "muffled under a duvet". The high-formant branch below does most of that work
-     * now, so the shelf only has to add presence: 1.0 is +6 dB above 2 kHz.
-     */
-    private const val HF_SHELF = 1.0
-
-    private const val HF_CORNER_HZ = 2000.0
 
     /**
      * Noise-path gain.
@@ -336,10 +325,6 @@ object NanoVoice {
         val r3 = Reso()
         val r4 = Reso()
         val rf = Reso()
-        // high-formant parallel branch (Klatt's trick): the cascade alone leaves
-        // F3/F4 under the skirts of F1/F2, so the vowel reads as muffled
-        val rh3 = Reso()
-        val rh4 = Reso()
         // parallel-bank resonators, only touched when Options.mix selects them
         val p1 = Reso()
         val p2 = Reso()
@@ -348,16 +333,30 @@ object NanoVoice {
         val rnd = java.util.Random(0x5EEDL)
         var phase = 0.0
         var flowPrev = 0.0
-        var hiPrev = 0.0
         var lowpass = 0.0
         var zeroX1 = 0.0
         var zeroX2 = 0.0
         var jitter = 0.0
         var shimmer = 1.0
-        var tiltLp = 0.0
         var dcLp = 0.0
-        val tiltCoeff = exp(-2.0 * PI * HF_CORNER_HZ / fs)
         val dcCoeff = exp(-2.0 * PI * 90.0 / fs)
+        // RBJ peaking EQ, fixed: +7 dB at 2.7 kHz, Q 1.0
+        val eqGain = 7.0
+        val eqQ = 1.0
+        val eqFreq = 2700.0
+        val eqA = Math.pow(10.0, eqGain / 40.0)
+        val eqW = 2.0 * PI * eqFreq / fs
+        val eqAlpha = sin(eqW) / (2.0 * eqQ)
+        val eqB0 = 1.0 + eqAlpha * eqA
+        val eqB1 = -2.0 * cos(eqW)
+        val eqB2 = 1.0 - eqAlpha * eqA
+        val eqA0 = 1.0 + eqAlpha / eqA
+        val eqA1 = -2.0 * cos(eqW)
+        val eqA2 = 1.0 - eqAlpha / eqA
+        var eqX1 = 0.0
+        var eqX2 = 0.0
+        var eqY1 = 0.0
+        var eqY2 = 0.0
         val nyq = fs / 2.0
         val oq = 0.62
 
@@ -376,8 +375,6 @@ object NanoVoice {
             r2.set(ff2, max(60.0, b2[bi]), fs)
             r3.set(ff3, max(80.0, b3[bi]), fs)
             r4.set(ff4, 250.0, fs)
-            rh3.setPeak(ff3, max(90.0, b3[bi]), fs)
-            rh4.setPeak(ff4, 260.0, fs)
             if (o.mix != 0) {
                 p1.setPeak(ff1, max(50.0, b1[bi]), fs)
                 p2.setPeak(ff2, max(60.0, b2[bi]), fs)
@@ -416,10 +413,6 @@ object NanoVoice {
                 // bright that it excited the top formants with nothing but fizz
                 val src = rad
                 var y = r4.run(r3.run(r2.run(r1.run(src))))
-                // the high branch sees a differentiated source so F3/F4 can keep up
-                val srcHi = src - 0.9 * hiPrev
-                hiPrev = src
-                y += rh3.run(srcHi) * 0.55 + rh4.run(srcHi) * 0.30
                 if (o.mix != 0) {
                     // same four formants, but each one gets its own path and its own
                     // amplitude instead of being filtered through the stage before it
@@ -429,9 +422,19 @@ object NanoVoice {
                         p3.run(src) * tilt[2] +
                         p4.run(src) * tilt[3]
                 }
-                // gentle high shelf so the cascade does not sound like a pillow
-                tiltLp = tiltCoeff * tiltLp + (1.0 - tiltCoeff) * y
-                y += HF_SHELF * (y - tiltLp)
+                // Presence band. The cascade is honest but dark (1.8 % of the energy
+                // in 2-4 kHz); a parallel bank is the opposite extreme (15.7 % there,
+                // 42.8 % above 4 kHz). A +7 dB peaking EQ at 2.7 kHz lifts exactly the
+                // band that carries consonant place and vowel identity, and leaves the
+                // fricative range alone.
+                val eqIn = y
+                val eqOut = (eqB0 * eqIn + eqB1 * eqX1 + eqB2 * eqX2 -
+                    eqA1 * eqY1 - eqA2 * eqY2) / eqA0
+                eqX2 = eqX1
+                eqX1 = eqIn
+                eqY2 = eqY1
+                eqY1 = eqOut
+                y = eqOut
                 // 90 Hz rumble filter: keeps F0, drops the shelf's DC lift and the
                 // thump that makes a formant voice sound like it is in a bucket
                 dcLp = dcCoeff * dcLp + (1.0 - dcCoeff) * y
