@@ -119,9 +119,12 @@ jobs:
       - name: Verify APK + audio artifacts
         run: |
           set -o pipefail
-          python3 tools/verify_apk.py "dist/GossipAudio-${VERSION}-release.apk" | tee dist/VERIFICATION.txt
+          mkdir -p ci-logs
+          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
+          echo "verifying dist/GossipAudio-${VERSION}-release.apk"
+          python3 tools/verify_apk.py "dist/GossipAudio-${VERSION}-release.apk" 2>&1 | tee dist/VERIFICATION.txt | tail -40
           echo "" | tee -a dist/VERIFICATION.txt
-          python3 tools/verify_audio.py | tee -a dist/VERIFICATION.txt
+          python3 tools/verify_audio.py 2>&1 | tee -a dist/VERIFICATION.txt | tail -20
 
       - name: Upload artifacts (workflow run)
         if: always()
@@ -181,6 +184,8 @@ jobs:
             tail -c 4000 ci-logs/test.log 2>/dev/null || true
             echo "====== assemble.log (tail) ======"
             tail -c 20000 ci-logs/assemble.log 2>/dev/null || true
+            echo "====== verification report ======"
+            cat dist/VERIFICATION.txt 2>/dev/null | tail -c 6000 || true
             echo "====== sdk.txt ======"
             cat ci-logs/sdk.txt 2>/dev/null || true
           } > ci-logs/failure.txt
