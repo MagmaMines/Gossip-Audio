@@ -116,6 +116,13 @@ jobs:
           } > dist/BUILD_INFO.txt
           cat dist/BUILD_INFO.txt
 
+      - name: Verify APK + audio artifacts
+        run: |
+          set -o pipefail
+          python3 tools/verify_apk.py "dist/GossipAudio-${VERSION}-release.apk" | tee dist/VERIFICATION.txt
+          echo "" | tee -a dist/VERIFICATION.txt
+          python3 tools/verify_audio.py | tee -a dist/VERIFICATION.txt
+
       - name: Upload artifacts (workflow run)
         if: always()
         uses: actions/upload-artifact@v4
