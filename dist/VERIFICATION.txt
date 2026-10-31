@@ -1,8 +1,8 @@
-=== APK verification: dist/GossipAudio-1.0.2-release.apk
+=== APK verification: dist/GossipAudio-1.0.3-release.apk
 {
   "package": "xyz.beyoneer.gossipaudio",
-  "versionName": "1.0.2",
-  "versionCode": "3",
+  "versionName": "1.0.3",
+  "versionCode": "4",
   "minSdk": "24",
   "targetSdk": "35",
   "appClass": "xyz.beyoneer.gossipaudio.GossipApp",
@@ -38,10 +38,10 @@
     "key_bits": 4096,
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
-  "entries": 32,
-  "uncompressed_bytes": 3235594,
-  "dex_bytes": 2853132,
-  "apk_sha256": "a3e20b6bdab161be749c08d180b9c07b86ecaf943691c40fa09c8fc351145f98"
+  "entries": 33,
+  "uncompressed_bytes": 3261522,
+  "dex_bytes": 2876100,
+  "apk_sha256": "df28bf430a45bf8fb80da5dda7807ba10d5433d2736772d52dc716ca0a3104b2"
 }
 
 --- notes
@@ -50,7 +50,7 @@
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
  * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
- * dex files: classes.dex (2853132 bytes uncompressed)
+ * dex files: classes.dex (2876100 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
