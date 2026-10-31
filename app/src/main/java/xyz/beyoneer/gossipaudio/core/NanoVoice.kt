@@ -149,10 +149,10 @@ object NanoVoice {
      *
      * A cascade is the right shape but it is dark: with its skirts added, only 0.5 %
      * of the energy landed in 2-4 kHz against 46 % below 300 Hz, which reads as
-     * "muffled under a duvet". 2.2 is +9.6 dB above 2 kHz — measured back to ~6 %
-     * in 2-4 kHz and ~20 % in 800-2000 Hz, which is where speech actually lives.
+     * "muffled under a duvet". The high-formant branch below does most of that work
+     * now, so the shelf only has to add presence: 1.0 is +6 dB above 2 kHz.
      */
-    private const val HF_SHELF = 2.2
+    private const val HF_SHELF = 1.0
 
     private const val HF_CORNER_HZ = 2000.0
 
@@ -334,9 +334,14 @@ object NanoVoice {
         val r3 = Reso()
         val r4 = Reso()
         val rf = Reso()
+        // high-formant parallel branch (Klatt's trick): the cascade alone leaves
+        // F3/F4 under the skirts of F1/F2, so the vowel reads as muffled
+        val rh3 = Reso()
+        val rh4 = Reso()
         val rnd = java.util.Random(0x5EEDL)
         var phase = 0.0
         var flowPrev = 0.0
+        var hiPrev = 0.0
         var lowpass = 0.0
         var zeroX1 = 0.0
         var zeroX2 = 0.0
@@ -364,6 +369,8 @@ object NanoVoice {
             r2.set(ff2, max(60.0, b2[bi]), fs)
             r3.set(ff3, max(80.0, b3[bi]), fs)
             r4.set(ff4, 250.0, fs)
+            rh3.setPeak(ff3, max(90.0, b3[bi]), fs)
+            rh4.setPeak(ff4, 260.0, fs)
             rf.set(min(max(fc[bi], 500.0), nyq * 0.95), max(600.0, bwf[bi]), fs)
             val aGain = amp[bi]
             val aVoice = min(1.0, av[bi])
@@ -396,6 +403,10 @@ object NanoVoice {
                 // bright that it excited the top formants with nothing but fizz
                 val src = rad
                 var y = r4.run(r3.run(r2.run(r1.run(src))))
+                // the high branch sees a differentiated source so F3/F4 can keep up
+                val srcHi = src - 0.9 * hiPrev
+                hiPrev = src
+                y += rh3.run(srcHi) * 0.55 + rh4.run(srcHi) * 0.30
                 // gentle high shelf so the cascade does not sound like a pillow
                 tiltLp = tiltCoeff * tiltLp + (1.0 - tiltCoeff) * y
                 y += HF_SHELF * (y - tiltLp)
