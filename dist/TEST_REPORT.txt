@@ -1,29 +1,29 @@
 GossipAudio test report
 =======================
 
-AccessibilityTest: 4 tests, 0 failed, 0 skipped  (14.658 s)
-  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  12.408 s
-  [PASS] hapticsSwitchActuallyGatesVibration  0.66 s
-  [PASS] everyTappableControlHasAName  1.035 s
-  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.553 s
+AccessibilityTest: 4 tests, 0 failed, 0 skipped  (11.305 s)
+  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  9.868 s
+  [PASS] hapticsSwitchActuallyGatesVibration  0.424 s
+  [PASS] everyTappableControlHasAName  0.655 s
+  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.357 s
 
-PipelineTest: 8 tests, 0 failed, 0 skipped  (0.563 s)
-  [PASS] silenceAndEmptyInputAreHandledGracefully  0.104 s
-  [PASS] mp3EncoderProducesRealFramesAndTags  0.207 s
-  [PASS] stylesChangeRateAndPitchNumerically  0.008 s
-  [PASS] everyVoiceSynthesisesAudibleSpeech  0.192 s
-  [PASS] audioEffectsAreStable  0.021 s
-  [PASS] wavRoundTripPreservesSamples  0.009 s
-  [PASS] textKitEstimatesMatchRenderedAudio  0.021 s
-  [PASS] catalogHasTenVoicesAndEightStyles  0.0 s
+PipelineTest: 8 tests, 0 failed, 0 skipped  (0.341 s)
+  [PASS] silenceAndEmptyInputAreHandledGracefully  0.055 s
+  [PASS] mp3EncoderProducesRealFramesAndTags  0.131 s
+  [PASS] stylesChangeRateAndPitchNumerically  0.005 s
+  [PASS] everyVoiceSynthesisesAudibleSpeech  0.116 s
+  [PASS] audioEffectsAreStable  0.014 s
+  [PASS] wavRoundTripPreservesSamples  0.006 s
+  [PASS] textKitEstimatesMatchRenderedAudio  0.012 s
+  [PASS] catalogHasTenVoicesAndEightStyles  0.001 s
 
-StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (5.55 s)
-  [PASS] typingAndTappingGenerateCreatesAPlayableClip  5.55 s
+StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (4.145 s)
+  [PASS] typingAndTappingGenerateCreatesAPlayableClip  4.145 s
 
-UiSmokeTest: 4 tests, 0 failed, 0 skipped  (5.002 s)
-  [PASS] appBootsIntoShellAndRendersEveryTab  2.171 s
-  [PASS] darkThemeStillUsesBrandYellow  0.496 s
-  [PASS] aboutHelpAndDiagnosticsScreensRender  1.636 s
-  [PASS] playerScreenOpensForARealClip  0.698 s
+UiSmokeTest: 4 tests, 0 failed, 0 skipped  (3.08 s)
+  [PASS] appBootsIntoShellAndRendersEveryTab  1.33 s
+  [PASS] darkThemeStillUsesBrandYellow  0.355 s
+  [PASS] aboutHelpAndDiagnosticsScreensRender  0.929 s
+  [PASS] playerScreenOpensForARealClip  0.466 s
 
 TOTAL: 17 tests, 0 failed, 0 skipped
