@@ -1,4 +1,4 @@
-# Feature catalogue — 28 features, each with proof
+# Feature catalogue — 38 features, each with proof
 
 Every row below is wired to code that ships in the APK. The **Verify** column tells you how to see it
 with your own eyes (or ears) on a real phone in under a minute.
@@ -97,3 +97,21 @@ Being honest is part of “production grade”:
 * **No account, no sync, no analytics.** The app cannot phone home even if it wanted to.
 * **No fake demos.** The self-test and the CI verifiers exercise the shipped code, and the sample audio in
   [`../dist/samples/`](../dist/samples/) was produced by it.
+
+---
+
+## 1.0.3 additions — ten more, each with a proof
+
+| # | Feature | Where the code lives | Verify |
+|---|---|---|---|
+| 29 | **Share-to-gossip** — any app's text can be sent straight into the composer | `AndroidManifest.xml` (`ACTION_SEND`, `text/plain`), `MainActivity.handleIntent`, `StudioTab.onShow` | In Chrome, select a sentence → Share → GossipAudio. The text lands in the composer with a toast. |
+| 30 | **Process selected text** (Android 6+) — "Gossip this" in the text-selection menu | `AndroidManifest.xml` (`ACTION_PROCESS_TEXT`) | Select text in any editor → ⋮ → *GossipAudio*. |
+| 31 | **Launcher shortcuts** — New gossip / Library / Play my voice (long-press the icon) | `res/xml/shortcuts.xml`, `MainActivity.ACTION_*` | Long-press the launcher icon. Each shortcut opens the right tab. |
+| 32 | **Say it your way** — custom pronunciations, applied to both engines | `Prefs.wordMap`, `SpeechSynth.applyWordMap` | Settings → Voice lab → *Say it your way* → `beyoneer = Be-yo-neer`. Every render (system TTS and NanoVoice) now says it that way. |
+| 33 | **Voice engine & language inspector** — shows every engine on the phone and each language's status, with a one-tap installer | `SettingsTab.showEngineAndLanguages` | Settings → Voice lab → *Voice engine & languages*. Green = ready, amber = needs data, with a button that opens the system TTS data installer. |
+| 34 | **Bigger text** — a global 15 % type scale for accessibility | `Prefs.bigText`, `Ui.textScale` | Settings → Voice lab → *Bigger text*. Every label in the app grows; the setting survives restarts. |
+| 35 | **Auto-trim & auto-normalise** — the post-processing is now switchable per clip | `Prefs.autoTrim`, `Prefs.autoNormalize`, `SpeechSynth.finish` | Turn both off, render a quiet sentence, compare the waveform in Diagnostics. |
+| 36 | **Set as ringtone / notification / alarm** — the clip is written into the system sound library via MediaStore | `PlayerScreen.applyAsSound` | Player → *Ringtone* → pick a slot. The system sound picker shows the clip. (Android 10+.) |
+| 37 | **Copy / share the transcript** | `PlayerScreen.copyTranscript`, `shareTranscript` | Player → *Copy text* / *Share text*. |
+| 38 | **Library sorting** — newest, longest, A–Z | `LibraryTab.sortMode` | Library → tap the sort chip; it cycles and the list re-orders. |
+| — | **Studio statistics** — clip count, total minutes, most-used voice | `SettingsTab.statsRow` | Settings → Voice lab header. |

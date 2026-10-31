@@ -4,12 +4,12 @@ Open the app and work down this list. Anything that fails is a bug worth reporti
 **Settings → Diagnostics → Run self-test** covers the audio pipeline automatically (8 checks).
 
 ## Install & launch
-- [ ] `dist/GossipAudio-1.0.2-release.apk` installs without "invalid package" (v2 signature verified in CI).
+- [ ] `dist/GossipAudio-1.0.3-release.apk` installs without "invalid package" (v2 signature verified in CI).
 - [ ] Launcher icon is the yellow logo, label reads **GossipAudio**.
 - [ ] Cold start shows the butterfly splash, then onboarding (first run) or the Studio tab.
 - [ ] Rotating the phone does not lose the composer text or stop playback.
 
-## Audio quality (the 1.0.2 fix)
+## Audio quality (the 1.0.3 fix)
 - [ ] Generate a sentence, save WAV, play it: continuous voice, no ticks/hiss between words.
 - [ ] Type `नमस्ते दोस्तों, आज की गॉसिप सुनो।` → audio is Hindi-ish, not silence.
 - [ ] Type `kaise ho bhai, sab badhiya hai?` → Hinglish, not spelled-out English.

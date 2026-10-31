@@ -92,12 +92,15 @@ composer text
 3. Any exception, timeout (`12 s` watchdog per engine) or empty result falls through to `NanoVoice`.
    The fallback is recorded in `Clip.engine` (`"system"` or `"nano"`) and shown in the player.
 
-### NanoVoice 2 (the guaranteed engine)
+### NanoVoice 4 (the guaranteed engine)
 
 NanoVoice is a source–filter formant synthesiser, not a sample player and not a neural model.
 The 1.0.1 implementation restarted the voice for every phoneme (own attack/release, coefficients
 recomputed per sample), which produced the "ticks/hiss" users reported: only 31–52 % of the energy
-landed on harmonics of F0. 1.0.2 replaces it end to end:
+landed on harmonics of F0. 1.0.1's replacement was still wrong, for a reason worth writing down: every
+vowel was declared without `av`, which defaults to 0.0, so the voiced path was multiplied by zero and the
+only audible content was consonant noise — normalised up to full scale. 1.0.3 fixes that (`av = 1.0` on
+all 19 vowels) and rebuilds the tract around what the measurements said:
 
 1. **Phonemise** — English letter-to-sound rules plus a lexicon of irregular common words and
    contractions; Devanagari Hindi (independent vowels, consonants, matras, virama, anusvara,
@@ -113,9 +116,16 @@ landed on harmonics of F0. 1.0.2 replaces it end to end:
 4. **Continuous glottal source** — a Rosenberg pulse (open quotient 0.62) runs for the whole utterance
    with period jitter (±0.2 %) and per-period shimmer (±3 %); radiation is the first difference of the
    glottal flow. F0 declines 22 % across a sentence, +10 % on stressed syllables, optional vibrato.
-5. **Vocal tract** — four cascaded two-pole resonators (bandwidths 70/95/140/250 Hz), a nasal
-   anti-resonator at 950 Hz, shaped noise through a band-pass resonator for fricatives, one-pole
-   low-passed noise for breathiness, and a per-phoneme gain envelope.
+5. **Vocal tract** — four *cascaded* two-pole resonators, which is one tube, which is a vocal tract.
+   Bandwidths are 25–35 % wider than the textbook male values (F1 ≈ 95 Hz, F2 ≈ 125 Hz, F3 ≈ 175 Hz):
+   narrow formants look right on a spectrogram and put 79 % of the energy under 800 Hz.
+   A parallel bank — every formant normalised to the same loudness — was tried and measured 20.8 % of
+   the energy above 4 kHz, which is a snake, not a sentence.
+   Two corrections make the cascade speak: a *partial* second difference on the source (`src = rad −
+   0.55·radPrev`, +5 dB/oct above 1 kHz, coherent with every formant so nothing cancels) and a two-pole
+   4.2 kHz roll-off on the voiced path only — /s/ and /sh/ come from the noise branch, not from there.
+   A nasal anti-resonator at 950 Hz handles nasal coupling; shaped noise through a band-pass resonator
+   gives fricatives, and one-pole low-passed noise gives breathiness.
 6. **Master** — 99.9th-percentile normalisation (one transient cannot squash the sentence), hard clamp,
    16-bit PCM at the requested sample rate (22 050 Hz by default).
 
