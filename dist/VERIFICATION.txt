@@ -31,9 +31,9 @@
   ],
   "providers": [],
   "entries": 30,
-  "uncompressed_bytes": 3196342,
-  "dex_bytes": 2816028,
-  "apk_sha256": "8b12f14d4386e369b1e14037fa324983f1afe3e753ef198dd92086f88e6b087e"
+  "uncompressed_bytes": 3196362,
+  "dex_bytes": 2816048,
+  "apk_sha256": "eb71f882648262cb19e9d1c7409b0dd50314a85f29a4b0be43072d10befe8246"
 }
 
 --- notes
@@ -41,7 +41,7 @@
  * no INTERNET permission — audio pipeline is genuinely offline
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
- * dex files: classes.dex (2816028 bytes uncompressed)
+ * dex files: classes.dex (2816048 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
