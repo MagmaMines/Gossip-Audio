@@ -36,6 +36,13 @@ class PipelineTest {
         assertEquals(1, VoiceCatalog.botCount)
         assertEquals(8, StyleCatalog.all.size)
         assertTrue(VoiceCatalog.all.any { it.gender == VoiceGender.NONHUMAN })
+        // SpeechSynth derives F0 from gender x pitch: these ranges keep the four
+        // female voices above the five male ones even after the multiplier.
+        assertTrue(
+            "female voices need a higher pitch factor than male ones",
+            VoiceCatalog.all.filter { it.gender == VoiceGender.FEMALE }.all { it.pitch > 1.05f } &&
+                VoiceCatalog.all.filter { it.gender == VoiceGender.MALE }.all { it.pitch < 0.96f }
+        )
     }
 
     @Test

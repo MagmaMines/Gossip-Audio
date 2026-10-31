@@ -363,9 +363,23 @@ class SpeechSynth(private val context: Context) {
                 val pieces = ArrayList<Pcm>()
                 chunks.forEachIndexed { i, chunk ->
                     main.post { callback.onProgress(0.2f + 0.7f * (i.toFloat() / chunks.size), "NanoVoice is thinking\u2026") }
+                    // A woman is not a man with a slightly higher number: female voices
+                    // get a ~1.8x higher F0 *and* a resized vocal tract. The old single
+                    // 118 Hz baseline made all four female voices sit at 132-146 Hz,
+                    // which read as one slightly tired man doing four accents.
+                    val f0Base = when (voice.gender) {
+                        VoiceGender.FEMALE -> 170.0
+                        VoiceGender.MALE -> 120.0
+                        VoiceGender.NONHUMAN -> 140.0
+                    }
+                    val tract = when (voice.gender) {
+                        VoiceGender.FEMALE -> 1.10 + (voice.pitch - 1.0) * 1.20
+                        VoiceGender.MALE -> 0.92 + (voice.pitch - 0.86) * 0.90
+                        VoiceGender.NONHUMAN -> 1.0
+                    }
                     val options = NanoVoice.Options(
-                        baseF0 = (118.0 * voice.pitch).coerceIn(70.0, 330.0),
-                        formantScale = (1.0 + (voice.pitch - 1.0) * 0.55).coerceIn(0.9, 1.35),
+                        baseF0 = (f0Base * voice.pitch).coerceIn(70.0, 330.0),
+                        formantScale = tract.coerceIn(0.85, 1.35),
                         breathiness = if (voice.gender == VoiceGender.FEMALE) 0.06 else 0.03,
                         roughness = if (voice.id == "bot") 0.4 else 0.0,
                         vibrato = if (voice.gender == VoiceGender.FEMALE) 0.02 else 0.0,
