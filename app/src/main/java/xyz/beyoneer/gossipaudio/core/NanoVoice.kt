@@ -340,6 +340,9 @@ object NanoVoice {
         var jitter = 0.0
         var shimmer = 1.0
         var dcLp = 0.0
+        var lp1 = 0.0
+        var lp2 = 0.0
+        val lpCoeff = exp(-2.0 * PI * 4200.0 / fs)
         val dcCoeff = exp(-2.0 * PI * 90.0 / fs)
         val nyq = fs / 2.0
         val oq = 0.62
@@ -411,10 +414,16 @@ object NanoVoice {
                         p3.run(src) * tilt[2] +
                         p4.run(src) * tilt[3]
                 }
-                // 90 Hz rumble filter: keeps F0, drops the shelf's DC lift and the
-                // thump that makes a formant voice sound like it is in a bucket
+                // 90 Hz rumble filter: keeps F0, drops the thump that makes a formant
+                // voice sound like it is in a bucket
                 dcLp = dcCoeff * dcLp + (1.0 - dcCoeff) * y
                 y -= dcLp
+                // Two-pole 4.2 kHz roll-off on the *voiced* path only. Pre-emphasis
+                // lifted the presence band, and also every fizz above it; real speech
+                // falls off up there and /s/ comes from the noise path, not from here.
+                lp1 += (1.0 - lpCoeff) * (y - lp1)
+                lp2 += (1.0 - lpCoeff) * (lp1 - lp2)
+                y = lp2
                 if (aNasal > 0.01) {
                     val zx = y - nzB * zeroX1 - nzC * zeroX2
                     zeroX2 = zeroX1
