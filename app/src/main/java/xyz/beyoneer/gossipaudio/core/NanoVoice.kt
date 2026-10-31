@@ -133,17 +133,21 @@ object NanoVoice {
         "JHB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0)
     )
 
-    private const val VOICE_GAIN = 80.0
+    private const val VOICE_GAIN = 8.0
+
+    /** High-shelf depth that puts F3/F4 back after the cascade roll-off. */
+    private const val HF_SHELF = 0.55
 
     /**
      * Noise-path gain.
      *
-     * Measured on a full sentence, not on a lone hiss: with the parallel formant bank
-     * the voiced path needs a 80x gain, and at 0.08 the fricatives land a few dB under
-     * the voice. The old numbers were tuned against a peak-normalised noise render and
-     * were 25 dB too hot — that is the "pure hsss" of 1.0.1.
+     * Measured on a full sentence, not on a lone hiss. With the cascade bank the voiced
+     * path needs 8x (the parallel bank needed 80x because its double-differentiated
+     * source was ~10x quieter), and at 0.20 the fricatives sit about 12 dB under the
+     * vowels — where a real /s/ lives. The 1.0.1 numbers were tuned against a
+     * peak-normalised noise render and were 25 dB too hot: that is "pure hiss".
      */
-    private const val FRIC_GAIN = 0.08
+    private const val FRIC_GAIN = 0.20
 
     // -------------------------------------------------------------- public API
 
@@ -320,9 +324,8 @@ object NanoVoice {
         var zeroX2 = 0.0
         var jitter = 0.0
         var shimmer = 1.0
-        var radPrev = 0.0
         var tiltLp = 0.0
-        val tiltCoeff = exp(-2.0 * PI * 3200.0 / fs)
+        val tiltCoeff = exp(-2.0 * PI * 1800.0 / fs)
         val nyq = fs / 2.0
         val oq = 0.62
 
@@ -332,10 +335,15 @@ object NanoVoice {
             var ff3 = min(max(f3[bi], ff2 + 250.0), nyq * 0.97)
             var ff4 = ff3 + 350.0
             if (ff4 > nyq * 0.99) ff4 = nyq * 0.99
-            r1.setPeak(ff1, max(50.0, b1[bi]), fs)
-            r2.setPeak(ff2, max(60.0, b2[bi]), fs)
-            r3.setPeak(ff3, max(80.0, b3[bi]), fs)
-            r4.setPeak(ff4, 250.0, fs)
+            // Cascade, not a parallel bank: a real vocal tract is one tube, and its
+            // 12 dB/oct roll-off per formant is exactly the natural spectral tilt that
+            // keeps F3/F4 from shouting. Normalising each stage to +0 dB at its own
+            // centre (setPeak) and summing them made every formant equally loud, which
+            // measured 20.8 % of the energy above 4 kHz — the "hsss" of 1.0.2.
+            r1.set(ff1, max(50.0, b1[bi]), fs)
+            r2.set(ff2, max(60.0, b2[bi]), fs)
+            r3.set(ff3, max(80.0, b3[bi]), fs)
+            r4.set(ff4, 250.0, fs)
             rf.set(min(max(fc[bi], 500.0), nyq * 0.95), max(600.0, bwf[bi]), fs)
             val aGain = amp[bi]
             val aVoice = min(1.0, av[bi])
@@ -364,17 +372,13 @@ object NanoVoice {
                 } * shimmer
                 val rad = flow - flowPrev
                 flowPrev = flow
-                // A smooth Rosenberg pulse rolls off far faster than a real glottal
-                // source, so differentiate once more before the formants see it.
-                val src = rad - 0.96 * radPrev
-                radPrev = rad
-                var y = r1.run(src) * 1.00 +
-                    r2.run(src) * 0.90 +
-                    r3.run(src) * 0.55 +
-                    r4.run(src) * 0.30
-                // and put the natural -6 dB/oct back above 3.2 kHz
+                // one differentiation = lip radiation; a second one made the source so
+                // bright that it excited the top formants with nothing but fizz
+                val src = rad
+                var y = r4.run(r3.run(r2.run(r1.run(src))))
+                // gentle high shelf so the cascade does not sound like a pillow
                 tiltLp = tiltCoeff * tiltLp + (1.0 - tiltCoeff) * y
-                y = tiltLp
+                y += HF_SHELF * (y - tiltLp)
                 if (aNasal > 0.01) {
                     val zx = y - nzB * zeroX1 - nzC * zeroX2
                     zeroX2 = zeroX1
