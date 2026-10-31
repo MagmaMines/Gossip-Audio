@@ -1,7 +1,7 @@
 GossipAudio build report
-version: 1.0.1 (2)
-commit: 56b09b991461c23930a11fdc2186463bfe8fab16
-built: 2026-10-31T15:21:27Z
+version: 1.0.2 (3)
+commit: 99642e73c4d2fda28032d07db32b6e1a40c91ae4
+built: 2026-10-31T16:06:50Z
 runner: Linux X64
 java: openjdk version "17.0.21" 2026-10-20
 gradle: Gradle 8.11.1
@@ -9,15 +9,21 @@ gradle: Gradle 8.11.1
 sha256:
 f53eb02e47ae4a3f0444c88fc2f7f9d2ed7c71e97bd6e881d066a2c90de65515  dist/GossipAudio-1.0.1-debug.apk
 3467241bfd81dbfe1d6c5cdaed2ad82a81f51ea983478222d3d8e18225562458  dist/GossipAudio-1.0.1-release.apk
+55c27e438502215b75cc56dbdd4da6383c3050e9b1fdea4a5144520c19895ea9  dist/GossipAudio-1.0.2-debug.apk
+5870da2d9343f6a80d11391f4f9aaef100813332b41348a3ff1e09755d68ea0c  dist/GossipAudio-1.0.2-release.apk
 23c1edf52111d557601c2e835aa642a14b6cafbb7743be616b359e1e9f4fe9bf  dist/GossipAudio-1.0.1.aab
+ce402dd46cc6563735b23934499f1d5851d0d3f9e6422feb80f6ee55543a004c  dist/GossipAudio-1.0.2.aab
 
 apk size:
-total 4296
--rw-r--r-- 1 runner runner     517 Oct 31 15:21 BUILD_INFO.txt
--rw-r--r-- 1 runner runner 1706296 Oct 31 15:21 GossipAudio-1.0.1-debug.apk
--rw-r--r-- 1 runner runner 1335013 Oct 31 15:21 GossipAudio-1.0.1-release.apk
--rw-r--r-- 1 runner runner 1334110 Oct 31 15:21 GossipAudio-1.0.1.aab
--rw-r--r-- 1 runner runner    1224 Oct 31 15:21 TEST_REPORT.txt
--rw-r--r-- 1 runner runner    3048 Oct 31 15:18 VERIFICATION.txt
-drwxr-xr-x 2 runner runner    4096 Oct 31 15:18 samples
-drwxr-xr-x 2 runner runner    4096 Oct 31 15:18 shots
+total 8612
+-rw-r--r-- 1 runner runner     810 Oct 31 16:06 BUILD_INFO.txt
+-rw-r--r-- 1 runner runner 1706296 Oct 31 16:03 GossipAudio-1.0.1-debug.apk
+-rw-r--r-- 1 runner runner 1335013 Oct 31 16:03 GossipAudio-1.0.1-release.apk
+-rw-r--r-- 1 runner runner 1334110 Oct 31 16:03 GossipAudio-1.0.1.aab
+-rw-r--r-- 1 runner runner 1721804 Oct 31 16:06 GossipAudio-1.0.2-debug.apk
+-rw-r--r-- 1 runner runner 1346837 Oct 31 16:06 GossipAudio-1.0.2-release.apk
+-rw-r--r-- 1 runner runner 1345923 Oct 31 16:06 GossipAudio-1.0.2.aab
+-rw-r--r-- 1 runner runner    1567 Oct 31 16:06 TEST_REPORT.txt
+-rw-r--r-- 1 runner runner    3048 Oct 31 16:03 VERIFICATION.txt
+drwxr-xr-x 2 runner runner    4096 Oct 31 16:06 samples
+drwxr-xr-x 2 runner runner    4096 Oct 31 16:03 shots

@@ -1,0 +1,2 @@
+device=1233x2673px density=3.0
+

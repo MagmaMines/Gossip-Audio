@@ -1,29 +1,37 @@
 GossipAudio test report
 =======================
 
-AccessibilityTest: 4 tests, 0 failed, 0 skipped  (11.305 s)
-  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  9.868 s
-  [PASS] hapticsSwitchActuallyGatesVibration  0.424 s
-  [PASS] everyTappableControlHasAName  0.655 s
-  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.357 s
+AccessibilityTest: 4 tests, 0 failed, 0 skipped  (11.772 s)
+  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  9.33 s
+  [PASS] hapticsSwitchActuallyGatesVibration  0.781 s
+  [PASS] everyTappableControlHasAName  1.028 s
+  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.632 s
 
-PipelineTest: 8 tests, 0 failed, 0 skipped  (0.341 s)
-  [PASS] silenceAndEmptyInputAreHandledGracefully  0.055 s
-  [PASS] mp3EncoderProducesRealFramesAndTags  0.131 s
-  [PASS] stylesChangeRateAndPitchNumerically  0.005 s
-  [PASS] everyVoiceSynthesisesAudibleSpeech  0.116 s
-  [PASS] audioEffectsAreStable  0.014 s
-  [PASS] wavRoundTripPreservesSamples  0.006 s
-  [PASS] textKitEstimatesMatchRenderedAudio  0.012 s
-  [PASS] catalogHasTenVoicesAndEightStyles  0.001 s
+PipelineTest: 10 tests, 0 failed, 0 skipped  (1.021 s)
+  [PASS] silenceAndEmptyInputAreHandledGracefully  0.118 s
+  [PASS] renderedAudioIsTonalSpeechNotNoise  0.245 s
+  [PASS] mp3EncoderProducesRealFramesAndTags  0.198 s
+  [PASS] stylesChangeRateAndPitchNumerically  0.026 s
+  [PASS] everyVoiceSynthesisesAudibleSpeech  0.33 s
+  [PASS] audioEffectsAreStable  0.03 s
+  [PASS] wavRoundTripPreservesSamples  0.017 s
+  [PASS] textKitEstimatesMatchRenderedAudio  0.032 s
+  [PASS] hindiAndHinglishBothProduceSpeech  0.022 s
+  [PASS] catalogHasTenVoicesAndEightStyles  0.0 s
 
-StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (4.145 s)
-  [PASS] typingAndTappingGenerateCreatesAPlayableClip  4.145 s
+ResponsiveLayoutTest: 4 tests, 0 failed, 0 skipped  (7.74 s)
+  [PASS] tinyPhoneFitsEveryTab  5.235 s
+  [PASS] tabletFitsEveryTabAndCapsTheReadingColumn  1.071 s
+  [PASS] pixelPhoneFitsEveryTab  0.803 s
+  [PASS] largeFontsStillFit  0.631 s
 
-UiSmokeTest: 4 tests, 0 failed, 0 skipped  (3.08 s)
-  [PASS] appBootsIntoShellAndRendersEveryTab  1.33 s
-  [PASS] darkThemeStillUsesBrandYellow  0.355 s
-  [PASS] aboutHelpAndDiagnosticsScreensRender  0.929 s
-  [PASS] playerScreenOpensForARealClip  0.466 s
+StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (1.171 s)
+  [PASS] typingAndTappingGenerateCreatesAPlayableClip  1.171 s
 
-TOTAL: 17 tests, 0 failed, 0 skipped
+UiSmokeTest: 4 tests, 0 failed, 0 skipped  (4.068 s)
+  [PASS] appBootsIntoShellAndRendersEveryTab  1.755 s
+  [PASS] darkThemeStillUsesBrandYellow  0.457 s
+  [PASS] aboutHelpAndDiagnosticsScreensRender  1.279 s
+  [PASS] playerScreenOpensForARealClip  0.575 s
+
+TOTAL: 23 tests, 0 failed, 0 skipped

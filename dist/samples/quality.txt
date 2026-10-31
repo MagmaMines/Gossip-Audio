@@ -1,0 +1,5 @@
+harmonic_ratio_median=1.000
+voiced_frames=36
+duration_ms=4452
+peak=31968
+estimate=v2 continuous-voicing formant synthesiser

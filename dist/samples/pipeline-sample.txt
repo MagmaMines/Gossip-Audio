@@ -1,2 +1,2 @@
-source=22050Hz 98342 samples (4459 ms)
-mp3=72306 bytes, tagged=73603 bytes, id3=1297 bytes
+source=22050Hz 104222 samples (4726 ms)
+mp3=76486 bytes, tagged=77783 bytes, id3=1297 bytes
