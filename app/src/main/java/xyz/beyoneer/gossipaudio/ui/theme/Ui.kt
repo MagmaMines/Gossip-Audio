@@ -173,6 +173,8 @@ object Ui {
             val target = dp(v.context, baseHorizontalDp) + extra.toInt()
             if (v.paddingLeft != target) {
                 v.setPadding(target, v.paddingTop, target, v.paddingBottom)
+                // padding changes the content box, so the children need a new pass
+                v.requestLayout()
             }
         }
     }

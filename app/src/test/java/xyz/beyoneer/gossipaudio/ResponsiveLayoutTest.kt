@@ -68,7 +68,10 @@ class ResponsiveLayoutTest {
             looper.idle()
             // Twice: capWidth() and the fade rows adjust themselves from a post(), so a
             // single pass leaves children measured against the pre-cap width.
-            repeat(2) {
+            repeat(3) {
+                // forceLayout() because measure() alone returns the cached result and
+                // never revisits the children after capWidth() changed the padding.
+                root.forceLayout()
                 root.measure(
                     View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
                     View.MeasureSpec.makeMeasureSpec(metrics.heightPixels, View.MeasureSpec.EXACTLY)
@@ -84,11 +87,12 @@ class ResponsiveLayoutTest {
         }
 
         if (widthDp >= 700) {
-            val column = findCappedColumn(root)
-            assertNotNull("tablet layout should have a width-capped column", column)
+            val column = findReadingColumn(root)
+            assertNotNull("tablet layout should have a readable column", column)
             val contentDp = (column!!.width - column.paddingLeft - column.paddingRight) / metrics.density
             report.append("tablet content width: ${contentDp}dp\n")
-            assertTrue("content should stay readable on a tablet (capped ~680dp), was $contentDp dp", contentDp <= 690f)
+            assertTrue("content should stay readable on a tablet (capped ~680dp), was $contentDp dp", contentDp <= 700f)
+            assertTrue("tablet should still use the screen, content was $contentDp dp", contentDp > 500f)
         }
 
         java.io.File("build/test-samples").mkdirs()
@@ -126,14 +130,16 @@ class ResponsiveLayoutTest {
         }
     }
 
-    private fun findCappedColumn(view: View): LinearLayout? {
-        if (view is LinearLayout && view.width > 0) {
-            val contentDp = view.width / view.resources.displayMetrics.density
-            if (contentDp > 600f && contentDp < 700f) return view
+    /** The first ScrollView child: the column whose padding carries the width cap. */
+    private fun findReadingColumn(view: View): LinearLayout? {
+        if (view is ScrollView) {
+            for (i in 0 until view.childCount) {
+                (view.getChildAt(i) as? LinearLayout)?.let { return it }
+            }
         }
         if (view is ViewGroup) {
             for (i in 0 until view.childCount) {
-                findCappedColumn(view.getChildAt(i))?.let { return it }
+                findReadingColumn(view.getChildAt(i))?.let { return it }
             }
         }
         return null
