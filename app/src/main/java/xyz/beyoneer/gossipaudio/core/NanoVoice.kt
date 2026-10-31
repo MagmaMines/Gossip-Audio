@@ -48,7 +48,9 @@ object NanoVoice {
         val robotic: Boolean = false,
         val rate: Double = 1.0,
         val pitch: Double = 1.0,
-        val sampleRate: Int = 22050
+        val sampleRate: Int = 22050,
+        /** Internal A/B switch used by the audio lab test; 0 is the shipped mix. */
+        val mix: Int = 0
     )
 
     // ------------------------------------------------------------------ model
@@ -338,6 +340,11 @@ object NanoVoice {
         // F3/F4 under the skirts of F1/F2, so the vowel reads as muffled
         val rh3 = Reso()
         val rh4 = Reso()
+        // parallel-bank resonators, only touched when Options.mix selects them
+        val p1 = Reso()
+        val p2 = Reso()
+        val p3 = Reso()
+        val p4 = Reso()
         val rnd = java.util.Random(0x5EEDL)
         var phase = 0.0
         var flowPrev = 0.0
@@ -371,6 +378,12 @@ object NanoVoice {
             r4.set(ff4, 250.0, fs)
             rh3.setPeak(ff3, max(90.0, b3[bi]), fs)
             rh4.setPeak(ff4, 260.0, fs)
+            if (o.mix != 0) {
+                p1.setPeak(ff1, max(50.0, b1[bi]), fs)
+                p2.setPeak(ff2, max(60.0, b2[bi]), fs)
+                p3.setPeak(ff3, max(80.0, b3[bi]), fs)
+                p4.setPeak(ff4, 260.0, fs)
+            }
             rf.set(min(max(fc[bi], 500.0), nyq * 0.95), max(600.0, bwf[bi]), fs)
             val aGain = amp[bi]
             val aVoice = min(1.0, av[bi])
@@ -407,6 +420,15 @@ object NanoVoice {
                 val srcHi = src - 0.9 * hiPrev
                 hiPrev = src
                 y += rh3.run(srcHi) * 0.55 + rh4.run(srcHi) * 0.30
+                if (o.mix != 0) {
+                    // same four formants, but each one gets its own path and its own
+                    // amplitude instead of being filtered through the stage before it
+                    val tilt = if (o.mix == 2) doubleArrayOf(1.0, 1.15, 1.35, 1.6) else doubleArrayOf(1.0, 0.9, 0.55, 0.3)
+                    y = p1.run(src) * tilt[0] +
+                        p2.run(src) * tilt[1] +
+                        p3.run(src) * tilt[2] +
+                        p4.run(src) * tilt[3]
+                }
                 // gentle high shelf so the cascade does not sound like a pillow
                 tiltLp = tiltCoeff * tiltLp + (1.0 - tiltCoeff) * y
                 y += HF_SHELF * (y - tiltLp)

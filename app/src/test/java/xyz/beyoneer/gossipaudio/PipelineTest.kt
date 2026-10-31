@@ -296,6 +296,28 @@ class PipelineTest {
     }
 
     /** Energy share per band, so a regression to "one flat buzz" shows up in CI. */
+    /**
+     * Audio lab: renders the same sentence through every mixing strategy and writes
+     * the band balance of each, so the choice is made from measurements instead of
+     * taste. Not an assertion — it exists to feed CI's quality report.
+     */
+    @Test
+    fun mixLab() {
+        val text = "Btw we're not gossiping inreal, your face is funny tho."
+        val report = StringBuilder()
+        for (mix in 0..2) {
+            val pcm = NanoVoice.speak(text, NanoVoice.Options(baseF0 = 126.0, mix = mix))
+            val shares = bandShares(pcm.samples, pcm.sampleRate)
+            File(sampleDir, "mix-$mix.wav").writeBytes(Wav.write(pcm))
+            report.append("mix=").append(mix)
+                .append(" rms=").append(String.format("%.0f", pcm.rms()))
+                .append(" bands=").append(formatShares(shares))
+                .append('\n')
+        }
+        File(sampleDir, "mix-lab.txt").writeText(report.toString())
+        println(report)
+    }
+
     private fun bandShares(samples: ShortArray, fs: Int): DoubleArray {
         val bands = listOf(0 to 300, 300 to 800, 800 to 2000, 2000 to 4000, 4000 to 8000)
         val frame = 1024
