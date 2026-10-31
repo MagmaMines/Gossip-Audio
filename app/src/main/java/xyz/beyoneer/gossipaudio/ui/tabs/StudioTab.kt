@@ -234,6 +234,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             Ui.dp(activity, 18f), Ui.dp(activity, 18f), Gravity.CENTER
         ))
         card.addView(share, LinearLayout.LayoutParams(Ui.dp(activity, 34f), Ui.dp(activity, 34f)))
+        share.contentDescription = "Share the GossipAudio tagline"
         Ui.pressable(share, 0.9f) {
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
@@ -265,6 +266,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             minLines = 4
             maxLines = 10
             setPadding(0, Ui.dp(activity, 10f), 0, Ui.dp(activity, 8f))
+            contentDescription = "Your gossip text"
             filters = arrayOf(InputFilter.LengthFilter(2000))
             inputType = android.text.InputType.TYPE_CLASS_TEXT or
                 android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or
@@ -283,13 +285,13 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         card.addView(input)
 
         val actions = Ui.row(activity)
-        val dice = miniAction(Icons.Kind.DICE) {
+        val dice = miniAction(Icons.Kind.DICE, "Random gossip") {
             val seed = TextKit.randomGossip()
             input.setText(seed)
             input.setSelection(seed.length)
             activity.toast("Random gossip loaded \uD83C\uDFB2")
         }
-        val mic = miniAction(Icons.Kind.MIC) {
+        val mic = miniAction(Icons.Kind.MIC, "Dictate with your voice") {
             activity.requestMic { granted ->
                 if (granted) {
                     val voice = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId)
@@ -303,11 +305,11 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                 }
             }
         }
-        val clear = miniAction(Icons.Kind.CLOSE) {
+        val clear = miniAction(Icons.Kind.CLOSE, "Clear the text box") {
             input.setText("")
             activity.toast("Cleared. The tea is safe.")
         }
-        val paste = miniAction(Icons.Kind.PLUS) {
+        val paste = miniAction(Icons.Kind.PLUS, "Paste from clipboard") {
             val clip = activity.getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val text = clip.primaryClip?.getItemAt(0)?.text?.toString()
             if (text.isNullOrBlank()) {
@@ -348,14 +350,15 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         return card
     }
 
-    private fun miniAction(icon: Icons.Kind, action: () -> Unit): View {
+    private fun miniAction(icon: Icons.Kind, label: String, action: () -> Unit): View {
         val box = FrameLayout(activity).apply {
             background = Ui.rounded(palette.bg, Ui.dpf(activity, 100f), palette.outline, Ui.dp(activity, 1f))
         }
         box.addView(IconView(activity, icon, palette.text, 17f), FrameLayout.LayoutParams(
             Ui.dp(activity, 17f), Ui.dp(activity, 17f), Gravity.CENTER
         ))
-        box.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 36f), Ui.dp(activity, 36f))
+        box.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 40f), Ui.dp(activity, 40f))
+        box.contentDescription = label
         Ui.pressable(box, 0.9f, action)
         return box
     }
@@ -380,6 +383,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f
         ))
         val reset = Ui.text(activity, "reset", 11.5f, palette.yellowDeep, bold = true)
+        reset.contentDescription = "Reset speed and pitch to normal"
         Ui.pressable(reset) {
             activity.app.prefs.pitch = 1f
             activity.app.prefs.speed = 1f
@@ -398,6 +402,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 12f) })
         val speedSlider = NeonSlider(activity, palette, 0.5f, 2.0f, activity.app.prefs.speed, 0.05f)
+        speedSlider.contentDescription = "Speaking speed"
         speedSlider.onChanged = {
             activity.app.prefs.speed = it
             speedLabel.text = "Speed  ${"%.2f".format(it)}x"
@@ -413,6 +418,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 8f) })
         val pitchSlider = NeonSlider(activity, palette, 0.6f, 1.6f, activity.app.prefs.pitch, 0.02f)
+        pitchSlider.contentDescription = "Voice pitch"
         pitchSlider.onChanged = {
             activity.app.prefs.pitch = it
             pitchLabel.text = "Pitch  ${"%.2f".format(it)}x"

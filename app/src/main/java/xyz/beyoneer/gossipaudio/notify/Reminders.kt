@@ -64,7 +64,8 @@ class ReminderReceiver : BroadcastReceiver() {
 
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
-        if (intent?.action != Intent.ACTION_BOOT_COMPLETED) return
+        val action = intent?.action
+        if (action != Intent.ACTION_BOOT_COMPLETED && action != Intent.ACTION_MY_PACKAGE_REPLACED) return
         val app = context.applicationContext as? xyz.beyoneer.gossipaudio.GossipApp ?: return
         if (app.prefs.dailyReminder) {
             ReminderScheduler.schedule(context, app.prefs.reminderHour, app.prefs.reminderMinute)

@@ -65,7 +65,8 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
         back.addView(IconView(activity, Icons.Kind.BACK, palette.text, 19f), FrameLayout.LayoutParams(
             Ui.dp(activity, 19f), Ui.dp(activity, 19f), Gravity.CENTER
         ))
-        back.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 40f), Ui.dp(activity, 40f))
+        back.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 44f), Ui.dp(activity, 44f))
+        back.contentDescription = "Back"
         Ui.pressable(back, 0.9f) { activity.router.pop() }
         top.addView(back)
         top.addView(Ui.text(activity, "Diagnostics", 17f, palette.text, bold = true), LinearLayout.LayoutParams(

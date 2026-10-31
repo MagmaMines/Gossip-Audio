@@ -125,28 +125,45 @@ object Ui {
         Color.red(color), Color.green(color), Color.blue(color)
     )
 
-    /** Springy press feedback used by every tappable surface. */
-    fun pressable(view: View, scale: Float = 0.965f, onClick: (() -> Unit)? = null) {
+    /**
+     * Springy press feedback + a real haptic tick, used by every tappable surface.
+     * Returns the view so labels can be chained: `Ui.pressable(back, 0.9f) { pop() }.contentDescription = "Back"`.
+     */
+    fun <T : View> pressable(view: T, scale: Float = 0.965f, onClick: (() -> Unit)? = null): T {
+        val animates = Motion.enabled
         if (onClick != null) view.setOnClickListener { v ->
-            v.animate().scaleX(1f).scaleY(1f).setDuration(180)
-                .setInterpolator(OvershootInterpolator(2f)).start()
+            if (animates) {
+                v.animate().scaleX(1f).scaleY(1f).setDuration(180)
+                    .setInterpolator(OvershootInterpolator(2f)).start()
+            }
             onClick()
         }
         view.setOnTouchListener { v, event ->
             when (event.actionMasked) {
-                android.view.MotionEvent.ACTION_DOWN ->
-                    v.animate().scaleX(scale).scaleY(scale).setDuration(90)
-                        .setInterpolator(DecelerateInterpolator()).start()
+                android.view.MotionEvent.ACTION_DOWN -> {
+                    Haptics.tap(v)
+                    if (animates) {
+                        v.animate().scaleX(scale).scaleY(scale).setDuration(90)
+                            .setInterpolator(DecelerateInterpolator()).start()
+                    }
+                }
                 android.view.MotionEvent.ACTION_UP,
-                android.view.MotionEvent.ACTION_CANCEL ->
+                android.view.MotionEvent.ACTION_CANCEL -> if (animates) {
                     v.animate().scaleX(1f).scaleY(1f).setDuration(220)
                         .setInterpolator(OvershootInterpolator(2.2f)).start()
+                }
             }
             false
         }
+        return view
     }
 
     fun fadeInUp(view: View, delay: Long = 0, distanceDp: Float = 18f) {
+        if (!Motion.enabled) {
+            view.alpha = 1f
+            view.translationY = 0f
+            return
+        }
         val distance = dpf(view.context, distanceDp)
         view.alpha = 0f
         view.translationY = distance
@@ -158,6 +175,12 @@ object Ui {
     }
 
     fun popIn(view: View, delay: Long = 0) {
+        if (!Motion.enabled) {
+            view.alpha = 1f
+            view.scaleX = 1f
+            view.scaleY = 1f
+            return
+        }
         view.alpha = 0f
         view.scaleX = 0.86f
         view.scaleY = 0.86f

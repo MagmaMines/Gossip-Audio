@@ -6,6 +6,9 @@ sandbox) and parses Android's binary XML + APK Signing Block by hand.
 """
 import struct, sys, zipfile, os, json, hashlib
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import apksig  # noqa: E402  (local module, real v2/v3 signature verification)
+
 APK = sys.argv[1] if len(sys.argv) > 1 else "dist/GossipAudio-1.0.0-release.apk"
 
 RES_STRING_POOL = 0x0001
@@ -204,6 +207,26 @@ def verify(apk):
         ", ".join(schemes) if schemes else "none",
         ", ".join(hex(i) for i in sig_ids) if sig_ids else "none"))
     notes.append("v1 signature files: %s" % (", ".join(v1) if v1 else "none (fine for minSdk 24+)"))
+
+    # --- real cryptographic verification: digest covers the archive, RSA signature covers the signer
+    sig = apksig.verify(blob)
+    if sig.get("ok"):
+        for signer in sig["signers"]:
+            notes.append(
+                "signature VERIFIED: %s / RSA-%d, certificate sha256 %s..., %d-byte signed block, %d chunks"
+                % (signer.get("algorithm"), signer.get("key_bits", 0),
+                   signer.get("certificate_sha256"), sig.get("block_bytes"), sig.get("chunks"))
+            )
+        manifest_info["signature"] = {
+            "verified": True,
+            "schemes": sig["schemes"],
+            "algorithm": sig["signers"][0].get("algorithm"),
+            "key_bits": sig["signers"][0].get("key_bits"),
+            "certificate_sha256": sig["signers"][0].get("certificate_sha256"),
+        }
+    else:
+        problems.append("signature did not verify: %s" % (sig.get("reason") or "unknown reason"))
+        manifest_info["signature"] = {"verified": False, "reason": sig.get("reason")}
 
     # --- dex sanity: our classes must exist in the dex string table
     dex_blob = b"".join(z.read(n) for n in dexes)

@@ -18,6 +18,7 @@ import xyz.beyoneer.gossipaudio.core.VoiceCatalog
 import xyz.beyoneer.gossipaudio.data.AudioFormat
 import xyz.beyoneer.gossipaudio.data.Clip
 import xyz.beyoneer.gossipaudio.notify.Notifier
+import xyz.beyoneer.gossipaudio.ui.theme.Haptics
 import xyz.beyoneer.gossipaudio.ui.theme.Ui
 import xyz.beyoneer.gossipaudio.ui.widgets.BrandButton
 import xyz.beyoneer.gossipaudio.ui.widgets.Chip
@@ -91,6 +92,7 @@ object ExportFlow {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 10f) })
         val quality = NeonSlider(activity, palette, 64f, 320f, bitrate.toFloat(), 8f)
+        quality.contentDescription = "MP3 bitrate in kilobits per second"
         quality.onChanged = {
             bitrate = it.toInt()
             qualityLabel.text = "Quality  $bitrate kbps"
@@ -183,6 +185,7 @@ object ExportFlow {
                     busy = false
                     download.setLoading(false)
                     if (output == null) {
+                        Haptics.warn(activity.window.decorView)
                         activity.toast("Export failed \u2014 try another format.")
                         return@post
                     }
@@ -200,6 +203,7 @@ object ExportFlow {
                                     clip.lastExportUri = uri.toString()
                                     store.update { if (it.id == clip.id) it.lastExportUri = uri.toString() }
                                     Notifier.exported(activity, output.displayName, uri.toString())
+                                    Haptics.confirm(activity.window.decorView)
                                     activity.toast("Saved \u2022 Downloads/GossipAudio/${output.displayName}")
                                     shareSheet(activity, uri, output.displayName)
                                 }

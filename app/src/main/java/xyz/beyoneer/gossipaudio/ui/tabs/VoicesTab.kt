@@ -180,6 +180,16 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 10f) })
 
+        // The whole card selects the voice — nobody should have to aim at a button.
+        card.isClickable = true
+        card.setOnClickListener {
+            activity.app.prefs.selectedVoiceId = voice.id
+            render()
+            activity.toast("${voice.name} is now your gossip voice.")
+        }
+        card.contentDescription = "${voice.name}, ${voice.genderLabel}, ${voice.region}. ${voice.vibe}"
+        Ui.pressable(card, 0.985f)
+
         preview.setOnClick {
             if (previewing == voice.id) {
                 activity.toast("Already preparing that sample\u2026")

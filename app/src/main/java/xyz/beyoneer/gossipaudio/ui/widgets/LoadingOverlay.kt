@@ -32,6 +32,8 @@ class LoadingOverlay(private val activity: MainActivity) {
         val palette = activity.palette
         root.setBackgroundColor(0xF20B0B0C.toInt())
         root.isClickable = true
+        // The blocker exists to eat stray taps; it is not a TalkBack stop.
+        root.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         root.visibility = View.GONE
 
         val column = LinearLayout(activity).apply {
@@ -44,6 +46,8 @@ class LoadingOverlay(private val activity: MainActivity) {
         }
         column.addView(butterfly, LinearLayout.LayoutParams(Ui.dp(activity, 190f), Ui.dp(activity, 190f)))
         label = Ui.text(activity, "Waking the voice\u2026", 17f, Color.WHITE, bold = true, gravity = Gravity.CENTER)
+        // Announce "Rendering…" -> "Saved" without the user hunting for the label.
+        label.accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
         column.addView(label, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 18f) })

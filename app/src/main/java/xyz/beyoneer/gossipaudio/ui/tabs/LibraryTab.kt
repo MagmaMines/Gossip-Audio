@@ -97,6 +97,7 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
             background = null
             setPadding(Ui.dp(activity, 8f), Ui.dp(activity, 11f), 0, Ui.dp(activity, 11f))
             typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
+            contentDescription = "Search your library"
         }
         searchField.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -260,7 +261,9 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
         like.filled = clip.liked
         val likeBox = FrameLayout(activity)
         likeBox.addView(like, FrameLayout.LayoutParams(Ui.dp(activity, 18f), Ui.dp(activity, 18f), Gravity.CENTER))
-        likeBox.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 34f), Ui.dp(activity, 34f))
+        likeBox.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 40f), Ui.dp(activity, 40f))
+        likeBox.contentDescription =
+            if (clip.liked) "Remove like from ${clip.title}" else "Like ${clip.title}"
         Ui.pressable(likeBox, 0.86f) {
             activity.app.store.toggleLike(clip.id)
             render()
@@ -277,7 +280,8 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
             IconView(activity, if (playing) Icons.Kind.PAUSE else Icons.Kind.PLAY, palette.onYellow, 16f),
             FrameLayout.LayoutParams(Ui.dp(activity, 16f), Ui.dp(activity, 16f), Gravity.CENTER)
         )
-        card.addView(playBtn, LinearLayout.LayoutParams(Ui.dp(activity, 38f), Ui.dp(activity, 38f)))
+        card.addView(playBtn, LinearLayout.LayoutParams(Ui.dp(activity, 44f), Ui.dp(activity, 44f)))
+        playBtn.contentDescription = if (playing) "Pause ${clip.title}" else "Play ${clip.title}"
         Ui.pressable(playBtn, 0.9f) {
             if (playing) {
                 PlaybackHub.pause()
@@ -294,7 +298,8 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
         more.addView(Ui.text(activity, "\u22EE", 18f, palette.textDim, bold = true, gravity = Gravity.CENTER), FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ))
-        more.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 30f), Ui.dp(activity, 38f))
+        more.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 40f), Ui.dp(activity, 44f))
+        more.contentDescription = "More actions for ${clip.title}"
         Ui.pressable(more, 0.86f) { ClipActions.show(activity, clip) { render() } }
         card.addView(more)
 

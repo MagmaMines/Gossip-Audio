@@ -13,9 +13,13 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
 import android.view.animation.OvershootInterpolator
 import android.widget.LinearLayout
 import android.widget.TextView
+import xyz.beyoneer.gossipaudio.ui.theme.Haptics
+import xyz.beyoneer.gossipaudio.ui.theme.Motion
 import xyz.beyoneer.gossipaudio.ui.theme.Palette
 import xyz.beyoneer.gossipaudio.ui.theme.Ui
 import kotlin.math.abs
@@ -85,7 +89,7 @@ class BrandButton(
         addView(label)
 
         Ui.pressable(this, 0.96f)
-        if (variant == Variant.PRIMARY) startGlow()
+        if (variant == Variant.PRIMARY && Motion.enabled) startGlow()
     }
 
     private fun startGlow() {
@@ -135,7 +139,7 @@ class Chip(
     private val onClick: (() -> Unit)? = null
 ) : TextView(context) {
 
-    private var isSelected = selected
+    private var chosen = selected
 
     init {
         this.text = text
@@ -146,24 +150,26 @@ class Chip(
         includeFontPadding = false
         paint()
         setOnClickListener {
-            isSelected = !isSelected
+            chosen = !chosen
             paint()
-            Ui.pressable(this, 0.94f)
             onClick?.invoke()
         }
         Ui.pressable(this, 0.94f)
-    }
-
-    fun setSelectedState(value: Boolean) {
-        isSelected = value
         paint()
     }
 
-    fun selected(): Boolean = isSelected
+    fun setSelectedState(value: Boolean) {
+        chosen = value
+        paint()
+    }
+
+    fun selected(): Boolean = chosen
 
     private fun paint() {
         val a = accent ?: palette.yellow
-        background = if (isSelected) {
+        // View.isSelected is what TalkBack reads as "selected".
+        setSelected(chosen)
+        background = if (chosen) {
             Ui.gradient(
                 intArrayOf(Ui.blend(a, Color.WHITE, 0.25f), a),
                 Ui.dpf(context, 100f),
@@ -172,17 +178,23 @@ class Chip(
         } else {
             Ui.rounded(palette.card, Ui.dpf(context, 100f), palette.outline, Ui.dp(context, 1f))
         }
-        setTextColor(if (isSelected) palette.onYellow else palette.textDim)
+        setTextColor(if (chosen) palette.onYellow else palette.textDim)
     }
 }
 
-/** Minimal custom switch with a springy knob. */
-class ToggleSwitch(context: Context, private val palette: Palette, initial: Boolean = false) : View(context) {
+/** Minimal custom switch with a springy knob — exposed to TalkBack as a real Switch. */
+class ToggleSwitch(
+    context: Context,
+    private val palette: Palette,
+    initial: Boolean = false,
+    description: CharSequence? = null
+) : View(context) {
 
     var checked = initial
         set(value) {
             field = value
-            animate()
+            isSelected = value
+            animateTo(if (value) 1f else 0f)
             invalidate()
         }
     var onChanged: ((Boolean) -> Unit)? = null
@@ -192,31 +204,63 @@ class ToggleSwitch(context: Context, private val palette: Palette, initial: Bool
     private var anim = if (initial) 1f else 0f
 
     init {
-        layoutParams = ViewGroup.LayoutParams(Ui.dp(context, 52f), Ui.dp(context, 30f))
-        setOnClickListener {
-            checked = !checked
-            ValueAnimator.ofFloat(anim, if (checked) 1f else 0f).apply {
-                duration = 220
-                addUpdateListener {
-                    anim = it.animatedValue as Float
-                    invalidate()
-                }
-                start()
+        // 48dp tall touch target, 30dp tall visual track (Material's minimum is 48dp).
+        layoutParams = ViewGroup.LayoutParams(Ui.dp(context, 52f), Ui.dp(context, 48f))
+        isClickable = true
+        isFocusable = true
+        isSelected = initial
+        if (!description.isNullOrBlank()) contentDescription = description
+        setOnClickListener { performToggle() }
+    }
+
+    /** Flip the switch exactly as a tap would (used by the whole settings row). */
+    fun performToggle() {
+        Haptics.tap(this)
+        checked = !checked
+        onChanged?.invoke(checked)
+        sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_CLICKED)
+    }
+
+    /** Spring the knob to a position; instant when the user asked for less motion. */
+    private fun animateTo(target: Float) {
+        if (anim == target) return
+        if (!Motion.enabled) {
+            anim = target
+            invalidate()
+            return
+        }
+        ValueAnimator.ofFloat(anim, target).apply {
+            duration = 220
+            addUpdateListener {
+                anim = it.animatedValue as Float
+                invalidate()
             }
-            onChanged?.invoke(checked)
+            start()
+        }
+    }
+
+    override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(info)
+        info.className = "android.widget.Switch"
+        info.isCheckable = true
+        info.isChecked = checked
+        info.isClickable = true
+        if (contentDescription.isNullOrBlank()) {
+            info.contentDescription = if (checked) "On" else "Off"
         }
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        val h = height.toFloat()
         val w = width.toFloat()
+        val trackH = Ui.dpf(context, 30f)
+        val top = (height - trackH) / 2f
         track.color = Ui.blend(palette.outline, palette.yellow, anim)
-        canvas.drawRoundRect(RectF(0f, 0f, w, h), h / 2, h / 2, track)
+        canvas.drawRoundRect(RectF(0f, top, w, top + trackH), trackH / 2, trackH / 2, track)
         knob.color = if (anim > 0.5f) palette.onYellow else palette.textDim
-        val r = h * 0.38f
-        val cx = h / 2 + (w - h) * anim
-        canvas.drawCircle(cx, h / 2, r, knob)
+        val r = trackH * 0.38f
+        val cx = trackH / 2 + (w - trackH) * anim
+        canvas.drawCircle(cx, top + trackH / 2, r, knob)
     }
 }
 
@@ -277,6 +321,7 @@ class Segmented(context: Context, private val palette: Palette, options: List<St
 
     private fun updateColors() {
         labels.forEachIndexed { index, tv ->
+            tv.isSelected = index == selectedIndex
             tv.setTextColor(if (index == selectedIndex) palette.onYellow else palette.textDim)
         }
     }
@@ -316,6 +361,53 @@ class NeonSlider(
             intArrayOf(palette.yellowDeep, palette.yellowBright, palette.yellow),
             floatArrayOf(0f, 0.5f, 1f), Shader.TileMode.CLAMP
         )
+        isFocusable = true
+    }
+
+    /** Set the value programmatically (snapped) and notify the listener. */
+    fun setValue(v: Float) {
+        val snapped = ((v / step).roundToInt() * step).coerceIn(min, max)
+        if (abs(snapped - value) < step * 0.5f) return
+        value = snapped
+        onChanged?.invoke(value)
+    }
+
+    private fun fraction(): Float = ((value - min) / (max - min)).coerceIn(0f, 1f)
+
+    override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(info)
+        info.className = "android.widget.SeekBar"
+        info.rangeInfo = AccessibilityNodeInfo.RangeInfo.obtain(
+            AccessibilityNodeInfo.RangeInfo.RANGE_TYPE_FLOAT, min, max, value
+        )
+        info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_PROGRESS)
+        info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD)
+        info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_BACKWARD)
+    }
+
+    override fun performAccessibilityAction(action: Int, args: android.os.Bundle?): Boolean {
+        val stride = (max - min) / 20f
+        when (action) {
+            android.R.id.accessibilityActionSetProgress -> {
+                val target = args?.getFloat(AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE)
+                if (target != null) {
+                    setValue(target)
+                    sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
+                    return true
+                }
+            }
+            AccessibilityNodeInfo.ACTION_SCROLL_FORWARD -> {
+                setValue(value + stride)
+                sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
+                return true
+            }
+            AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD -> {
+                setValue(value - stride)
+                sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
+                return true
+            }
+        }
+        return super.performAccessibilityAction(action, args)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -324,7 +416,7 @@ class NeonSlider(
         val pad = Ui.dpf(context, 14f)
         val trackH = Ui.dpf(context, 8f)
         val usable = width - pad * 2
-        val frac = (value - min) / (max - min)
+        val frac = fraction()
         trackPaint.color = palette.outline
         canvas.drawRoundRect(RectF(pad, cy - trackH / 2, width - pad, cy + trackH / 2), trackH / 2, trackH / 2, trackPaint)
         val end = pad + usable * frac

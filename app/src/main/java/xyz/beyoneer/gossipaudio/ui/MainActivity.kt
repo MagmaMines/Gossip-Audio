@@ -12,6 +12,8 @@ import xyz.beyoneer.gossipaudio.R
 import xyz.beyoneer.gossipaudio.data.Prefs
 import xyz.beyoneer.gossipaudio.ui.screens.OnboardingScreen
 import xyz.beyoneer.gossipaudio.ui.screens.SplashScreen
+import xyz.beyoneer.gossipaudio.ui.theme.Haptics
+import xyz.beyoneer.gossipaudio.ui.theme.Motion
 import xyz.beyoneer.gossipaudio.ui.theme.Palette
 import xyz.beyoneer.gossipaudio.ui.theme.ThemeController
 import xyz.beyoneer.gossipaudio.ui.theme.Ui
@@ -29,6 +31,7 @@ class MainActivity : Activity() {
 
     private var micCallback: ((Boolean) -> Unit)? = null
     private var notificationCallback: ((Boolean) -> Unit)? = null
+    private var storageCallback: ((Boolean) -> Unit)? = null
     private var imageCallback: ((android.net.Uri?) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,11 +42,36 @@ class MainActivity : Activity() {
         palette = ThemeController.palette(this)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         applySystemBars()
+        Haptics.enabled = prefs.haptics
+        Motion.reduce = prefs.reduceMotion
         router = Router(this)
         setContentView(router.container)
-        if (savedInstanceState == null) {
+        // Also covers process-death restore: without this the container would stay empty.
+        if (router.current() == null) {
             router.start(SplashScreen(this))
         }
+        registerBackHandler()
+    }
+
+    /**
+     * Android 13+ routes the back gesture/button through OnBackInvokedDispatcher; without this
+     * callback the system would finish the activity instead of popping the in-app stack.
+     */
+    private fun registerBackHandler() {
+        if (Build.VERSION.SDK_INT < 33) return
+        try {
+            onBackInvokedDispatcher.registerOnBackInvokedCallback(
+                android.window.OnBackInvokedDispatcher.PRIORITY_DEFAULT
+            ) { handleBack() }
+        } catch (_: Throwable) {
+            // Older ROMs that report 33 without the dispatcher: onBackPressed still works.
+        }
+    }
+
+    private fun handleBack() {
+        if (Overlays.dismissTop(this)) return
+        if (router.back()) return
+        finish()
     }
 
     private fun applySystemBars() {
@@ -115,7 +143,7 @@ class MainActivity : Activity() {
             callback?.invoke(true)
             return
         }
-        notificationCallback = callback
+        storageCallback = callback
         requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQ_STORAGE)
     }
 
@@ -127,9 +155,13 @@ class MainActivity : Activity() {
                 micCallback?.invoke(granted)
                 micCallback = null
             }
-            REQ_NOTIF, REQ_STORAGE -> {
+            REQ_NOTIF -> {
                 notificationCallback?.invoke(granted)
                 notificationCallback = null
+            }
+            REQ_STORAGE -> {
+                storageCallback?.invoke(granted)
+                storageCallback = null
             }
         }
     }
@@ -178,9 +210,23 @@ class MainActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        if (Overlays.dismissTop(this)) return
-        if (!router.back()) {
-            super.onBackPressed()
+        handleBack()
+    }
+
+    /** True when the user permanently blocked a permission; useful for a "fix it in Settings" hint. */
+    fun isPermissionPermanentlyDenied(permission: String): Boolean =
+        checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED &&
+            !shouldShowRequestPermissionRationale(permission)
+
+    /** Deep-link to this app's notification settings so a blocked toggle is never a dead end. */
+    fun openNotificationSettings() {
+        try {
+            startActivity(
+                android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, packageName)
+            )
+        } catch (_: Throwable) {
+            toast("Open Settings \u2192 Apps \u2192 GossipAudio \u2192 Notifications")
         }
     }
 

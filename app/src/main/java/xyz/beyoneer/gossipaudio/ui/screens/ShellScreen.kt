@@ -108,28 +108,30 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         bar.addView(names, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
 
         val theme = iconButton(
-            if (palette.dark) Icons.Kind.SUN else Icons.Kind.MOON
+            if (palette.dark) Icons.Kind.SUN else Icons.Kind.MOON,
+            if (palette.dark) "Switch to light theme" else "Switch to dark theme"
         ) { activity.toggleTheme() }
         bar.addView(theme)
-        val bell = iconButton(Icons.Kind.BELL) {
+        val bell = iconButton(Icons.Kind.BELL, "Open reminder settings") {
             selectTab(3)
             settings.focusReminder()
         }
         bar.addView(bell)
-        val info = iconButton(Icons.Kind.INFO) { openAbout() }
+        val info = iconButton(Icons.Kind.INFO, "About GossipAudio") { openAbout() }
         bar.addView(info)
         return bar
     }
 
-    private fun iconButton(kind: Icons.Kind, action: () -> Unit): View {
+    private fun iconButton(kind: Icons.Kind, label: String, action: () -> Unit): View {
         val box = FrameLayout(activity).apply {
             background = Ui.rounded(palette.card, Ui.dpf(activity, 100f), palette.outline, Ui.dp(activity, 1f))
             isClickable = true
+            contentDescription = label
         }
         box.addView(IconView(activity, kind, palette.text, 19f), FrameLayout.LayoutParams(
             Ui.dp(activity, 20f), Ui.dp(activity, 20f), Gravity.CENTER
         ))
-        box.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 40f), Ui.dp(activity, 40f)).apply {
+        box.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 44f), Ui.dp(activity, 44f)).apply {
             marginStart = Ui.dp(activity, 8f)
         }
         Ui.pressable(box, 0.9f, action)
@@ -167,6 +169,7 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             labelView.setPadding(0, Ui.dp(activity, 3f), 0, 0)
             cell.addView(iconView, LinearLayout.LayoutParams(Ui.dp(activity, 22f), Ui.dp(activity, 22f)))
             cell.addView(labelView)
+            cell.contentDescription = "$label tab"
             cell.setOnClickListener { selectTab(index) }
             Ui.pressable(cell, 0.92f)
             navIcons.add(iconView)
@@ -184,6 +187,7 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
     private fun updateNav() {
         navCells.forEachIndexed { index, cell ->
             val selected = index == current
+            cell.isSelected = selected
             navIcons[index].setTintColor(if (selected) palette.onYellow else palette.textDim)
             navLabels[index].setTextColor(if (selected) palette.text else palette.textDim)
             cell.background = if (selected) {
@@ -322,6 +326,7 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             addView(bars, LinearLayout.LayoutParams(Ui.dp(activity, 20f), Ui.dp(activity, 20f)).apply {
                 marginStart = Ui.dp(activity, 8f)
             })
+            play.contentDescription = "Pause or resume"
             play.setOnClickListener {
                 PlaybackHub.toggle()
             }

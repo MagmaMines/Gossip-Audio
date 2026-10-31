@@ -75,6 +75,7 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             Ui.dp(activity, 20f), Ui.dp(activity, 20f), Gravity.CENTER
         ))
         back.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 42f), Ui.dp(activity, 42f))
+        back.contentDescription = "Back"
         Ui.pressable(back, 0.9f) { activity.router.pop() }
         header.addView(back)
         val headerText = LinearLayout(activity).apply {
@@ -91,6 +92,7 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             Ui.dp(activity, 18f), Ui.dp(activity, 18f), Gravity.CENTER
         ))
         more.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 42f), Ui.dp(activity, 42f))
+        more.contentDescription = "Clip actions"
         Ui.pressable(more, 0.9f) {
             clip?.let { ClipActions.show(activity, it) { refreshFromStore() } }
         }
@@ -139,11 +141,11 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
         }
-        transport.addView(roundControl(Icons.Kind.PREV, 44f) { PlaybackHub.previous() }, LinearLayout.LayoutParams(
+        transport.addView(roundControl(Icons.Kind.PREV, 44f, "Previous clip") { PlaybackHub.previous() }, LinearLayout.LayoutParams(
             Ui.dp(activity, 44f), Ui.dp(activity, 44f)
         ))
         transport.addView(Ui.space(activity, Ui.dp(activity, 6f)), LinearLayout.LayoutParams(0, 1, 0.35f))
-        transport.addView(roundControl(Icons.Kind.REPLAY, 46f) { PlaybackHub.replay() }, LinearLayout.LayoutParams(
+        transport.addView(roundControl(Icons.Kind.REPLAY, 46f, "Replay from the start") { PlaybackHub.replay() }, LinearLayout.LayoutParams(
             Ui.dp(activity, 46f), Ui.dp(activity, 46f)
         ))
         transport.addView(Ui.space(activity, Ui.dp(activity, 4f)), LinearLayout.LayoutParams(0, 1, 0.2f))
@@ -167,11 +169,11 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             }
         }
         transport.addView(Ui.space(activity, Ui.dp(activity, 4f)), LinearLayout.LayoutParams(0, 1, 0.2f))
-        transport.addView(roundControl(Icons.Kind.STOP, 46f) { PlaybackHub.stop() }, LinearLayout.LayoutParams(
+        transport.addView(roundControl(Icons.Kind.STOP, 46f, "Stop") { PlaybackHub.stop() }, LinearLayout.LayoutParams(
             Ui.dp(activity, 46f), Ui.dp(activity, 46f)
         ))
         transport.addView(Ui.space(activity, Ui.dp(activity, 6f)), LinearLayout.LayoutParams(0, 1, 0.35f))
-        transport.addView(roundControl(Icons.Kind.NEXT, 44f) { PlaybackHub.next() }, LinearLayout.LayoutParams(
+        transport.addView(roundControl(Icons.Kind.NEXT, 44f, "Next clip") { PlaybackHub.next() }, LinearLayout.LayoutParams(
             Ui.dp(activity, 44f), Ui.dp(activity, 44f)
         ))
         column.addView(transport, LinearLayout.LayoutParams(
@@ -280,13 +282,14 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
         return card
     }
 
-    private fun roundControl(icon: Icons.Kind, sizeDp: Float, action: () -> Unit): View {
+    private fun roundControl(icon: Icons.Kind, sizeDp: Float, label: String, action: () -> Unit): View {
         val box = FrameLayout(activity).apply {
             background = Ui.rounded(palette.card, Ui.dpf(activity, 200f), palette.outline, Ui.dp(activity, 1.2f))
         }
         box.addView(IconView(activity, icon, palette.text, sizeDp * 0.42f), FrameLayout.LayoutParams(
             Ui.dp(activity, sizeDp * 0.45f), Ui.dp(activity, sizeDp * 0.45f), Gravity.CENTER
         ))
+        box.contentDescription = label
         Ui.pressable(box, 0.9f, action)
         return box
     }
@@ -408,6 +411,7 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
         val active = state.clipId == clip.id
         val playing = active && state.playing
         playIcon.kind = if (playing) Icons.Kind.PAUSE else Icons.Kind.PLAY
+        playButton.contentDescription = if (playing) "Pause" else "Play"
         playIcon.invalidate()
         vinyl.playing = playing
         waveform.playing = playing

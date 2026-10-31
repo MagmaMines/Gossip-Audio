@@ -52,3 +52,20 @@ Open the app and work down this list. Anything that fails is a bug worth reporti
 - [ ] `PipelineTest` 8/8 green (synthesis, WAV round-trip, MP3 frames + ID3, styles, effects, text kit, silence).
 - [ ] `tools/verify_apk.py` → "none — APK structure, manifest, signing and dex contents check out".
 - [ ] `tools/verify_audio.py` → "all audio files valid".
+
+## Commercial-readiness pass (2026-10-31)
+
+Added after the first release; all of it is enforced by `AccessibilityTest` or visible in the code.
+
+| Check | How to verify |
+|---|---|
+| Every icon-only button is named | TalkBack on: swipe through Studio/Voices/Library/Settings — no "unlabelled button" |
+| Switches announce their state | Settings → any toggle: "Daily gossip nudge, switch, off" |
+| Sliders are operable without touch | Focus "Download quality", swipe up/down changes it; TalkBack reads the new value |
+| Haptics preference is real | Settings → Haptics on: every press ticks. Off: silence. |
+| Reduce motion is real | Settings → Reduce motion on: no press scaling, no pop-ins, no glow; router cuts instantly |
+| Back gesture | Android 14/15: open About → back returns to the shell; back again leaves the app |
+| Denied notifications | Turn on "Daily gossip nudge", deny permission: switch springs back off and a toast explains |
+| Reminders after update | Enable the nudge, update the app, the alarm is re-registered (`MY_PACKAGE_REPLACED`) |
+| Process death | Enable "Don't keep activities", background the app, return: the shell appears instead of a blank screen |
+| Backup scope | `adb shell bmgr backupnow xyz.beyoneer.gossipaudio` backs up prefs only — not the audio masters |

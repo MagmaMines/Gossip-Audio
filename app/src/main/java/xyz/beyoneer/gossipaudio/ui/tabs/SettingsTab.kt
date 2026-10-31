@@ -1,5 +1,6 @@
 package xyz.beyoneer.gossipaudio.ui.tabs
 
+import android.Manifest
 import android.app.TimePickerDialog
 import android.view.Gravity
 import android.view.View
@@ -15,6 +16,8 @@ import xyz.beyoneer.gossipaudio.ui.MainActivity
 import xyz.beyoneer.gossipaudio.ui.Overlays
 import xyz.beyoneer.gossipaudio.ui.Tab
 import xyz.beyoneer.gossipaudio.ui.screens.ShellScreen
+import xyz.beyoneer.gossipaudio.ui.theme.Haptics
+import xyz.beyoneer.gossipaudio.ui.theme.Motion
 import xyz.beyoneer.gossipaudio.ui.theme.Ui
 import xyz.beyoneer.gossipaudio.ui.widgets.IconView
 import xyz.beyoneer.gossipaudio.ui.widgets.Icons
@@ -31,6 +34,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
     private val palette get() = shell.colors
     private lateinit var scroll: ScrollView
     private var reminderRow: View? = null
+    private var notificationsRow: View? = null
     private var reminderTimeValue: TextView? = null
 
     override val root: View by lazy { build() }
@@ -80,12 +84,20 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
                     Icons.Kind.SPARKLE, "Reduce motion",
                     "Calmer transitions, no butterfly flight",
                     activity.prefs.reduceMotion
-                ) { activity.prefs.reduceMotion = it },
+                ) { enabled ->
+                    activity.prefs.reduceMotion = enabled
+                    Motion.reduce = enabled
+                    activity.toast(if (enabled) "Animations toned down." else "Full butterfly mode restored.")
+                },
                 toggleRow(
                     Icons.Kind.WAVE, "Haptics",
                     "Tiny taps when buttons are pressed",
                     activity.prefs.haptics
-                ) { activity.prefs.haptics = it }
+                ) { enabled ->
+                    activity.prefs.haptics = enabled
+                    Haptics.enabled = enabled
+                    if (enabled) Haptics.confirm(activity.window.decorView)
+                }
             )
         )
 
@@ -132,27 +144,55 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
             "A friendly reminder at your chosen time",
             activity.prefs.dailyReminder
         ) { enabled ->
-            activity.prefs.dailyReminder = enabled
-            if (enabled) {
-                activity.requestNotifications()
-                ReminderScheduler.schedule(activity, activity.prefs.reminderHour, activity.prefs.reminderMinute)
-                activity.toast("Daily gossip enabled \uD83D\uDD14")
-            } else {
+            if (!enabled) {
+                activity.prefs.dailyReminder = false
                 ReminderScheduler.cancel(activity)
                 activity.toast("Reminders off. Quiet mode.")
+            } else {
+                activity.requestNotifications { granted ->
+                    if (granted) {
+                        activity.prefs.dailyReminder = true
+                        ReminderScheduler.schedule(
+                            activity, activity.prefs.reminderHour, activity.prefs.reminderMinute
+                        )
+                        activity.toast("Daily gossip enabled \uD83D\uDD14")
+                    } else {
+                        // Never leave a switch on that cannot possibly fire.
+                        activity.prefs.dailyReminder = false
+                        reminderRow?.let { setToggle(it, false) }
+                        if (activity.isPermissionPermanentlyDenied(Manifest.permission.POST_NOTIFICATIONS)) {
+                            activity.toast("Notifications are blocked for GossipAudio \u2014 opening settings.")
+                            activity.openNotificationSettings()
+                        } else {
+                            activity.toast("No notifications, no nudge. Turn them on any time.")
+                        }
+                    }
+                }
             }
         }
         reminderRow = reminder
+        val notificationsToggle = toggleRow(
+            Icons.Kind.INFO, "System notifications",
+            "Playback controls + export confirmations",
+            activity.prefs.notifications
+        ) { enabled ->
+            if (!enabled) {
+                activity.prefs.notifications = false
+            } else {
+                activity.requestNotifications { granted ->
+                    activity.prefs.notifications = granted
+                    if (!granted) {
+                        // Do not leave a switch on that can never deliver anything.
+                        notificationsRow?.let { setToggle(it, false) }
+                        activity.toast("Notifications stay muted until you allow them.")
+                    }
+                }
+            }
+        }
+        notificationsRow = notificationsToggle
         column.addView(
             card(
-                toggleRow(
-                    Icons.Kind.INFO, "System notifications",
-                    "Playback controls + export confirmations",
-                    activity.prefs.notifications
-                ) { enabled ->
-                    activity.prefs.notifications = enabled
-                    if (enabled) activity.requestNotifications()
-                },
+                notificationsToggle,
                 reminder,
                 actionRowTitled(Icons.Kind.TIMER, "Reminder time", reminderTimeLabel()) { pickTime() }
             )
@@ -278,6 +318,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
         val label = Ui.text(activity, "Download quality  ${activity.prefs.defaultBitrate} kbps", 12.5f, palette.textDim, bold = true, font = "sans-serif-medium")
         wrap.addView(label)
         val slider = NeonSlider(activity, palette, 64f, 320f, activity.prefs.defaultBitrate.toFloat(), 8f)
+        slider.contentDescription = "Download quality in kilobits per second"
         slider.onChanged = {
             activity.prefs.defaultBitrate = it.toInt()
             label.text = "Download quality  ${it.toInt()} kbps"
@@ -302,10 +343,18 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
         texts.addView(Ui.text(activity, title, 13.5f, palette.text, bold = true, font = "sans-serif-medium"))
         texts.addView(Ui.text(activity, subtitle, 10.5f, palette.textDim, font = "sans-serif"))
         row.addView(texts, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-        val toggle = ToggleSwitch(activity, palette, checked)
+        val toggle = ToggleSwitch(activity, palette, checked, title)
         toggle.onChanged = onChange
         row.addView(toggle)
         return row
+    }
+
+    /** Find the switch inside a settings row and force its visual state. */
+    private fun setToggle(view: View?, value: Boolean) {
+        when (view) {
+            is ToggleSwitch -> view.checked = value
+            is ViewGroup -> for (i in 0 until view.childCount) setToggle(view.getChildAt(i), value)
+        }
     }
 
     /** Same as [actionRow] but keeps a handle on the value label so it can be refreshed. */

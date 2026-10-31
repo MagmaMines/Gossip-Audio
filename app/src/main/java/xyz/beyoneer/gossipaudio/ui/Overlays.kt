@@ -65,6 +65,8 @@ object Overlays {
             val icon = IconView(activity, Icons.Kind.SPARKLE, palette.yellow, 16f)
             pill.addView(icon)
             val tv = Ui.text(activity, message, 13.5f, Color.WHITE, bold = true, font = "sans-serif-medium")
+            // Custom toast = invisible to TalkBack unless we say it out loud.
+            tv.accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_ASSERTIVE
             tv.setPadding(Ui.dp(activity, 10f), 0, 0, 0)
             tv.maxWidth = Ui.dp(activity, 260f)
             pill.addView(tv)
@@ -76,6 +78,7 @@ object Overlays {
             root.addView(pill, lp)
             (activity.contentRoot as? ViewGroup)?.addView(root, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             stack(activity).add(root)
+            tv.announceForAccessibility(message)
             pill.alpha = 0f
             pill.translationY = Ui.dpf(activity, 24f)
             pill.animate().alpha(1f).translationY(0f).setDuration(260)
@@ -101,6 +104,8 @@ object Overlays {
         val scrim = View(activity)
         scrim.setBackgroundColor(0xB3000000.toInt())
         scrim.alpha = 0f
+        // Tapping the scrim dismisses; talk to the sheet content instead of the dimmer.
+        scrim.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         root.addView(scrim, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         val panel = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
@@ -184,6 +189,7 @@ object Overlays {
             background = Ui.rounded(palette.bg, Ui.dpf(activity, 16f), palette.outline, Ui.dp(activity, 1f))
             setPadding(Ui.dp(activity, 14f), Ui.dp(activity, 12f), Ui.dp(activity, 14f), Ui.dp(activity, 12f))
             setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15f)
+            contentDescription = hint
         }
         content.addView(input, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         val row = Ui.row(activity)
