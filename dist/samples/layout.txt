@@ -1,2 +1,9 @@
-device=1233x2673px density=3.0
-
+device=1600x2560px density=2.0
+tab 0 @800dp: ok
+device=1600x2560px density=2.0
+tab 1 @800dp: ok
+device=1600x2560px density=2.0
+tab 2 @800dp: ok
+device=1600x2560px density=2.0
+tab 3 @800dp: ok
+tablet content width: 644.0dp
