@@ -117,30 +117,29 @@ object NanoVoice {
         "SIL" to Ph(500.0, 1500.0, 2500.0, amp = 0.0, dur = 120.0),
         "CL" to Ph(300.0, 1200.0, 2400.0, amp = 0.0, dur = 40.0),
         "CLV" to Ph(280.0, 1150.0, 2350.0, av = 0.13, amp = 0.50, dur = 34.0),
-        "ASP" to Ph(450.0, 1500.0, 2500.0, fv = 1.60, amp = 0.80, fc = 1900.0, bwf = 3000.0, dur = 24.0),
+        "ASP" to Ph(450.0, 1500.0, 2500.0, fv = 0.30, amp = 0.80, fc = 1900.0, bwf = 3000.0, dur = 24.0),
 
         // plosive bursts
-        "PB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
-        "BB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
-        "TB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
-        "DB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
-        "KB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
-        "GB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
-        "TXB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
-        "DXB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
-        "CHB" to Ph(450.0, 1500.0, 2500.0, fv = 2.20, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0),
-        "JHB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 1.80, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0)
+        "PB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
+        "BB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 900.0, bwf = 2200.0, dur = 9.0),
+        "TB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
+        "DB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 3800.0, bwf = 2200.0, dur = 9.0),
+        "KB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
+        "GB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 2100.0, bwf = 2200.0, dur = 9.0),
+        "TXB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
+        "DXB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 3000.0, bwf = 2200.0, dur = 9.0),
+        "CHB" to Ph(450.0, 1500.0, 2500.0, fv = 0.55, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0),
+        "JHB" to Ph(450.0, 1500.0, 2500.0, av = 0.20, fv = 0.45, amp = 0.90, fc = 2900.0, bwf = 2200.0, dur = 10.0)
     )
 
     private const val VOICE_GAIN = 8.2
 
     /**
-     * Noise-path gain. Measured against a sustained vowel, /s/ used to sit +10 dB
-     * *above* the voice, which is both wrong and exactly the kind of hiss people
-     * complain about. At 0.10 /s/ lands ~9 dB and /sh/ ~12 dB below the vowel, and
-     * the burst/aspiration phones carry their own drive values to stay audible.
+     * Noise-path gain, measured against a sustained /ɑ/ with the parallel formant
+     * bank: /s/ lands ~7.5 dB, /ʃ/ ~11 dB and /f/ ~15 dB below the vowel. Any louder
+     * and the file reads as static; any quieter and the fricatives vanish.
      */
-    private const val FRIC_GAIN = 0.10
+    private const val FRIC_GAIN = 0.25
 
     // -------------------------------------------------------------- public API
 
@@ -184,6 +183,25 @@ object NanoVoice {
             b = 2.0 * r * cos(th)
             c = -(r * r)
             a = 1.0 - b - c
+        }
+
+        /**
+         * Same resonator, but normalised to 0 dB *at its own formant*.
+         *
+         * This is the difference between a kazoo and a voice. In a cascade every stage
+         * rolls off at 12 dB/oct above its centre, so by the time the signal reaches F2
+         * it has been attenuated by F1's skirt and the upper formants end up 20-30 dB
+         * down. A parallel bank sums the four formants instead, and normalising each to
+         * its centre means the mix weights below are honest numbers.
+         */
+        fun setPeak(freq: Double, bw: Double, fs: Double) {
+            val r = exp(-PI * bw / fs)
+            val th = 2.0 * PI * freq / fs
+            b = 2.0 * r * cos(th)
+            c = -(r * r)
+            val dr = 1.0 - b * cos(th) - c * cos(2.0 * th)
+            val di = b * sin(th) + c * sin(2.0 * th)
+            a = sqrt(dr * dr + di * di)
         }
 
         fun run(x: Double): Double {
@@ -298,6 +316,9 @@ object NanoVoice {
         var zeroX2 = 0.0
         var jitter = 0.0
         var shimmer = 1.0
+        var radPrev = 0.0
+        var tiltLp = 0.0
+        val tiltCoeff = exp(-2.0 * PI * 3200.0 / fs)
         val nyq = fs / 2.0
         val oq = 0.62
 
@@ -307,10 +328,10 @@ object NanoVoice {
             var ff3 = min(max(f3[bi], ff2 + 250.0), nyq * 0.97)
             var ff4 = ff3 + 350.0
             if (ff4 > nyq * 0.99) ff4 = nyq * 0.99
-            r1.set(ff1, max(50.0, b1[bi]), fs)
-            r2.set(ff2, max(60.0, b2[bi]), fs)
-            r3.set(ff3, max(80.0, b3[bi]), fs)
-            r4.set(ff4, 250.0, fs)
+            r1.setPeak(ff1, max(50.0, b1[bi]), fs)
+            r2.setPeak(ff2, max(60.0, b2[bi]), fs)
+            r3.setPeak(ff3, max(80.0, b3[bi]), fs)
+            r4.setPeak(ff4, 250.0, fs)
             rf.set(min(max(fc[bi], 500.0), nyq * 0.95), max(600.0, bwf[bi]), fs)
             val aGain = amp[bi]
             val aVoice = min(1.0, av[bi])
@@ -339,10 +360,17 @@ object NanoVoice {
                 } * shimmer
                 val rad = flow - flowPrev
                 flowPrev = flow
-                var y = r1.run(rad)
-                y = r2.run(y)
-                y = r3.run(y)
-                y = r4.run(y)
+                // A smooth Rosenberg pulse rolls off far faster than a real glottal
+                // source, so differentiate once more before the formants see it.
+                val src = rad - 0.96 * radPrev
+                radPrev = rad
+                var y = r1.run(src) * 1.00 +
+                    r2.run(src) * 0.90 +
+                    r3.run(src) * 0.55 +
+                    r4.run(src) * 0.30
+                // and put the natural -6 dB/oct back above 3.2 kHz
+                tiltLp = tiltCoeff * tiltLp + (1.0 - tiltCoeff) * y
+                y = tiltLp
                 if (aNasal > 0.01) {
                     val zx = y - nzB * zeroX1 - nzC * zeroX2
                     zeroX2 = zeroX1

@@ -269,15 +269,72 @@ class PipelineTest {
         assertTrue("not enough voiced frames: ${ratios.size}", ratios.size > 20)
         val median = ratios.sorted()[ratios.size / 2]
         assertTrue("harmonic ratio $median is noise-like (ticks!), expected > 0.65", median > 0.65)
+        // A buzzer has ~all of its energy under 300 Hz. Speech puts real power in
+        // F2/F3 (800-4000 Hz); if that band collapses the engine is a kazoo again.
+        val shares = bandShares(pcm.samples, pcm.sampleRate)
+        assertTrue(
+            "upper formants are missing: ${formatShares(shares)}",
+            shares[2] + shares[3] > 4.0
+        )
+        assertTrue(
+            "all energy sits under 300 Hz: ${formatShares(shares)}",
+            shares[0] < 48.0
+        )
         val report = buildString {
             append("harmonic_ratio_median=").append(String.format("%.3f", median)).append('\n')
             append("voiced_frames=").append(ratios.size).append('\n')
             append("duration_ms=").append(pcm.durationMs).append('\n')
             append("peak=").append(pcm.peak()).append('\n')
-            append("estimate=").append("v2 continuous-voicing formant synthesiser").append('\n')
+            append("bands_percent=").append(formatShares(shares)).append('\n')
+            append("estimate=").append("v3 parallel formant synthesiser").append('\n')
         }
         File(sampleDir, "quality.txt").writeText(report)
         println(report)
+    }
+
+    /** Energy share per band, so a regression to "one flat buzz" shows up in CI. */
+    private fun bandShares(samples: ShortArray, fs: Int): DoubleArray {
+        val bands = listOf(0 to 300, 300 to 800, 800 to 2000, 2000 to 4000, 4000 to 8000)
+        val frame = 1024
+        val energy = DoubleArray(bands.size)
+        var frames = 0
+        var start = 0
+        while (start + frame <= samples.size) {
+            var rms = 0.0
+            for (i in start until start + frame) {
+                val v = samples[i] / 32768.0
+                rms += v * v
+            }
+            if (kotlin.math.sqrt(rms / frame) > 0.02) {
+                frames++
+                val x = DoubleArray(frame) { samples[start + it] / 32768.0 }
+                bands.forEachIndexed { bi, (lo, hi) ->
+                    var k = maxOf(1, lo * frame / fs)
+                    val kEnd = minOf(frame / 2 - 1, maxOf(k + 1, hi * frame / fs))
+                    while (k <= kEnd) {
+                        var re = 0.0
+                        var im = 0.0
+                        val f = k * fs.toDouble() / frame
+                        for (j in 0 until frame) {
+                            val w = 0.54 - 0.46 * kotlin.math.cos(2.0 * kotlin.math.PI * j / (frame - 1))
+                            val ang = 2.0 * kotlin.math.PI * f * j / fs
+                            re += x[j] * w * kotlin.math.cos(ang)
+                            im += x[j] * w * kotlin.math.sin(ang)
+                        }
+                        energy[bi] += re * re + im * im
+                        k += 6
+                    }
+                }
+            }
+            start += frame
+        }
+        val total = energy.sum().coerceAtLeast(1e-9)
+        return DoubleArray(energy.size) { 100.0 * energy[it] / total }
+    }
+
+    private fun formatShares(shares: DoubleArray): String {
+        val bands = listOf("0-300", "300-800", "800-2000", "2000-4000", "4000-8000")
+        return bands.mapIndexed { i, b -> "$b=" + String.format("%.1f", shares[i]) }.joinToString(" ")
     }
 
     @Test
