@@ -16,7 +16,6 @@
     "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
     "android.permission.WAKE_LOCK",
     "android.permission.RECEIVE_BOOT_COMPLETED",
-    "android.permission.SCHEDULE_EXACT_ALARM",
     "android.permission.WRITE_EXTERNAL_STORAGE"
   ],
   "activities": [
@@ -30,10 +29,19 @@
     "xyz.beyoneer.gossipaudio.notify.BootReceiver"
   ],
   "providers": [],
-  "entries": 30,
-  "uncompressed_bytes": 3196362,
-  "dex_bytes": 2816048,
-  "apk_sha256": "75ee95ff89b5c670b99cb542ac59e1a429638fe8829033e3ef5afdba7837f3c2"
+  "signature": {
+    "verified": true,
+    "schemes": [
+      "v2"
+    ],
+    "algorithm": "RSA-PKCS1/SHA-512",
+    "key_bits": 4096,
+    "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
+  },
+  "entries": 32,
+  "uncompressed_bytes": 3208590,
+  "dex_bytes": 2826128,
+  "apk_sha256": "80f29c1e6cd12b0b91d0fc9870ea55f185ddd48d53edb27e2a630131a7b4b1f1"
 }
 
 --- notes
@@ -41,7 +49,8 @@
  * no INTERNET permission — audio pipeline is genuinely offline
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
- * dex files: classes.dex (2816048 bytes uncompressed)
+ * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
+ * dex files: classes.dex (2826128 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out

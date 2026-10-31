@@ -1,23 +1,29 @@
 GossipAudio test report
 =======================
 
-PipelineTest: 8 tests, 0 failed, 0 skipped  (0.815 s)
-  [PASS] silenceAndEmptyInputAreHandledGracefully  0.132 s
-  [PASS] mp3EncoderProducesRealFramesAndTags  0.268 s
-  [PASS] stylesChangeRateAndPitchNumerically  0.017 s
-  [PASS] everyVoiceSynthesisesAudibleSpeech  0.267 s
-  [PASS] audioEffectsAreStable  0.044 s
-  [PASS] wavRoundTripPreservesSamples  0.036 s
-  [PASS] textKitEstimatesMatchRenderedAudio  0.049 s
+AccessibilityTest: 4 tests, 0 failed, 0 skipped  (11.13 s)
+  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  9.678 s
+  [PASS] hapticsSwitchActuallyGatesVibration  0.401 s
+  [PASS] everyTappableControlHasAName  0.714 s
+  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.337 s
+
+PipelineTest: 8 tests, 0 failed, 0 skipped  (0.45 s)
+  [PASS] silenceAndEmptyInputAreHandledGracefully  0.063 s
+  [PASS] mp3EncoderProducesRealFramesAndTags  0.164 s
+  [PASS] stylesChangeRateAndPitchNumerically  0.006 s
+  [PASS] everyVoiceSynthesisesAudibleSpeech  0.15 s
+  [PASS] audioEffectsAreStable  0.029 s
+  [PASS] wavRoundTripPreservesSamples  0.022 s
+  [PASS] textKitEstimatesMatchRenderedAudio  0.011 s
   [PASS] catalogHasTenVoicesAndEightStyles  0.0 s
 
-StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (11.208 s)
-  [PASS] typingAndTappingGenerateCreatesAPlayableClip  11.208 s
+StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (4.024 s)
+  [PASS] typingAndTappingGenerateCreatesAPlayableClip  4.024 s
 
-UiSmokeTest: 4 tests, 0 failed, 0 skipped  (5.581 s)
-  [PASS] appBootsIntoShellAndRendersEveryTab  2.539 s
-  [PASS] darkThemeStillUsesBrandYellow  0.625 s
-  [PASS] aboutHelpAndDiagnosticsScreensRender  1.672 s
-  [PASS] playerScreenOpensForARealClip  0.744 s
+UiSmokeTest: 4 tests, 0 failed, 0 skipped  (3.237 s)
+  [PASS] appBootsIntoShellAndRendersEveryTab  1.378 s
+  [PASS] darkThemeStillUsesBrandYellow  0.401 s
+  [PASS] aboutHelpAndDiagnosticsScreensRender  0.973 s
+  [PASS] playerScreenOpensForARealClip  0.484 s
 
-TOTAL: 13 tests, 0 failed, 0 skipped
+TOTAL: 17 tests, 0 failed, 0 skipped
