@@ -71,7 +71,7 @@ class ResponsiveLayoutTest {
             repeat(3) {
                 // forceLayout() because measure() alone returns the cached result and
                 // never revisits the children after capWidth() changed the padding.
-                root.forceLayout()
+                forceLayoutTree(root)
                 root.measure(
                     View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY),
                     View.MeasureSpec.makeMeasureSpec(metrics.heightPixels, View.MeasureSpec.EXACTLY)
@@ -127,6 +127,14 @@ class ResponsiveLayoutTest {
                 }
                 audit(child, problems, childPath, depth + 1)
             }
+        }
+    }
+
+    /** measure() returns cached results unless every view is marked dirty first. */
+    private fun forceLayoutTree(view: View) {
+        view.forceLayout()
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) forceLayoutTree(view.getChildAt(i))
         }
     }
 
