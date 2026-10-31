@@ -1,29 +1,29 @@
 GossipAudio test report
 =======================
 
-AccessibilityTest: 4 tests, 0 failed, 0 skipped  (11.13 s)
-  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  9.678 s
-  [PASS] hapticsSwitchActuallyGatesVibration  0.401 s
-  [PASS] everyTappableControlHasAName  0.714 s
-  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.337 s
+AccessibilityTest: 4 tests, 0 failed, 0 skipped  (14.658 s)
+  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  12.408 s
+  [PASS] hapticsSwitchActuallyGatesVibration  0.66 s
+  [PASS] everyTappableControlHasAName  1.035 s
+  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.553 s
 
-PipelineTest: 8 tests, 0 failed, 0 skipped  (0.45 s)
-  [PASS] silenceAndEmptyInputAreHandledGracefully  0.063 s
-  [PASS] mp3EncoderProducesRealFramesAndTags  0.164 s
-  [PASS] stylesChangeRateAndPitchNumerically  0.006 s
-  [PASS] everyVoiceSynthesisesAudibleSpeech  0.15 s
-  [PASS] audioEffectsAreStable  0.029 s
-  [PASS] wavRoundTripPreservesSamples  0.022 s
-  [PASS] textKitEstimatesMatchRenderedAudio  0.011 s
+PipelineTest: 8 tests, 0 failed, 0 skipped  (0.563 s)
+  [PASS] silenceAndEmptyInputAreHandledGracefully  0.104 s
+  [PASS] mp3EncoderProducesRealFramesAndTags  0.207 s
+  [PASS] stylesChangeRateAndPitchNumerically  0.008 s
+  [PASS] everyVoiceSynthesisesAudibleSpeech  0.192 s
+  [PASS] audioEffectsAreStable  0.021 s
+  [PASS] wavRoundTripPreservesSamples  0.009 s
+  [PASS] textKitEstimatesMatchRenderedAudio  0.021 s
   [PASS] catalogHasTenVoicesAndEightStyles  0.0 s
 
-StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (4.024 s)
-  [PASS] typingAndTappingGenerateCreatesAPlayableClip  4.024 s
+StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (5.55 s)
+  [PASS] typingAndTappingGenerateCreatesAPlayableClip  5.55 s
 
-UiSmokeTest: 4 tests, 0 failed, 0 skipped  (3.237 s)
-  [PASS] appBootsIntoShellAndRendersEveryTab  1.378 s
-  [PASS] darkThemeStillUsesBrandYellow  0.401 s
-  [PASS] aboutHelpAndDiagnosticsScreensRender  0.973 s
-  [PASS] playerScreenOpensForARealClip  0.484 s
+UiSmokeTest: 4 tests, 0 failed, 0 skipped  (5.002 s)
+  [PASS] appBootsIntoShellAndRendersEveryTab  2.171 s
+  [PASS] darkThemeStillUsesBrandYellow  0.496 s
+  [PASS] aboutHelpAndDiagnosticsScreensRender  1.636 s
+  [PASS] playerScreenOpensForARealClip  0.698 s
 
 TOTAL: 17 tests, 0 failed, 0 skipped
