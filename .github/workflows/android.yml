@@ -10,6 +10,7 @@ on:
       - main
     paths-ignore:
       - 'dist/**'
+      - 'ci-logs/**'
       - 'docs/shots/**'
       - '**.md'
       - 'assets/**'
@@ -38,25 +39,46 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
-          cache-read-only: false
 
-      - name: Install SDK packages
+      - name: Inspect Android SDK
         run: |
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          set +e
+          echo "ANDROID_HOME=${ANDROID_HOME}"
+          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}"
+          ls -1 "${ANDROID_HOME}/platforms" 2>&1 | head
+          ls -1 "${ANDROID_HOME}/build-tools" 2>&1 | head
+          echo "JAVA_HOME=${JAVA_HOME}"
+          java -version
+          gradle --version
+
+      - name: Install missing SDK packages
+        run: |
+          set +e
+          SDKMGR=$(find "$ANDROID_HOME" -name sdkmanager -type f 2>/dev/null | head -1)
+          echo "sdkmanager: $SDKMGR"
+          if [ -n "$SDKMGR" ]; then
+            yes | "$SDKMGR" --licenses > /dev/null 2>&1
+            "$SDKMGR" "platforms;android-35" "build-tools;35.0.0" "platform-tools" 2>&1 | tail -20
+          fi
+          mkdir -p ci-logs
+          echo "sdk ok" > ci-logs/sdk.txt
+          ls -1 "$ANDROID_HOME/platforms" >> ci-logs/sdk.txt 2>&1
+          ls -1 "$ANDROID_HOME/build-tools" >> ci-logs/sdk.txt 2>&1
 
       - name: Unit tests
-        run: gradle --no-daemon --stacktrace --console=plain testDebugUnitTest
+        run: |
+          set -o pipefail
+          mkdir -p ci-logs
+          gradle --no-daemon --stacktrace --console=plain testDebugUnitTest 2>&1 | tee ci-logs/test.log
 
       - name: Assemble debug + release + bundle
-        run: gradle --no-daemon --stacktrace --console=plain assembleDebug assembleRelease bundleRelease
+        run: |
+          set -o pipefail
+          gradle --no-daemon --stacktrace --console=plain assembleDebug assembleRelease bundleRelease 2>&1 | tee ci-logs/assemble.log
 
       - name: Prepare dist
         run: |
@@ -87,13 +109,18 @@ jobs:
           cat dist/BUILD_INFO.txt
 
       - name: Upload artifacts (workflow run)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: GossipAudio-apk
-          path: dist/
+          path: |
+            dist/
+            ci-logs/
           retention-days: 90
+          if-no-files-found: warn
 
       - name: Publish APK into the repository
+        if: success()
         run: |
           set -euo pipefail
           git config user.name "GossipAudio CI"
@@ -105,3 +132,25 @@ jobs:
             git commit -m "ci: publish APK + build report [skip ci]"
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
+
+      - name: Publish failure diagnostics into the repository
+        if: failure()
+        run: |
+          set -euo pipefail
+          git config user.name "GossipAudio CI"
+          git config user.email "ci@beyoneer.xyz"
+          mkdir -p ci-logs
+          {
+            echo "run: ${GITHUB_RUN_ID}"
+            echo "commit: ${GITHUB_SHA}"
+            echo "time: $(date -u)"
+            echo "====== test.log (tail) ======"
+            tail -c 20000 ci-logs/test.log 2>/dev/null || true
+            echo "====== assemble.log (tail) ======"
+            tail -c 120000 ci-logs/assemble.log 2>/dev/null || true
+            echo "====== sdk.txt ======"
+            cat ci-logs/sdk.txt 2>/dev/null || true
+          } > ci-logs/failure.txt
+          git add -f ci-logs
+          git commit -m "ci: failure diagnostics [skip ci]" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}" || true
