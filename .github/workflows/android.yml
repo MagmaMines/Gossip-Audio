@@ -241,6 +241,9 @@ jobs:
             grep -E "^e: " ci-logs/assemble.log 2>/dev/null | sed -e 's|file:///home/runner/work/[^/]*/[^/]*/|src/|' | head -300 || true
             echo "====== warnings that matter ======"
             grep -E "^e: |Unresolved|Type mismatch|none of the following|No value passed|cannot be applied|Overload resolution" ci-logs/test.log ci-logs/assemble.log 2>/dev/null | head -80 || true
+            echo "====== test output (layout + audio quality) ======"
+            grep -E "TAB [0-9] overflow|overflow @|tablet content|harmonic ratio|voiced_frames|duration_ms|peak=" ci-logs/test.log 2>/dev/null | head -80 || true
+            cat app/build/test-samples/quality.txt 2>/dev/null || true
             echo "====== failing tests ======"
             grep -E "FAILED|AssertionError|expected:|but was:|Tests? .* failed" ci-logs/test.log 2>/dev/null | head -60 || true
             for f in app/build/test-results/testDebugUnitTest/*.xml; do

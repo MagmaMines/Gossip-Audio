@@ -18,6 +18,7 @@ import org.robolectric.annotation.GraphicsMode
 import xyz.beyoneer.gossipaudio.ui.MainActivity
 import xyz.beyoneer.gossipaudio.ui.screens.ShellScreen
 import org.robolectric.annotation.Config as RoboConfig
+import java.io.File
 import java.time.Duration
 
 /**
@@ -68,6 +69,7 @@ class ResponsiveLayoutTest {
         val shell = activity.router.current() as? ShellScreen
         assertNotNull("shell did not boot", shell)
 
+        val layoutReport = StringBuilder()
         var tabOverflow = false
         for (index in 0..3) {
             shell!!.selectTab(index, animate = false)
@@ -77,11 +79,22 @@ class ResponsiveLayoutTest {
             audit(root, problems)
             if (problems.isNotEmpty()) {
                 tabOverflow = true
-                println("TAB $index overflow @${metrics.widthPixels}px:\n  " + problems.take(12).joinToString("\n  "))
+                val report = "TAB $index overflow @${metrics.widthPixels}px:\n  " +
+                    problems.distinct().take(14).joinToString("\n  ")
+                println(report)
+                layoutReport.append(report).append('\n')
             }
             assertTrue("tab $index renders nothing", root.width > 100 && root.height > 100)
         }
-        assertTrue("a control sticks out of its parent (see log above)", !tabOverflow)
+        File("build/test-samples").mkdirs()
+        File("build/test-samples/layout.txt").writeText(
+            "device=${metrics.widthPixels}x${metrics.heightPixels}px density=${metrics.density}\n" +
+                layoutReport + "\n"
+        )
+        assertTrue(
+            "a control sticks out of its parent:\n" + layoutReport.toString().take(900),
+            !tabOverflow
+        )
 
         if (expectCapped) {
             val column = findReadingColumn(root)
