@@ -151,12 +151,13 @@ object NanoVoice {
      * Noise-path gain.
      *
      * Measured on a full sentence, not on a lone hiss. With the cascade bank the voiced
-     * path needs 8x (the parallel bank needed 80x because its double-differentiated
-     * source was ~10x quieter), and at 0.20 the fricatives sit about 12 dB under the
-     * vowels — where a real /s/ lives. The 1.0.1 numbers were tuned against a
-     * peak-normalised noise render and were 25 dB too hot: that is "pure hiss".
+     * path needs 8x. At 0.20 the fricatives measured 13.9 % of the sentence energy
+     * above 4 kHz — a snake, not a sentence. 0.10 puts /s/ about 18 dB under the
+     * vowels, which is where a real one lives, and drops that band to a few percent.
+     * The 1.0.1 numbers were tuned against a peak-normalised noise render and were
+     * 25 dB too hot: that is "pure hiss".
      */
-    private const val FRIC_GAIN = 0.20
+    private const val FRIC_GAIN = 0.10
 
     // -------------------------------------------------------------- public API
 
