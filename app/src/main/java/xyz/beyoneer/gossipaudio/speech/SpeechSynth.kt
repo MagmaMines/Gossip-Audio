@@ -10,6 +10,7 @@ import xyz.beyoneer.gossipaudio.core.AudioFx
 import xyz.beyoneer.gossipaudio.core.NanoVoice
 import xyz.beyoneer.gossipaudio.core.Pcm
 import xyz.beyoneer.gossipaudio.core.StylePreset
+import xyz.beyoneer.gossipaudio.core.TextKit
 import xyz.beyoneer.gossipaudio.core.VoiceEngine
 import xyz.beyoneer.gossipaudio.core.VoiceGender
 import xyz.beyoneer.gossipaudio.core.VoiceProfile
@@ -18,6 +19,8 @@ import java.io.File
 import java.util.Locale
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 /**
  * Turns text into PCM using the best available on-device engine.
@@ -69,8 +72,9 @@ class SpeechSynth(private val context: Context) {
         val systemUsable = voice.engine == VoiceEngine.SYSTEM_TTS && hasSystemEngine()
         if (systemUsable) {
             systemPath(clean, voice, finalPitch, finalRate, callback) { pcm, note ->
-                if (pcm != null) {
-                    finish(pcm, "system", note, startedAt, sampler, callback)
+                val usable = pcm != null && looksLikeSpeech(pcm, clean)
+                if (usable) {
+                    finish(pcm!!, "system", note, startedAt, sampler, callback)
                 } else {
                     nanoPath(clean, voice, style, finalPitch, finalRate, callback, startedAt, sampler)
                 }
@@ -294,6 +298,38 @@ class SpeechSynth(private val context: Context) {
         }
     }
 
+    /**
+     * A voice engine that is installed but has no data pack can "succeed" while
+     * writing near-silence or a couple of clicks. That is exactly the bug users
+     * reported as "only ticks". Anything that does not look like speech is
+     * rejected here and the built-in engine takes over.
+     */
+    private fun looksLikeSpeech(pcm: Pcm, text: String): Boolean {
+        if (pcm.samples.isEmpty()) return false
+        val words = TextKit.wordCount(text).coerceAtLeast(1)
+        val seconds = pcm.durationMs / 1000.0
+        if (seconds < 0.25) return false
+        var loud = 0
+        var peak = 0
+        val window = 512
+        var i = 0
+        while (i + window <= pcm.samples.size) {
+            var sum = 0L
+            for (j in i until i + window) {
+                val v = pcm.samples[j].toInt()
+                if (abs(v) > peak) peak = abs(v)
+                sum += v.toLong() * v
+            }
+            val rms = sqrt(sum.toDouble() / window)
+            if (rms > 900) loud++
+            i += window
+        }
+        val voicedRatio = loud.toDouble() / (pcm.samples.size / window).coerceAtLeast(1)
+        // plausible speech: some real level, and enough of it for the amount of text
+        val expectedSeconds = words / 4.0
+        return peak > 2500 && voicedRatio > 0.15 && seconds > expectedSeconds * 0.25
+    }
+
     private fun readPcm(file: File): Pcm? {
         return try {
             val bytes = file.readBytes()
@@ -328,14 +364,15 @@ class SpeechSynth(private val context: Context) {
                 chunks.forEachIndexed { i, chunk ->
                     main.post { callback.onProgress(0.2f + 0.7f * (i.toFloat() / chunks.size), "NanoVoice is thinking\u2026") }
                     val options = NanoVoice.Options(
-                        baseF0 = (118.0 * voice.pitch * pitch).coerceIn(70.0, 330.0),
+                        baseF0 = (118.0 * voice.pitch).coerceIn(70.0, 330.0),
                         formantScale = (1.0 + (voice.pitch - 1.0) * 0.55).coerceIn(0.9, 1.35),
                         breathiness = if (voice.gender == VoiceGender.FEMALE) 0.06 else 0.03,
                         roughness = if (voice.id == "bot") 0.4 else 0.0,
                         vibrato = if (voice.gender == VoiceGender.FEMALE) 0.02 else 0.0,
                         robotic = voice.id == "bot" || style.id == "robo",
                         rate = rate.toDouble(),
-                        pitch = pitch.toDouble()
+                        pitch = pitch.toDouble(),
+                        sampleRate = 22050
                     )
                     val pcm = NanoVoice.speak(chunk, options)
                     if (pcm.samples.isNotEmpty()) pieces.add(pcm)

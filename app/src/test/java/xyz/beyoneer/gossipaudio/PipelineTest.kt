@@ -164,4 +164,110 @@ class PipelineTest {
         val silentMp3 = Mp3Encoder.encode(silent, 96)
         assertTrue("silence still yields a decodable stream", silentMp3.isEmpty() || Mp3Encoder.looksLikeMp3(silentMp3))
     }
+    /**
+     * The regression guard for the "only ticks" bug report. A voiced frame of
+     * real speech puts most of its energy on harmonics of F0; v1 scored 0.31-0.52
+     * here (noise-like), v2 scores 0.85+. This test fails the build if anyone
+     * ever ships a buzz generator again.
+     */
+    @Test
+    fun renderedAudioIsTonalSpeechNotNoise() {
+        val text = "Btw we're not gossiping inreal, your face is funny tho."
+        val pcm = NanoVoice.speak(text, NanoVoice.Options(baseF0 = 126.0))
+        assertTrue("audio too short", pcm.durationMs > 2000)
+        val fs = pcm.sampleRate.toDouble()
+        val frame = 660
+        val hop = 320
+        val energies = ArrayList<Double>()
+        var start = 0
+        while (start + frame <= pcm.samples.size) {
+            var e = 0.0
+            for (j in 0 until frame) {
+                val v = pcm.samples[start + j] / 32768.0
+                e += v * v
+            }
+            energies.add(e)
+            start += hop
+        }
+        val loud = energies.sorted()[((energies.size - 1) * 0.9).toInt()]
+        val ratios = ArrayList<Double>()
+        var frameStart = 0
+        var index = 0
+        while (frameStart + frame <= pcm.samples.size) {
+            if (energies[index] > loud * 0.45) {
+                val x = DoubleArray(frame) { j -> pcm.samples[frameStart + j] / 32768.0 }
+                val mean = x.average()
+                for (j in x.indices) x[j] -= mean
+                var best = 0.0
+                var bestLag = 0
+                for (lag in (fs / 350).toInt()..(fs / 70).toInt()) {
+                    var num = 0.0
+                    var ea = 0.0
+                    var eb = 0.0
+                    for (j in 0 until frame - lag) {
+                        num += x[j] * x[j + lag]
+                        ea += x[j] * x[j]
+                        eb += x[j + lag] * x[j + lag]
+                    }
+                    val r = if (ea <= 0.0 || eb <= 0.0) 0.0 else num / kotlin.math.sqrt(ea * eb)
+                    if (r > best) {
+                        best = r
+                        bestLag = lag
+                    }
+                }
+                if (bestLag > 0 && best > 0.25) {
+                    val f0 = fs / bestLag
+                    var harmonic = 0.0
+                    var h = f0
+                    while (h < 4500.0) {
+                        var re = 0.0
+                        var im = 0.0
+                        for (j in x.indices) {
+                            val w = 0.54 - 0.46 * kotlin.math.cos(2.0 * kotlin.math.PI * j / (frame - 1))
+                            val ang = 2.0 * kotlin.math.PI * h * j / fs
+                            re += x[j] * w * kotlin.math.cos(ang)
+                            im += x[j] * w * kotlin.math.sin(ang)
+                        }
+                        harmonic += re * re + im * im
+                        h += f0
+                    }
+                    var total = 0.0
+                    var k = 40
+                    while (k * fs / frame < 4500.0) {
+                        var re = 0.0
+                        var im = 0.0
+                        val f = k * fs / frame
+                        for (j in x.indices) {
+                            val w = 0.54 - 0.46 * kotlin.math.cos(2.0 * kotlin.math.PI * j / (frame - 1))
+                            val ang = 2.0 * kotlin.math.PI * f * j / fs
+                            re += x[j] * w * kotlin.math.cos(ang)
+                            im += x[j] * w * kotlin.math.sin(ang)
+                        }
+                        total += re * re + im * im
+                        k += 4
+                    }
+                    if (total > 0.0) ratios.add((harmonic / total).coerceIn(0.0, 1.0))
+                }
+            }
+            frameStart += hop
+            index++
+        }
+        assertTrue("not enough voiced frames: ${ratios.size}", ratios.size > 20)
+        val median = ratios.sorted()[ratios.size / 2]
+        assertTrue("harmonic ratio $median is noise-like (ticks!), expected > 0.65", median > 0.65)
+        println("NanoVoice harmonic ratio median=$median frames=${ratios.size}")
+    }
+
+    @Test
+    fun hindiAndHinglishBothProduceSpeech() {
+        val hindi = NanoVoice.speak("नमस्ते दोस्तों, आज की गॉसिप सुनो।", NanoVoice.Options(baseF0 = 168.0))
+        assertTrue("hindi audio missing", hindi.durationMs > 1200)
+        assertTrue("hindi too quiet", hindi.peak() > 2000)
+        val hinglish = NanoVoice.speak("kaise ho bhai, sab badhiya hai?", NanoVoice.Options(baseF0 = 150.0))
+        assertTrue("hinglish audio missing", hinglish.durationMs > 800)
+        assertEquals("K EY S EY", NanoVoice.phonemize("kaise").joinToString(" "))
+        assertTrue(NanoVoice.phonemize("नमस्ते").isNotEmpty())
+        File(sampleDir, "voice-hindi.wav").writeBytes(Wav.write(hindi))
+        File(sampleDir, "voice-hinglish.wav").writeBytes(Wav.write(hinglish))
+    }
 }
