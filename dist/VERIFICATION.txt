@@ -39,9 +39,9 @@
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
   "entries": 33,
-  "uncompressed_bytes": 3261602,
-  "dex_bytes": 2876180,
-  "apk_sha256": "fca77184a35a9e2b081f9a5880a502d3748b42c6c6acee57e3c011d8c7f5c489"
+  "uncompressed_bytes": 3261918,
+  "dex_bytes": 2876496,
+  "apk_sha256": "ea7c3f0595f1762301cef4cd10b7e9cdab3e7c5ccf42ecdd9b6d6eed17443925"
 }
 
 --- notes
@@ -50,7 +50,7 @@
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
  * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
- * dex files: classes.dex (2876180 bytes uncompressed)
+ * dex files: classes.dex (2876496 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
@@ -59,17 +59,17 @@
          {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 172, 'duration_ms': 4493, 'audio_bytes': 71889}, 'size': 73186}
 [OK  ] WAV dist/samples/pipeline-sample.wav  194910 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4419}
-[OK  ] WAV dist/samples/voice-arjun.wav  186046 bytes
+[OK  ] WAV dist/samples/voice-arjun.wav  186052 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4218}
 [OK  ] WAV dist/samples/voice-bot.wav  182524 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4138}
-[OK  ] WAV dist/samples/voice-hindi.wav  116866 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2649}
-[OK  ] WAV dist/samples/voice-hinglish.wav  93510 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2119}
-[OK  ] WAV dist/samples/voice-maya.wav  179158 bytes
+[OK  ] WAV dist/samples/voice-hindi.wav  116964 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2651}
+[OK  ] WAV dist/samples/voice-hinglish.wav  93514 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2120}
+[OK  ] WAV dist/samples/voice-maya.wav  179160 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4062}
-[OK  ] WAV dist/samples/voice-quality.wav  179486 bytes
+[OK  ] WAV dist/samples/voice-quality.wav  179492 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4069}
 [OK  ] WAV dist/samples/voice-riya.wav  186120 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4219}

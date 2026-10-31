@@ -1,36 +1,36 @@
 GossipAudio test report
 =======================
 
-AccessibilityTest: 4 tests, 0 failed, 0 skipped  (12.538 s)
-  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  10.216 s
-  [PASS] hapticsSwitchActuallyGatesVibration  0.662 s
-  [PASS] everyTappableControlHasAName  1.114 s
-  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.54 s
+AccessibilityTest: 4 tests, 0 failed, 0 skipped  (11.188 s)
+  [PASS] backPopsTheScreenStackBeforeLeavingTheApp  9.08 s
+  [PASS] hapticsSwitchActuallyGatesVibration  0.682 s
+  [PASS] everyTappableControlHasAName  0.953 s
+  [PASS] switchesAndSlidersAdvertiseTheirAccessibilityRole  0.472 s
 
-PipelineTest: 10 tests, 0 failed, 0 skipped  (1.451 s)
-  [PASS] silenceAndEmptyInputAreHandledGracefully  0.101 s
-  [PASS] renderedAudioIsTonalSpeechNotNoise  0.601 s
-  [PASS] mp3EncoderProducesRealFramesAndTags  0.241 s
-  [PASS] stylesChangeRateAndPitchNumerically  0.031 s
-  [PASS] everyVoiceSynthesisesAudibleSpeech  0.392 s
-  [PASS] audioEffectsAreStable  0.021 s
-  [PASS] wavRoundTripPreservesSamples  0.011 s
-  [PASS] textKitEstimatesMatchRenderedAudio  0.023 s
-  [PASS] hindiAndHinglishBothProduceSpeech  0.029 s
+PipelineTest: 10 tests, 0 failed, 0 skipped  (1.358 s)
+  [PASS] silenceAndEmptyInputAreHandledGracefully  0.119 s
+  [PASS] renderedAudioIsTonalSpeechNotNoise  0.576 s
+  [PASS] mp3EncoderProducesRealFramesAndTags  0.209 s
+  [PASS] stylesChangeRateAndPitchNumerically  0.014 s
+  [PASS] everyVoiceSynthesisesAudibleSpeech  0.345 s
+  [PASS] audioEffectsAreStable  0.022 s
+  [PASS] wavRoundTripPreservesSamples  0.016 s
+  [PASS] textKitEstimatesMatchRenderedAudio  0.032 s
+  [PASS] hindiAndHinglishBothProduceSpeech  0.024 s
   [PASS] catalogHasTenVoicesAndEightStyles  0.0 s
 
-ResponsiveLayoutTest: 3 tests, 0 failed, 0 skipped  (6.22 s)
-  [PASS] tinyPhoneFitsEveryTab  4.57 s
-  [PASS] pixelPhoneFitsEveryTab  0.914 s
-  [PASS] tabletFitsEveryTabAndCapsContent  0.735 s
+ResponsiveLayoutTest: 3 tests, 0 failed, 0 skipped  (5.926 s)
+  [PASS] tinyPhoneFitsEveryTab  4.483 s
+  [PASS] pixelPhoneFitsEveryTab  0.733 s
+  [PASS] tabletFitsEveryTabAndCapsContent  0.71 s
 
-StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (1.27 s)
-  [PASS] typingAndTappingGenerateCreatesAPlayableClip  1.27 s
+StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (1.267 s)
+  [PASS] typingAndTappingGenerateCreatesAPlayableClip  1.267 s
 
-UiSmokeTest: 4 tests, 0 failed, 0 skipped  (4.342 s)
-  [PASS] appBootsIntoShellAndRendersEveryTab  1.887 s
-  [PASS] darkThemeStillUsesBrandYellow  0.542 s
-  [PASS] aboutHelpAndDiagnosticsScreensRender  1.319 s
-  [PASS] playerScreenOpensForARealClip  0.594 s
+UiSmokeTest: 4 tests, 0 failed, 0 skipped  (4.142 s)
+  [PASS] appBootsIntoShellAndRendersEveryTab  1.785 s
+  [PASS] darkThemeStillUsesBrandYellow  0.54 s
+  [PASS] aboutHelpAndDiagnosticsScreensRender  1.235 s
+  [PASS] playerScreenOpensForARealClip  0.582 s
 
 TOTAL: 22 tests, 0 failed, 0 skipped
