@@ -69,7 +69,8 @@ that a slower rate genuinely produces longer audio.
 2. **One glottal source** — a Rosenberg pulse (open quotient 0.62) runs continuously for the whole
    utterance, with ±0.2 % period jitter and ±3 % per-period shimmer; radiation is the first difference
    of the flow. Voicing is a *level*, never a gate.
-3. **Vocal tract** — four cascaded two-pole resonators (70/95/140/250 Hz bandwidths), a 950 Hz
+3. **Vocal tract** — four two-pole resonators in parallel (70/95/140/250 Hz bandwidths), each normalised
+   to 0 dB at its own formant and summed 1.00 / 0.90 / 0.55 / 0.30, a 950 Hz
    anti-resonator for nasals, a band-passed noise generator for fricatives (−9 dB for /s/, −12 dB for
    /ʃ/ relative to a vowel) and one-pole-filtered noise for breathiness.
 4. **Prosody** — 22 % F0 declination across a sentence, +10 % on stressed syllables, 0.9 Hz
@@ -82,8 +83,10 @@ Word gap is 30 ms, comma 170 ms, full stop 330 ms; a voiceless closure is 32 ms 
 
 Output: 22 050 Hz, 16-bit, mono, rendered in a few milliseconds per sentence on the CPU.
 
-CI measures the result on every build: **harmonic ratio 0.85–0.92** (energy that lands on F0 harmonics)
-and autocorrelation **0.72–0.80** at the pitch period. `PipelineTest` fails the build below 0.65.
+CI measures the result on every build: **harmonic ratio 0.85–0.95** (energy that lands on F0 harmonics),
+autocorrelation **0.72–0.80** at the pitch period, and the energy split across five bands. `PipelineTest`
+fails the build below 0.65 harmonic ratio, or if less than 4 % of the energy lands in 800–4000 Hz
+(i.e. if the voice collapses back into a buzzer).
 
 ### Accuracy disclaimer, stated proudly
 

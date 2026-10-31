@@ -43,7 +43,9 @@ old build, only **31–52 %** of the energy sat on harmonics of the pitch — i.
   sentence, so voicing never restarts inside a word;
 * **parameter tracks at 1.45 ms control rate**, one-pole smoothed, so formants glide into each other the
   way real coarticulation does;
-* **four-pole cascade formant filter** with per-phoneme targets, plus anti-resonance for nasals;
+* **parallel formant bank** — four resonators normalised at their own centres and summed 1.00 / 0.90 /
+  0.55 / 0.30 — instead of a cascade, because a cascade buries F2/F3 under F1's skirt and that is what
+  a kazoo sounds like;
 * **real consonants**: shaped noise for fricatives, and closure → burst → aspiration for every plosive;
 * **rule-based phonemiser** for English, Devanagari Hindi (matras, virama, anusvara, schwa deletion) and
   romanised Hinglish (`kaise ho bhai` → `K EY S EY HH OW B AA IY`).
@@ -57,7 +59,9 @@ Measured on the same sentence that exposed v1, in CI, on every build:
 | Sounds like | a modem having a bad day | a voice |
 
 `PipelineTest.renderedAudioIsTonalSpeechNotNoise` computes that harmonic ratio in CI and **fails the
-build below 0.65**, so this particular regression cannot come back quietly.
+build below 0.65**; it also measures where the energy sits (0–300 / 300–800 / 800–2000 / 2000–4000 /
+4000–8000 Hz) and fails if the 800–4000 Hz pair drops under 4 %, which is the signature of a pure
+buzzer. Both numbers are written to `dist/samples/quality.txt` on every build.
 
 ### Which engine speaks?
 

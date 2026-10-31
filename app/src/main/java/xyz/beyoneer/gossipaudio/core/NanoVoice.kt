@@ -7,6 +7,7 @@ import kotlin.math.exp
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 /**
  * NanoVoice 2 — GossipAudio's zero-dependency speech engine.
