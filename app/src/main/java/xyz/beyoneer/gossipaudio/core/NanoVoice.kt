@@ -157,7 +157,7 @@ object NanoVoice {
      * The 1.0.1 numbers were tuned against a peak-normalised noise render and were
      * 25 dB too hot: that is "pure hiss".
      */
-    private const val FRIC_GAIN = 0.10
+    private const val FRIC_GAIN = 0.12
 
     // -------------------------------------------------------------- public API
 
@@ -359,10 +359,14 @@ object NanoVoice {
             // keeps F3/F4 from shouting. Normalising each stage to +0 dB at its own
             // centre (setPeak) and summing them made every formant equally loud, which
             // measured 20.8 % of the energy above 4 kHz — the "hsss" of 1.0.2.
-            r1.set(ff1, max(50.0, b1[bi]), fs)
-            r2.set(ff2, max(60.0, b2[bi]), fs)
-            r3.set(ff3, max(80.0, b3[bi]), fs)
-            r4.set(ff4, 250.0, fs)
+            // Bandwidths ~30 % wider than the textbook male values. Narrow formants
+            // look right on a spectrogram and sound wrong: they leave 79 % of the
+            // energy under 800 Hz. Wider skirts spread F1 into the vowel body and
+            // let F2/F3 through, which is where intelligibility lives.
+            r1.set(ff1, max(50.0, b1[bi]) * 1.35, fs)
+            r2.set(ff2, max(60.0, b2[bi]) * 1.30, fs)
+            r3.set(ff3, max(80.0, b3[bi]) * 1.25, fs)
+            r4.set(ff4, 300.0, fs)
             if (o.mix != 0) {
                 p1.setPeak(ff1, max(50.0, b1[bi]), fs)
                 p2.setPeak(ff2, max(60.0, b2[bi]), fs)
