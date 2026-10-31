@@ -39,9 +39,9 @@
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
   "entries": 33,
-  "uncompressed_bytes": 3262458,
-  "dex_bytes": 2877036,
-  "apk_sha256": "12ac243a65c213ef75c6a5c33e42e4e5a00b9e1c01cafdd68d9885fd1daf4c00"
+  "uncompressed_bytes": 3262442,
+  "dex_bytes": 2877020,
+  "apk_sha256": "7238579307a91cf141aaadea2a644ebfc3c45c0fb5df71e497bad0d9c1e10d79"
 }
 
 --- notes
@@ -50,7 +50,7 @@
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
  * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
- * dex files: classes.dex (2877036 bytes uncompressed)
+ * dex files: classes.dex (2877020 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
@@ -71,8 +71,8 @@
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4138}
 [OK  ] WAV dist/samples/voice-hindi.wav  116968 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2651}
-[OK  ] WAV dist/samples/voice-hinglish.wav  93586 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2121}
+[OK  ] WAV dist/samples/voice-hinglish.wav  93516 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2120}
 [OK  ] WAV dist/samples/voice-maya.wav  179162 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4062}
 [OK  ] WAV dist/samples/voice-quality.wav  179492 bytes
