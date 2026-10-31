@@ -1,6 +1,6 @@
-run: 41221166476
-commit: 1985628aaec2b55517184f5254fe650a7ebee343
-time: Sat Oct 31 16:49:48 UTC 2026
+run: 41221766725
+commit: 8594f954dae4716dde7f06041a880f528f0cdc78
+time: Sat Oct 31 16:56:57 UTC 2026
 ====== kotlin errors (test.log) ======
 ====== kotlin errors (assemble.log) ======
 ====== warnings that matter ======
@@ -13,38 +13,38 @@ bands_percent=0-300=14.3 300-800=26.9 800-2000=22.3 2000-4000=15.6 4000-8000=20.
 estimate=v3 parallel formant synthesiser
 ====== failing tests ======
 ResponsiveLayoutTest > tabletFitsEveryTabAndCapsContent FAILED
-    java.lang.AssertionError at ResponsiveLayoutTest.kt:83
+    java.lang.AssertionError at ResponsiveLayoutTest.kt:86
 > Task :app:testDebugUnitTest FAILED
-BUILD FAILED in 49s
+BUILD FAILED in 47s
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.AccessibilityTest.xml
-  <testcase name="backPopsTheScreenStackBeforeLeavingTheApp" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="9.471"/>
-  <testcase name="hapticsSwitchActuallyGatesVibration" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.377"/>
-  <testcase name="everyTappableControlHasAName" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.774"/>
-  <testcase name="switchesAndSlidersAdvertiseTheirAccessibilityRole" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.351"/>
+  <testcase name="backPopsTheScreenStackBeforeLeavingTheApp" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="10.2"/>
+  <testcase name="hapticsSwitchActuallyGatesVibration" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.48"/>
+  <testcase name="everyTappableControlHasAName" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.639"/>
+  <testcase name="switchesAndSlidersAdvertiseTheirAccessibilityRole" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.328"/>
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.PipelineTest.xml
-  <testcase name="silenceAndEmptyInputAreHandledGracefully" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.082"/>
-  <testcase name="renderedAudioIsTonalSpeechNotNoise" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.291"/>
-  <testcase name="mp3EncoderProducesRealFramesAndTags" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.192"/>
-  <testcase name="stylesChangeRateAndPitchNumerically" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.012"/>
-  <testcase name="everyVoiceSynthesisesAudibleSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.162"/>
-  <testcase name="audioEffectsAreStable" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.023"/>
-  <testcase name="wavRoundTripPreservesSamples" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.012"/>
-  <testcase name="textKitEstimatesMatchRenderedAudio" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.022"/>
-  <testcase name="hindiAndHinglishBothProduceSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.019"/>
-  <testcase name="catalogHasTenVoicesAndEightStyles" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.0"/>
+  <testcase name="silenceAndEmptyInputAreHandledGracefully" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.057"/>
+  <testcase name="renderedAudioIsTonalSpeechNotNoise" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.266"/>
+  <testcase name="mp3EncoderProducesRealFramesAndTags" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.156"/>
+  <testcase name="stylesChangeRateAndPitchNumerically" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.009"/>
+  <testcase name="everyVoiceSynthesisesAudibleSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.181"/>
+  <testcase name="audioEffectsAreStable" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.016"/>
+  <testcase name="wavRoundTripPreservesSamples" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.008"/>
+  <testcase name="textKitEstimatesMatchRenderedAudio" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.021"/>
+  <testcase name="hindiAndHinglishBothProduceSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.016"/>
+  <testcase name="catalogHasTenVoicesAndEightStyles" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.001"/>
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.ResponsiveLayoutTest.xml
-  <testcase name="tinyPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="3.447"/>
-  <testcase name="pixelPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.527"/>
-  <testcase name="tabletFitsEveryTabAndCapsContent" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.239">
+  <testcase name="tinyPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="3.53"/>
+  <testcase name="pixelPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.451"/>
+  <testcase name="tabletFitsEveryTabAndCapsContent" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.26">
     <failure message="java.lang.AssertionError: tab 0 overflows @800dp: [tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[0] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[0] starts at 36px, parent padding 156px, tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[1] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[1] starts at 36px, parent padding 156px, tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[2] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[2] starts at 36px, parent padding 156px, tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/BrandButton[3] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/BrandButton[3] starts at 36px, parent padding 156px]" type="java.lang.AssertionError">java.lang.AssertionError: tab 0 overflows @800dp: [tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[0] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[0] starts at 36px, parent padding 156px, tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[1] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[1] starts at 36px, parent padding 156px, tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[2] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/LinearLayout[2] starts at 36px, parent padding 156px, tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/BrandButton[3] 1528px in 1288px (LinearLayout), tab0/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/FrameLayout[0]/LinearLayout[1]/FrameLayout[1]/FrameLayout[0]/ScrollView[0]/LinearLayout[0]/BrandButton[3] starts at 36px, parent padding 156px]
   </testcase>
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.StudioGenerateTest.xml
-  <testcase name="typingAndTappingGenerateCreatesAPlayableClip" classname="xyz.beyoneer.gossipaudio.StudioGenerateTest" time="1.104"/>
+  <testcase name="typingAndTappingGenerateCreatesAPlayableClip" classname="xyz.beyoneer.gossipaudio.StudioGenerateTest" time="0.922"/>
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.UiSmokeTest.xml
   <testcase name="appBootsIntoShellAndRendersEveryTab" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="1.376"/>
-  <testcase name="darkThemeStillUsesBrandYellow" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.367"/>
-  <testcase name="aboutHelpAndDiagnosticsScreensRender" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.925"/>
-  <testcase name="playerScreenOpensForARealClip" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.453"/>
+  <testcase name="darkThemeStillUsesBrandYellow" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.384"/>
+  <testcase name="aboutHelpAndDiagnosticsScreensRender" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.909"/>
+  <testcase name="playerScreenOpensForARealClip" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.452"/>
 ====== what went wrong ======
 * What went wrong:
 Execution failed for task ':app:testDebugUnitTest'.
@@ -64,22 +64,17 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyo
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:91:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:100:42 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
 ====== test.log (tail) ======
-eWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
-	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
-	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
-	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
-	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
-	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
-	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
-	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
-	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
-	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
-	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+ org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
@@ -87,21 +82,26 @@ eWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:3
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
-	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
 	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
 
-BUILD FAILED in 49s
+BUILD FAILED in 47s
 28 actionable tasks: 7 executed, 1 from cache, 20 up-to-date
 ====== assemble.log (tail) ======
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
@@ -120,8 +120,8 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :app:generateDebugBuildConfig
-> Task :app:generateDebugResValues
 > Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
 > Task :app:packageDebugResources
@@ -139,13 +139,13 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:compressDebugAssets
 > Task :app:desugarDebugFileDependencies
 > Task :app:mergeDebugJniLibFolders
-> Task :app:processDebugManifestForPackage
 > Task :app:checkDebugDuplicateClasses
-> Task :app:processDebugResources
-> Task :app:mergeExtDexDebug
 > Task :app:mergeDebugNativeLibs NO-SOURCE
 > Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:processDebugManifestForPackage
 > Task :app:mergeLibDexDebug
+> Task :app:mergeExtDexDebug
+> Task :app:processDebugResources
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
@@ -169,26 +169,26 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
 > Task :app:javaPreCompileRelease FROM-CACHE
+> Task :app:processReleaseManifestForPackage
+> Task :app:mergeReleaseResources
 > Task :app:desugarReleaseFileDependencies
 > Task :app:mergeReleaseStartupProfile
-> Task :app:mergeReleaseResources
+> Task :app:processReleaseResources
 > Task :app:mergeReleaseArtProfile
-> Task :app:processReleaseManifestForPackage
 > Task :app:mergeReleaseShaders
 > Task :app:compileReleaseShaders NO-SOURCE
 > Task :app:generateReleaseAssets UP-TO-DATE
 > Task :app:mergeReleaseAssets
 > Task :app:compressReleaseAssets
 > Task :app:extractReleaseVersionControlInfo
+> Task :app:mergeExtDexRelease
 > Task :app:collectReleaseDependencies
-> Task :app:processReleaseResources
 > Task :app:sdkReleaseDependencyData
-> Task :app:optimizeReleaseResources
 > Task :app:validateSigningRelease
+> Task :app:optimizeReleaseResources
 > Task :app:writeReleaseAppMetadata
 > Task :app:writeReleaseSigningConfigVersions
 > Task :app:processApplicationManifestReleaseForBundle
-> Task :app:mergeExtDexRelease
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig
 > Task :app:bundleReleaseResources
@@ -251,9 +251,9 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793465230037.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793465659771.json
 
-BUILD SUCCESSFUL in 1m 52s
+BUILD SUCCESSFUL in 1m 56s
 86 actionable tasks: 82 executed, 4 from cache
 ====== verification report ======
 === APK verification: dist/GossipAudio-1.0.2-release.apk
