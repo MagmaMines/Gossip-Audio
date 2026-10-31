@@ -41,7 +41,7 @@
   "entries": 32,
   "uncompressed_bytes": 3235594,
   "dex_bytes": 2853132,
-  "apk_sha256": "84759ec16699d876c9b1d49f26c57cc774d9b85d8f0c5609b47f86dd89a12cc8"
+  "apk_sha256": "a3e20b6bdab161be749c08d180b9c07b86ecaf943691c40fa09c8fc351145f98"
 }
 
 --- notes
