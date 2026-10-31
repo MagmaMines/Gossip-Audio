@@ -46,6 +46,8 @@ jobs:
 
       - name: Inspect Android SDK
         run: |
+          rm -f ci-logs/*.log
+          set +e
           set +e
           echo "ANDROID_HOME=${ANDROID_HOME}"
           echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}"
@@ -87,6 +89,11 @@ jobs:
           VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
           VCODE=$(grep -oP 'versionCode = \K[0-9]+' app/build.gradle.kts | head -1)
           mkdir -p dist
+          mkdir -p dist/samples
+          cp app/build/test-samples/*.wav dist/samples/ 2>/dev/null || true
+          cp app/build/test-samples/*.mp3 dist/samples/ 2>/dev/null || true
+          cp app/build/test-samples/pipeline-sample.txt dist/samples/ 2>/dev/null || true
+          ls -l dist/samples || true
           cp app/build/outputs/apk/release/app-release.apk "dist/GossipAudio-${VERSION}-release.apk"
           cp app/build/outputs/apk/debug/app-debug.apk "dist/GossipAudio-${VERSION}-debug.apk"
           if [ -f app/build/outputs/bundle/release/app-release.aab ]; then
@@ -163,6 +170,9 @@ jobs:
             echo "====== sdk.txt ======"
             cat ci-logs/sdk.txt 2>/dev/null || true
           } > ci-logs/failure.txt
+          rm -f ci-logs/*.log
+          git add -f ci-logs/failure.txt ci-logs/sdk.txt 2>/dev/null || true
+          git rm -r --cached --ignore-unmatch ci-logs > /dev/null 2>&1 || true
           git add -f ci-logs
           git commit -m "ci: failure diagnostics [skip ci]" || true
           git push origin "HEAD:${GITHUB_REF_NAME}" || true

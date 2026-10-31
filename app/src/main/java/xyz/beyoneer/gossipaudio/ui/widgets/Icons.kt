@@ -284,4 +284,7 @@ class IconView(
 object Ui2 {
     fun dp(context: Context, value: Float): Int =
         (value * context.resources.displayMetrics.density + 0.5f).toInt()
+
+    fun dpf(context: Context, value: Float): Float =
+        value * context.resources.displayMetrics.density
 }
