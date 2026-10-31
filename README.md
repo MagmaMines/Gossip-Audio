@@ -9,11 +9,12 @@ file you can download and share. No account, no cloud, no "premium" wall, no fak
   <img src="GossipAudio.png" alt="GossipAudio logo" width="180">
 </p>
 
-> ### ⬇️ The app is one file: [`GossipAudio-1.0.1-release.apk`](https://github.com/MagmaMines/Gossip-Audio/raw/arena/b73dc5e5-gossip-audio/dist/GossipAudio-1.0.1-release.apk)
+> ### ⬇️ The app is one file: [`GossipAudio-1.0.1-release.apk`](https://github.com/MagmaMines/Gossip-Audio/releases/download/v1.0.1/GossipAudio-1.0.1-release.apk)
 > Tap that link on your phone → install. No unzipping, no folder, no "extract here".
 > If you ever end up with **`gossipaudio-apk.zip`**, that came from GitHub's *workflow artifact*
-> wrapper (GitHub always zips CI artifacts) — it is not our download and this build no longer
-> publishes one. The real file is the `.apk` above (or the **Releases** page).
+> wrapper (GitHub always zips CI artifacts). That artifact no longer exists: CI used to publish the
+> app as `GossipAudio-apk`, and the legacy zips have been deleted. The download is the `.apk` above —
+> served with `Content-Type: application/vnd.android.package-archive`, so Android treats it as an app.
 
 | | |
 |---|---|

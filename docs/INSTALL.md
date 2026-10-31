@@ -5,7 +5,7 @@
 
 ## 0. One link, one file
 
-**[⬇ `GossipAudio-1.0.1-release.apk`](https://github.com/MagmaMines/Gossip-Audio/raw/arena/b73dc5e5-gossip-audio/dist/GossipAudio-1.0.1-release.apk)** — tap it on the phone and install.
+**[⬇ `GossipAudio-1.0.1-release.apk`](https://github.com/MagmaMines/Gossip-Audio/releases/download/v1.0.1/GossipAudio-1.0.1-release.apk)** — tap it on the phone and install.
 The same file is attached to the [v1.0.1 release](https://github.com/MagmaMines/Gossip-Audio/releases/tag/v1.0.1)
 and committed at [`dist/GossipAudio-1.0.1-release.apk`](../dist/GossipAudio-1.0.1-release.apk).
 
