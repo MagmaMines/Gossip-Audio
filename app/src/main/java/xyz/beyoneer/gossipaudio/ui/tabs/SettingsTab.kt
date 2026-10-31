@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.TextView
 import xyz.beyoneer.gossipaudio.audio.PlaybackHub
 import xyz.beyoneer.gossipaudio.core.TextKit
 import xyz.beyoneer.gossipaudio.notify.ReminderScheduler
