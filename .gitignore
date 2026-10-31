@@ -1,0 +1,17 @@
+# Gradle / build output
+.gradle/
+build/
+app/build/
+local.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.iml
+.idea/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Local secrets (the demo keystore is intentionally committed for reproducible builds)
+*.jks.bak

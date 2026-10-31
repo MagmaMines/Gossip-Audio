@@ -1,0 +1,77 @@
+=== APK verification: dist/GossipAudio-1.0.2-release.apk
+{
+  "package": "xyz.beyoneer.gossipaudio",
+  "versionName": "1.0.2",
+  "versionCode": "3",
+  "minSdk": "24",
+  "targetSdk": "35",
+  "appClass": "xyz.beyoneer.gossipaudio.GossipApp",
+  "label": "@ref/0x7f040001",
+  "icon": "@ref/0x7f030000",
+  "permissions": [
+    "android.permission.VIBRATE",
+    "android.permission.RECORD_AUDIO",
+    "android.permission.POST_NOTIFICATIONS",
+    "android.permission.FOREGROUND_SERVICE",
+    "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+    "android.permission.WAKE_LOCK",
+    "android.permission.RECEIVE_BOOT_COMPLETED",
+    "android.permission.WRITE_EXTERNAL_STORAGE"
+  ],
+  "activities": [
+    "xyz.beyoneer.gossipaudio.ui.MainActivity"
+  ],
+  "services": [
+    "xyz.beyoneer.gossipaudio.playback.PlaybackService"
+  ],
+  "receivers": [
+    "xyz.beyoneer.gossipaudio.notify.ReminderReceiver",
+    "xyz.beyoneer.gossipaudio.notify.BootReceiver"
+  ],
+  "providers": [],
+  "signature": {
+    "verified": true,
+    "schemes": [
+      "v2"
+    ],
+    "algorithm": "RSA-PKCS1/SHA-512",
+    "key_bits": 4096,
+    "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
+  },
+  "entries": 32,
+  "uncompressed_bytes": 3235594,
+  "dex_bytes": 2853132,
+  "apk_sha256": "84759ec16699d876c9b1d49f26c57cc774d9b85d8f0c5609b47f86dd89a12cc8"
+}
+
+--- notes
+ * packaged PNG resources: 17 (names are obfuscated by AGP)
+ * no INTERNET permission — audio pipeline is genuinely offline
+ * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
+ * v1 signature files: none (fine for minSdk 24+)
+ * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
+ * dex files: classes.dex (2853132 bytes uncompressed)
+
+--- problems
+ none — APK structure, manifest, signing and dex contents check out
+
+[OK  ] MP3 dist/samples/pipeline-sample.mp3  73186 bytes
+         {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 172, 'duration_ms': 4493, 'audio_bytes': 71889}, 'size': 73186}
+[OK  ] WAV dist/samples/pipeline-sample.wav  194910 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4419}
+[OK  ] WAV dist/samples/voice-arjun.wav  180346 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4088}
+[OK  ] WAV dist/samples/voice-bot.wav  176742 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4007}
+[OK  ] WAV dist/samples/voice-hindi.wav  113448 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2572}
+[OK  ] WAV dist/samples/voice-hinglish.wav  89256 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2023}
+[OK  ] WAV dist/samples/voice-maya.wav  173442 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 3932}
+[OK  ] WAV dist/samples/voice-quality.wav  173658 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 3937}
+[OK  ] WAV dist/samples/voice-riya.wav  180202 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4085}
+
+all audio files valid

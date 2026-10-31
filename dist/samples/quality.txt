@@ -1,0 +1,6 @@
+harmonic_ratio_median=1.000
+voiced_frames=34
+duration_ms=4186
+peak=31968
+bands_percent=0-300=14.3 300-800=26.9 800-2000=22.3 2000-4000=15.6 4000-8000=20.8
+estimate=v3 parallel formant synthesiser

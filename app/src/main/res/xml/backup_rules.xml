@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Audio masters and cover art can be hundreds of megabytes; they are excluded from
+  Google's 25 MB auto-backup quota. Preferences (and therefore the user's voice,
+  style and theme choices) are still backed up.
+-->
+<full-backup-content>
+    <exclude domain="file" path="clips/" />
+    <exclude domain="file" path="covers/" />
+    <exclude domain="file" path="exports/" />
+    <exclude domain="file" path="clips.json" />
+</full-backup-content>

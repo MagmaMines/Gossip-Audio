@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ replacement for fullBackupContent. Same policy: preferences yes, audio no. -->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="file" path="clips/" />
+        <exclude domain="file" path="covers/" />
+        <exclude domain="file" path="exports/" />
+        <exclude domain="file" path="clips.json" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="file" path="clips/" />
+        <exclude domain="file" path="covers/" />
+        <exclude domain="file" path="exports/" />
+        <exclude domain="file" path="clips.json" />
+    </device-transfer>
+</data-extraction-rules>
