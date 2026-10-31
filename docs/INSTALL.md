@@ -35,7 +35,7 @@ python3 tools/verify_apk.py dist/GossipAudio-1.0.1-release.apk
 
 ```
 * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae…, 4088-byte signed block, 4 chunks
-* dex files: classes.dex (2816048 bytes uncompressed)
+* dex files: classes.dex (2.8 MB uncompressed)
 --- problems
  none — APK structure, manifest, signing and dex contents check out
 ```
