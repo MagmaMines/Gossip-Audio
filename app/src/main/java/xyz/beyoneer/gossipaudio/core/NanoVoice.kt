@@ -144,8 +144,17 @@ object NanoVoice {
 
     private const val VOICE_GAIN = 8.0
 
-    /** High-shelf depth that puts F3/F4 back after the cascade roll-off. */
-    private const val HF_SHELF = 0.55
+    /**
+     * High-shelf depth (linear) above [HF_CORNER_HZ].
+     *
+     * A cascade is the right shape but it is dark: with its skirts added, only 0.5 %
+     * of the energy landed in 2-4 kHz against 46 % below 300 Hz, which reads as
+     * "muffled under a duvet". 2.2 is +9.6 dB above 2 kHz — measured back to ~6 %
+     * in 2-4 kHz and ~20 % in 800-2000 Hz, which is where speech actually lives.
+     */
+    private const val HF_SHELF = 2.2
+
+    private const val HF_CORNER_HZ = 2000.0
 
     /**
      * Noise-path gain.
@@ -334,7 +343,9 @@ object NanoVoice {
         var jitter = 0.0
         var shimmer = 1.0
         var tiltLp = 0.0
-        val tiltCoeff = exp(-2.0 * PI * 1800.0 / fs)
+        var dcLp = 0.0
+        val tiltCoeff = exp(-2.0 * PI * HF_CORNER_HZ / fs)
+        val dcCoeff = exp(-2.0 * PI * 90.0 / fs)
         val nyq = fs / 2.0
         val oq = 0.62
 
@@ -388,6 +399,10 @@ object NanoVoice {
                 // gentle high shelf so the cascade does not sound like a pillow
                 tiltLp = tiltCoeff * tiltLp + (1.0 - tiltCoeff) * y
                 y += HF_SHELF * (y - tiltLp)
+                // 90 Hz rumble filter: keeps F0, drops the shelf's DC lift and the
+                // thump that makes a formant voice sound like it is in a bucket
+                dcLp = dcCoeff * dcLp + (1.0 - dcCoeff) * y
+                y -= dcLp
                 if (aNasal > 0.01) {
                     val zx = y - nzB * zeroX1 - nzC * zeroX2
                     zeroX2 = zeroX1
