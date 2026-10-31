@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GossipAudio</string>
+    <string name="app_tagline">Btw we\u2019re not gossiping inreal\u2026 Your face is soo \ud83d\udc49\ud83d\ude02\ud83d\ude02 funny tho. ah okay you can download audio file for free.</string>
+    <string name="app_author">Beyoneer XYZ</string>
+    <string name="shortcut_play_short">Play my voice</string>
+    <string name="shortcut_play_long">Open GossipAudio player</string>
+    <string name="shortcut_studio_short">Gossip Studio</string>
+    <string name="shortcut_studio_long">Write gossip and hear it</string>
+</resources>

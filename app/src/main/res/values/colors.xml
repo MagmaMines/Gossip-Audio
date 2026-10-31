@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand_yellow">#F5C518</color>
+    <color name="brand_yellow_bright">#FFD84D</color>
+    <color name="brand_yellow_deep">#8A6A00</color>
+    <color name="brand_yellow_soft">#FFF2BF</color>
+    <color name="ink">#0B0B0C</color>
+    <color name="ink_soft">#141416</color>
+    <color name="ink_line">#2A2A2E</color>
+    <color name="paper">#FFFDF5</color>
+    <color name="paper_card">#FFFFFF</color>
+    <color name="muted">#7A7A80</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>
