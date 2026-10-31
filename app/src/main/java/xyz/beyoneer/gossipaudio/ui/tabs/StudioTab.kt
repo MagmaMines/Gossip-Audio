@@ -86,6 +86,14 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         refreshRecent()
         startTelemetry()
         updateEstimate()
+        // text handed over by another app (share sheet) or a launcher shortcut
+        activity.app.pendingText?.let { shared ->
+            activity.app.pendingText = null
+            input.setText(shared.take(2000))
+            input.setSelection(input.text.length)
+            updateEstimate()
+            activity.toast("Loaded the shared text \uD83E\uDD73")
+        }
     }
 
     override fun onHide() {

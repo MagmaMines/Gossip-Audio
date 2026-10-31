@@ -46,6 +46,12 @@ object Ui {
     fun ripple(content: GradientDrawable, rippleColor: Int): RippleDrawable =
         RippleDrawable(ColorStateList.valueOf(rippleColor), content, null)
 
+    /**
+     * Global text multiplier. Set once before a screen is built; the "Bigger text"
+     * switch in Settings flips it and recreates the activity.
+     */
+    var textScale: Float = 1f
+
     fun text(
         context: Context,
         value: CharSequence,
@@ -56,7 +62,7 @@ object Ui {
         gravity: Int = Gravity.START
     ): TextView = TextView(context).apply {
         text = value
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp)
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeSp * textScale)
         setTextColor(color)
         typeface = Typeface.create(font, if (bold) Typeface.BOLD else Typeface.NORMAL)
         this.gravity = gravity

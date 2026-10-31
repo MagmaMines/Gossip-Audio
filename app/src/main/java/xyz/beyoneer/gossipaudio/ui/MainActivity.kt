@@ -2,6 +2,7 @@ package xyz.beyoneer.gossipaudio.ui
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -43,6 +44,7 @@ class MainActivity : Activity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         applySystemBars()
         Haptics.enabled = prefs.haptics
+        Ui.textScale = if (prefs.bigText) 1.15f else 1f
         Motion.reduce = prefs.reduceMotion
         router = Router(this)
         setContentView(router.container)
@@ -51,6 +53,46 @@ class MainActivity : Activity() {
             router.start(SplashScreen(this))
         }
         registerBackHandler()
+        handleIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    /**
+     * One entry point for everything that can start us: a share sheet, "process text"
+     * from another app, or one of the launcher shortcuts.
+     */
+    private fun handleIntent(intent: Intent?) {
+        if (intent == null) return
+        val shared = when (intent.action) {
+            Intent.ACTION_SEND -> intent.getStringExtra(Intent.EXTRA_TEXT)
+            Intent.ACTION_PROCESS_TEXT -> intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()
+            else -> null
+        }
+        if (!shared.isNullOrBlank()) {
+            app.pendingText = shared.trim().take(2000)
+            app.pendingTab = 0
+        }
+        when (intent.action) {
+            ACTION_NEW_GOSSIP -> app.pendingTab = 0
+            ACTION_OPEN_LIBRARY -> app.pendingTab = 2
+            ACTION_PLAY_LATEST -> app.pendingTab = if (app.store.all().isEmpty()) 0 else 2
+        }
+        dispatchPending()
+    }
+
+    /** Applies the pending tab/text to whatever screen happens to be showing. */
+    fun dispatchPending() {
+        val tab = app.pendingTab
+        val shell = router.current() as? xyz.beyoneer.gossipaudio.ui.screens.ShellScreen
+        if (tab != null && shell != null) {
+            shell.selectTab(tab, animate = false)
+            app.pendingTab = null
+        }
     }
 
     /**
@@ -236,6 +278,9 @@ class MainActivity : Activity() {
         get() = window.decorView.findViewById(android.R.id.content)
 
     companion object {
+        const val ACTION_NEW_GOSSIP = "xyz.beyoneer.gossipaudio.NEW_GOSSIP"
+        const val ACTION_OPEN_LIBRARY = "xyz.beyoneer.gossipaudio.OPEN_LIBRARY"
+        const val ACTION_PLAY_LATEST = "xyz.beyoneer.gossipaudio.PLAY_LATEST"
         private const val REQ_MIC = 501
         private const val REQ_NOTIF = 502
         private const val REQ_STORAGE = 503

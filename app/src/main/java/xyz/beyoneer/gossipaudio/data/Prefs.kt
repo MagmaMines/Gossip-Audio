@@ -75,6 +75,34 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("effects_enabled", true)
         set(value) = sp.edit().putBoolean("effects_enabled", value).apply()
 
+    /** Bump every text size ~15 % — the cheapest accessibility win there is. */
+    var bigText: Boolean
+        get() = sp.getBoolean("big_text", false)
+        set(value) = sp.edit().putBoolean("big_text", value).apply()
+
+    /** Trim leading/trailing silence from every render (on by default). */
+    var autoTrim: Boolean
+        get() = sp.getBoolean("auto_trim", true)
+        set(value) = sp.edit().putBoolean("auto_trim", value).apply()
+
+    /** Peak-normalise every render to -1.5 dBFS (on by default). */
+    var autoNormalize: Boolean
+        get() = sp.getBoolean("auto_normalize", true)
+        set(value) = sp.edit().putBoolean("auto_normalize", value).apply()
+
+    /**
+     * "Say it your way" — pairs of [written, spoken] separated by ';'.
+     * Applied to the text before synthesis, so it works for NanoVoice and for the
+     * phone's TTS engine alike.
+     */
+    var wordMap: String
+        get() = sp.getString("word_map", "") ?: ""
+        set(value) = sp.edit().putString("word_map", value).apply()
+
+    var ringtoneHintSeen: Boolean
+        get() = sp.getBoolean("ringtone_hint", false)
+        set(value) = sp.edit().putBoolean("ringtone_hint", value).apply()
+
     var sleepTimerMinutes: Int
         get() = sp.getInt("sleep_timer", 0)
         set(value) = sp.edit().putInt("sleep_timer", value).apply()

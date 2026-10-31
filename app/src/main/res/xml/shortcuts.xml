@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Long-press the launcher icon: straight into the composer, the library or the last clip. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutId="new_gossip"
+        android:shortcutLongLabel="@string/shortcut_studio_long"
+        android:shortcutShortLabel="@string/shortcut_studio_short">
+        <intent
+            android:action="xyz.beyoneer.gossipaudio.NEW_GOSSIP"
+            android:targetClass="xyz.beyoneer.gossipaudio.ui.MainActivity"
+            android:targetPackage="xyz.beyoneer.gossipaudio" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutId="library"
+        android:shortcutLongLabel="@string/shortcut_library_long"
+        android:shortcutShortLabel="@string/shortcut_library_short">
+        <intent
+            android:action="xyz.beyoneer.gossipaudio.OPEN_LIBRARY"
+            android:targetClass="xyz.beyoneer.gossipaudio.ui.MainActivity"
+            android:targetPackage="xyz.beyoneer.gossipaudio" />
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutId="latest"
+        android:shortcutLongLabel="@string/shortcut_play_long"
+        android:shortcutShortLabel="@string/shortcut_play_short">
+        <intent
+            android:action="xyz.beyoneer.gossipaudio.PLAY_LATEST"
+            android:targetClass="xyz.beyoneer.gossipaudio.ui.MainActivity"
+            android:targetPackage="xyz.beyoneer.gossipaudio" />
+    </shortcut>
+</shortcuts>

@@ -7,4 +7,6 @@
     <string name="shortcut_play_long">Open GossipAudio player</string>
     <string name="shortcut_studio_short">Gossip Studio</string>
     <string name="shortcut_studio_long">Write gossip and hear it</string>
+    <string name="shortcut_library_short">Library</string>
+    <string name="shortcut_library_long">Open your saved clips</string>
 </resources>

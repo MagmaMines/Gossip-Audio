@@ -103,6 +103,8 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ))
         selectTab(0, animate = false)
+        // a share intent or a launcher shortcut may be waiting for this screen
+        root.post { activity.dispatchPending() }
         return root
     }
 
@@ -118,8 +120,18 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             orientation = LinearLayout.VERTICAL
             setPadding(Ui.dp(activity, 9f), 0, 0, 0)
         }
-        names.addView(Ui.text(activity, Brand.NAME, 17f, palette.text, bold = true))
-        names.addView(Ui.text(activity, Brand.BYLINE, 10f, palette.textDim, bold = true, font = "sans-serif-medium"))
+        val narrow = activity.resources.displayMetrics.widthPixels /
+            activity.resources.displayMetrics.density < 360f
+        val title = Ui.text(activity, Brand.NAME, if (narrow) 15.5f else 17f, palette.text, bold = true)
+        title.maxLines = 1
+        title.ellipsize = android.text.TextUtils.TruncateAt.END
+        names.addView(title)
+        if (!narrow) {
+            val byline = Ui.text(activity, Brand.BYLINE, 10f, palette.textDim, bold = true, font = "sans-serif-medium")
+            byline.maxLines = 1
+            byline.ellipsize = android.text.TextUtils.TruncateAt.END
+            names.addView(byline)
+        }
         bar.addView(names, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
 
         val theme = iconButton(

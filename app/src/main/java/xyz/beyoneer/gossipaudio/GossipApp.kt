@@ -16,6 +16,12 @@ class GossipApp : Application() {
     lateinit var store: ClipStore
         private set
 
+    /** Text handed to us by another app ("Share to GossipAudio"), consumed by the composer. */
+    var pendingText: String? = null
+
+    /** Tab to open after a launcher shortcut or a share intent. */
+    var pendingTab: Int? = null
+
     override fun onCreate() {
         super.onCreate()
         instance = this

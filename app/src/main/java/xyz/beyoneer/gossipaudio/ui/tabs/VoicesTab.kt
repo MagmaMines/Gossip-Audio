@@ -60,9 +60,9 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
             }
         )
 
-        val filters = LinearLayout(activity).apply {
-            orientation = LinearLayout.HORIZONTAL
-        }
+        // a FadeRow, not a LinearLayout: four chips do not fit on a 320 dp phone and
+        // a clipped "Not human" chip looked like a bug rather than a scroll affordance
+        val filters = xyz.beyoneer.gossipaudio.ui.widgets.FadeRow(activity, palette)
         val options = listOf<Pair<VoiceGender?, String>>(
             null to "All",
             VoiceGender.FEMALE to "Girls",
@@ -77,8 +77,9 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
                 render()
             }
             filterChips.add(gender to chip)
-            filters.addView(chip)
-            if (index < options.size - 1) filters.addView(Ui.space(activity, Ui.dp(activity, 8f)))
+            filters.content.addView(chip, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { if (index < options.size - 1) marginEnd = Ui.dp(activity, 8f) })
         }
         column.addView(filters, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT

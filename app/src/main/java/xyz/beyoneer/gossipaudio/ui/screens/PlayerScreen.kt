@@ -1,5 +1,12 @@
 package xyz.beyoneer.gossipaudio.ui.screens
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.ContentValues
+import android.content.Context
+import android.media.RingtoneManager
+import android.os.Build
+import android.provider.MediaStore
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -209,6 +216,23 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 18f) })
 
+        // second row: the things you do once and then forget about
+        val quick2 = LinearLayout(activity).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER
+        }
+        fun addPill2(pill: View, isLast: Boolean) {
+            quick2.addView(pill, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
+                if (!isLast) marginEnd = Ui.dp(activity, 8f)
+            })
+        }
+        addPill2(actionPill(Icons.Kind.BELL, "Ringtone") { pickSoundSlot() }, false)
+        addPill2(actionPill(Icons.Kind.EDIT, "Copy text") { copyTranscript() }, false)
+        addPill2(actionPill(Icons.Kind.SHARE, "Share text") { shareTranscript() }, true)
+        column.addView(quick2, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = Ui.dp(activity, 8f) })
+
         // speed
         column.addView(
             Ui.text(activity, "Speed", 11f, palette.textDim, bold = true, font = "sans-serif-medium", gravity = Gravity.CENTER),
@@ -310,6 +334,91 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
         pill.addView(tv)
         Ui.pressable(pill, 0.92f, action)
         return pill
+    }
+
+
+    // ------------------------------------------------- ringtone / transcript
+
+    private fun pickSoundSlot() {
+        val target = clip ?: return
+        val content = LinearLayout(activity).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(0, Ui.dp(activity, 4f), 0, 0)
+        }
+        listOf(
+            "Ringtone" to RingtoneManager.TYPE_RINGTONE,
+            "Notification" to RingtoneManager.TYPE_NOTIFICATION,
+            "Alarm" to RingtoneManager.TYPE_ALARM,
+        ).forEach { (label, type) ->
+            val button = BrandButton(activity, palette, "Set as $label", BrandButton.Variant.GHOST, Icons.Kind.BELL, compact = true)
+            button.setOnClick {
+                Overlays.dismissTop(activity)
+                applyAsSound(target, type, label)
+            }
+            content.addView(button, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = Ui.dp(activity, 8f) })
+        }
+        content.addView(
+            Ui.text(
+                activity,
+                "The clip is copied into your phone's sound library, so it survives even if you delete it here.",
+                11f, palette.textDim
+            )
+        )
+        Overlays.sheet(activity, "Use this clip as\u2026", content)
+    }
+
+    private fun applyAsSound(target: Clip, type: Int, label: String) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            activity.toast("Android 10+ can do this in one tap. Use Save, then pick the file in Settings.")
+            return
+        }
+        Thread {
+            val message = try {
+                val file = activity.app.store.fileFor(target)
+                val folder = when (type) {
+                    RingtoneManager.TYPE_NOTIFICATION -> "Notifications"
+                    RingtoneManager.TYPE_ALARM -> "Alarms"
+                    else -> "Ringtones"
+                }
+                val values = ContentValues().apply {
+                    put(MediaStore.Audio.Media.DISPLAY_NAME, "GossipAudio ${target.title}.wav".take(80))
+                    put(MediaStore.Audio.Media.MIME_TYPE, "audio/wav")
+                    put(MediaStore.Audio.Media.RELATIVE_PATH, folder)
+                    put(MediaStore.Audio.Media.IS_RINGTONE, if (type == RingtoneManager.TYPE_RINGTONE) 1 else 0)
+                    put(MediaStore.Audio.Media.IS_NOTIFICATION, if (type == RingtoneManager.TYPE_NOTIFICATION) 1 else 0)
+                    put(MediaStore.Audio.Media.IS_ALARM, if (type == RingtoneManager.TYPE_ALARM) 1 else 0)
+                }
+                val uri = activity.contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
+                    ?: throw IllegalStateException("could not create the sound entry")
+                activity.contentResolver.openOutputStream(uri)?.use { out ->
+                    file.inputStream().use { it.copyTo(out) }
+                } ?: throw IllegalStateException("could not write the sound")
+                RingtoneManager.setActualDefaultRingtoneUri(activity, type, uri)
+                "\u2705 $label set. Take that, silence."
+            } catch (t: Throwable) {
+                "Could not set it: ${t.message ?: "your phone said no"}"
+            }
+            activity.runOnUiThread { activity.toast(message) }
+        }.start()
+    }
+
+    private fun copyTranscript() {
+        val target = clip ?: return
+        val manager = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        manager.setPrimaryClip(ClipData.newPlainText("GossipAudio transcript", target.text))
+        activity.toast("Transcript copied \uD83D\uDCCB")
+    }
+
+    private fun shareTranscript() {
+        val target = clip ?: return
+        val send = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(android.content.Intent.EXTRA_TEXT, target.text)
+            putExtra(android.content.Intent.EXTRA_TITLE, target.title)
+        }
+        activity.startActivity(android.content.Intent.createChooser(send, "Share the tea"))
     }
 
     private fun showSleepTimer() {

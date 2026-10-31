@@ -59,7 +59,7 @@ class SpeechSynth(private val context: Context) {
         rate: Float,
         callback: Callback
     ) {
-        val clean = text.trim()
+        val clean = applyWordMap(text.trim())
         if (clean.isEmpty()) {
             callback.onError("Type some gossip first \uD83D\uDC40")
             return
@@ -83,6 +83,28 @@ class SpeechSynth(private val context: Context) {
         } else {
             nanoPath(clean, voice, style, finalPitch, finalRate, callback, startedAt, sampler)
         }
+    }
+
+    /**
+     * "Say it your way": the user's own written→spoken pairs, applied before either
+     * engine sees the text. Works for names ("Beyoneer" → "Be-yo-neer"), acronyms and
+     * whatever else a TTS engine insists on mangling.
+     */
+    private fun applyWordMap(text: String): String {
+        val raw = runCatching { xyz.beyoneer.gossipaudio.data.Prefs(context).wordMap }.getOrNull()
+        if (raw.isNullOrBlank()) return text
+        var out = text
+        raw.split(';').forEach { pair ->
+            val bits = pair.split('=', limit = 2)
+            if (bits.size == 2) {
+                val from = bits[0].trim()
+                val to = bits[1].trim()
+                if (from.isNotEmpty() && to.isNotEmpty()) {
+                    out = out.replace(from, to, ignoreCase = true)
+                }
+            }
+        }
+        return out
     }
 
     // ------------------------------------------------------------- system path
@@ -401,7 +423,11 @@ class SpeechSynth(private val context: Context) {
     ) {
         try {
             sampler.stop()
-            val polished = AudioFx.fade(AudioFx.normalize(AudioFx.trimSilence(pcm, 180, 40), -1.5), 10, 40)
+            val prefs = xyz.beyoneer.gossipaudio.data.Prefs(context)
+            var polished = pcm
+            if (prefs.autoTrim) polished = AudioFx.trimSilence(polished, 180, 40)
+            if (prefs.autoNormalize) polished = AudioFx.normalize(polished, -1.5)
+            polished = AudioFx.fade(polished, 10, 40)
             val outcome = Outcome(
                 pcm = polished,
                 engine = engine,

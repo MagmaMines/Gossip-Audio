@@ -2,6 +2,8 @@ package xyz.beyoneer.gossipaudio.ui.tabs
 
 import android.Manifest
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.speech.tts.TextToSpeech
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +27,8 @@ import xyz.beyoneer.gossipaudio.ui.widgets.NeonSlider
 import xyz.beyoneer.gossipaudio.ui.widgets.Segmented
 import xyz.beyoneer.gossipaudio.ui.widgets.ToggleSwitch
 import xyz.beyoneer.gossipaudio.data.AudioFormat
+import xyz.beyoneer.gossipaudio.core.VoiceCatalog
+import java.util.Locale
 import xyz.beyoneer.gossipaudio.speech.SpeechSynth
 
 /** Every knob in one place, all of it real. */
@@ -135,6 +139,37 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
                     "Straight to the player when your voice is ready",
                     activity.prefs.autoPlay
                 ) { activity.prefs.autoPlay = it }
+            )
+        )
+
+        // --- voice lab: the knobs you only need once, but then need badly
+        column.addView(sectionLabel("Voice lab"), topMargin())
+        column.addView(
+            card(
+                statsRow(),
+                wordMapRow(),
+                actionRow(
+                    Icons.Kind.WAVE, "Voice engine & languages",
+                    engineSummary()
+                ) { showEngineAndLanguages() },
+                toggleRow(
+                    Icons.Kind.SPEED, "Auto-trim silence",
+                    "Cut the dead air from every render",
+                    activity.prefs.autoTrim
+                ) { activity.prefs.autoTrim = it },
+                toggleRow(
+                    Icons.Kind.FX, "Auto-normalise",
+                    "Even loudness at -1.5 dBFS, every time",
+                    activity.prefs.autoNormalize
+                ) { activity.prefs.autoNormalize = it },
+                toggleRow(
+                    Icons.Kind.PERSON, "Bigger text",
+                    "15 % larger labels everywhere (restarts the screen)",
+                    activity.prefs.bigText
+                ) { enabled ->
+                    activity.prefs.bigText = enabled
+                    activity.recreate()
+                }
             )
         )
 
@@ -280,6 +315,120 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
         ))
         return scroll
     }
+
+
+    // ------------------------------------------------------------- voice lab
+
+    private fun statsRow(): View {
+        val clips = activity.app.store.all()
+        val minutes = clips.sumOf { it.durationMs } / 60000.0
+        val top = clips.groupingBy { it.voiceId }.eachCount().maxByOrNull { it.value }?.key
+        val topName = top?.let { id -> VoiceCatalog.all.firstOrNull { it.id == id }?.name } ?: "no favourite yet"
+        val box = LinearLayout(activity).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(0, Ui.dp(activity, 4f), 0, Ui.dp(activity, 6f))
+        }
+        box.addView(Ui.text(activity, "Your studio so far", 13.5f, palette.text, bold = true, font = "sans-serif-black"))
+        box.addView(
+            Ui.text(
+                activity,
+                String.format("%d clips · %.1f minutes of your own voice · most used: %s", clips.size, minutes, topName),
+                11.5f, palette.textDim
+            ),
+            LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                topMargin = Ui.dp(activity, 3f)
+            }
+        )
+        return box
+    }
+
+    private fun wordMapSummary(): String {
+        val raw = activity.prefs.wordMap
+        if (raw.isBlank()) return "Teach it names: \"beyoneer = Be-yo-neer\""
+        val count = raw.split(';').count { it.contains('=') }
+        return String.format("%d custom pronunciation%s · tap to edit", count, if (count == 1) "" else "s")
+    }
+
+    private var wordMapSubtitle: TextView? = null
+
+    private fun wordMapRow(): View {
+        val row = actionRow(Icons.Kind.EDIT, "Say it your way", wordMapSummary()) { editWordMap() }
+        wordMapSubtitle = findSubtitle(row, wordMapSummary())
+        return row
+    }
+
+    private fun findSubtitle(view: View, needle: String): TextView? {
+        if (view is TextView && view.text?.toString() == needle) return view
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                findSubtitle(view.getChildAt(i), needle)?.let { return it }
+            }
+        }
+        return null
+    }
+
+    private fun editWordMap(): Unit = Overlays.prompt(
+        activity,
+        "Say it your way",
+        activity.prefs.wordMap,
+        "beyoneer = Be-yo-neer; wtf = what the flip",
+    ) { value ->
+        activity.prefs.wordMap = value.replace("\n", ";").trim()
+        wordMapSubtitle?.text = wordMapSummary()
+        activity.toast(
+            if (activity.prefs.wordMap.isBlank()) "Custom words cleared."
+            else "Saved. Those words now speak your way."
+        )
+    }
+
+    /** Everything the app knows about the voice engines actually installed on this phone. */
+    private fun showEngineAndLanguages(): Unit {
+        val engines = runCatching {
+            TextToSpeech(activity).engines.map { it.label ?: it.name }
+        }.getOrDefault(emptyList())
+        val rows = ArrayList<Pair<String, String>>()
+        rows.add("NanoVoice (bundled)" to "always available, offline")
+        rows.add("Device engines" to if (engines.isEmpty()) "none found" else engines.joinToString(", "))
+        listOf("en-IN", "hi-IN", "en-US", "en-GB", "ja-JP").forEach { tag ->
+            val voice = VoiceCatalog.all.firstOrNull { it.locale == tag }
+            val name = voice?.name ?: tag
+            val status = runCatching {
+                val tts = TextToSpeech(activity)
+                val result = tts.isLanguageAvailable(Locale.forLanguageTag(tag))
+                tts.shutdown()
+                when {
+                    result >= TextToSpeech.LANG_AVAILABLE -> "ready"
+                    result == TextToSpeech.LANG_MISSING_DATA -> "needs data"
+                    else -> "not supported"
+                }
+            }.getOrDefault("unknown")
+            rows.add("$name · $tag" to status)
+        }
+        Overlays.info(activity, "Voice engines on this phone", rows)
+        val missing = rows.any { it.second == "needs data" }
+        if (missing) {
+            Overlays.confirm(
+                activity,
+                "Install a language?",
+                "Your phone can download more voices for free from the TTS engine. Open the installer now?",
+                confirmLabel = "Open installer"
+            ) {
+                runCatching {
+                    activity.startActivity(Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA))
+                }.onFailure { activity.toast("Open Settings → System → Languages → Text-to-speech") }
+            }
+        }
+    }
+
+    private fun engineSummary(): String {
+        val engines = runCatching { TextToSpeech(activity).engines.size }.getOrDefault(0)
+        return if (engines == 0) {
+            "No system engine installed — NanoVoice speaks"
+        } else {
+            "$engines on-device engine${if (engines == 1) "" else "s"} + NanoVoice fallback"
+        }
+    }
+
 
     private fun topMargin(): LinearLayout.LayoutParams =
         LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {

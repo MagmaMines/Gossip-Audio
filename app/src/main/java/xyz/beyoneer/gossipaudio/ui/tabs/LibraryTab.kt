@@ -44,6 +44,9 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
     private lateinit var searchField: EditText
     private var query = ""
     private var likedOnly = false
+    /** 0 = newest first, 1 = longest first, 2 = A–Z. */
+    private var sortMode = 0
+    private var sortChip: Chip? = null
     private var lastSignature = ""
 
     override val root: View by lazy { build() }
@@ -131,6 +134,16 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
         filters.addView(allChip)
         filters.addView(Ui.space(activity, Ui.dp(activity, 8f)))
         filters.addView(likedChip)
+        filters.addView(Ui.space(activity, Ui.dp(activity, 8f)))
+        val sorter = Chip(activity, palette, SORT_LABELS[sortMode], false)
+        sorter.contentDescription = "Change sort order"
+        sorter.setOnClickListener {
+            sortMode = (sortMode + 1) % SORT_LABELS.size
+            sorter.text = SORT_LABELS[sortMode]
+            render()
+        }
+        sortChip = sorter
+        filters.addView(sorter)
         column.addView(filters, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 12f) })
@@ -203,14 +216,23 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
         return scroll
     }
 
+    private companion object {
+        val SORT_LABELS = listOf("Newest", "Longest", "A\u2013Z")
+    }
+
     private fun render() {
         if (!::listBox.isInitialized) return
         val all = activity.app.store.all()
         val shown = if (likedOnly) activity.app.store.liked() else all
-        val filtered = if (query.isBlank()) shown else shown.filter {
+        val matched = if (query.isBlank()) shown else shown.filter {
             it.title.lowercase().contains(query.lowercase()) ||
                 it.text.lowercase().contains(query.lowercase()) ||
                 VoiceCatalog.byId(it.voiceId).name.lowercase().contains(query.lowercase())
+        }
+        val filtered = when (sortMode) {
+            1 -> matched.sortedByDescending { it.durationMs }
+            2 -> matched.sortedBy { it.title.lowercase() }
+            else -> matched
         }
         listBox.removeAllViews()
         val bytes = all.sumOf { it.sizeBytes }
