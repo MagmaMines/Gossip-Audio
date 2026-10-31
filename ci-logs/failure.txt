@@ -1,91 +1,96 @@
-run: 41211915085
-commit: 10e09c2b84b70b2c6f7f316f63ad93586ddfe58c
-time: Sat Oct 31 14:52:54 UTC 2026
+run: 41216212089
+commit: 04fe609ebf3eff4bbdbdb50edbf8b1d7ada6102d
+time: Sat Oct 31 15:48:06 UTC 2026
 ====== kotlin errors (test.log) ======
 ====== kotlin errors (assemble.log) ======
 ====== warnings that matter ======
 ====== failing tests ======
+PipelineTest > audioEffectsAreStable FAILED
+    java.lang.AssertionError at PipelineTest.kt:131
+> Task :app:testDebugUnitTest FAILED
+BUILD FAILED in 55s
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.AccessibilityTest.xml
-  <testcase name="backPopsTheScreenStackBeforeLeavingTheApp" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="10.813"/>
-  <testcase name="hapticsSwitchActuallyGatesVibration" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.569"/>
-  <testcase name="everyTappableControlHasAName" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.811"/>
-  <testcase name="switchesAndSlidersAdvertiseTheirAccessibilityRole" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.447"/>
+  <testcase name="backPopsTheScreenStackBeforeLeavingTheApp" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="10.287"/>
+  <testcase name="hapticsSwitchActuallyGatesVibration" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.682"/>
+  <testcase name="everyTappableControlHasAName" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="1.001"/>
+  <testcase name="switchesAndSlidersAdvertiseTheirAccessibilityRole" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.518"/>
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.PipelineTest.xml
-  <testcase name="silenceAndEmptyInputAreHandledGracefully" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.071"/>
-  <testcase name="mp3EncoderProducesRealFramesAndTags" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.183"/>
-  <testcase name="stylesChangeRateAndPitchNumerically" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.009"/>
-  <testcase name="everyVoiceSynthesisesAudibleSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.2"/>
-  <testcase name="audioEffectsAreStable" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.02"/>
-  <testcase name="wavRoundTripPreservesSamples" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.017"/>
-  <testcase name="textKitEstimatesMatchRenderedAudio" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.051"/>
-  <testcase name="catalogHasTenVoicesAndEightStyles" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.0"/>
+  <testcase name="silenceAndEmptyInputAreHandledGracefully" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.107"/>
+  <testcase name="renderedAudioIsTonalSpeechNotNoise" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.219"/>
+  <testcase name="mp3EncoderProducesRealFramesAndTags" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.232"/>
+  <testcase name="stylesChangeRateAndPitchNumerically" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.014"/>
+  <testcase name="everyVoiceSynthesisesAudibleSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.24"/>
+  <testcase name="audioEffectsAreStable" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.015">
+    <failure message="java.lang.AssertionError: normalize should raise level" type="java.lang.AssertionError">java.lang.AssertionError: normalize should raise level
+  </testcase>
+  <testcase name="wavRoundTripPreservesSamples" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.01"/>
+  <testcase name="textKitEstimatesMatchRenderedAudio" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.027"/>
+  <testcase name="hindiAndHinglishBothProduceSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.025"/>
+  <testcase name="catalogHasTenVoicesAndEightStyles" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.001"/>
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.StudioGenerateTest.xml
-  <testcase name="typingAndTappingGenerateCreatesAPlayableClip" classname="xyz.beyoneer.gossipaudio.StudioGenerateTest" time="5.047"/>
+  <testcase name="typingAndTappingGenerateCreatesAPlayableClip" classname="xyz.beyoneer.gossipaudio.StudioGenerateTest" time="5.515"/>
 --- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.UiSmokeTest.xml
-  <testcase name="appBootsIntoShellAndRendersEveryTab" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="1.715"/>
-  <testcase name="darkThemeStillUsesBrandYellow" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.428"/>
-  <testcase name="aboutHelpAndDiagnosticsScreensRender" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="1.282"/>
-  <testcase name="playerScreenOpensForARealClip" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.576"/>
+  <testcase name="appBootsIntoShellAndRendersEveryTab" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="2.195"/>
+  <testcase name="darkThemeStillUsesBrandYellow" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.548"/>
+  <testcase name="aboutHelpAndDiagnosticsScreensRender" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="1.464"/>
+  <testcase name="playerScreenOpensForARealClip" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.794"/>
 ====== what went wrong ======
+* What went wrong:
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
 ====== compiled files (last lines) ======
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:83:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:91:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:100:42 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
 ====== test.log (tail) ======
-To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
+ org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
-> Configure project :app
-WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
-The current default is 'false'.
-It will be removed in version 9.0 of the Android Gradle plugin.
-To keep using this feature, add the following to your module-level build.gradle files:
-    android.buildFeatures.buildConfig = true
-or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`.
 
-> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
-> Task :app:preBuild UP-TO-DATE
-> Task :app:preDebugBuild UP-TO-DATE
-> Task :app:generateDebugBuildConfig UP-TO-DATE
-> Task :app:checkDebugAarMetadata UP-TO-DATE
-> Task :app:generateDebugResValues UP-TO-DATE
-> Task :app:mapDebugSourceSetPaths UP-TO-DATE
-> Task :app:generateDebugResources UP-TO-DATE
-> Task :app:mergeDebugResources UP-TO-DATE
-> Task :app:packageDebugResources UP-TO-DATE
-> Task :app:parseDebugLocalResources UP-TO-DATE
-> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
-> Task :app:extractDeepLinksDebug UP-TO-DATE
-> Task :app:processDebugMainManifest UP-TO-DATE
-> Task :app:processDebugManifest UP-TO-DATE
-> Task :app:processDebugManifestForPackage UP-TO-DATE
-> Task :app:processDebugResources UP-TO-DATE
-> Task :app:compileDebugKotlin UP-TO-DATE
-> Task :app:javaPreCompileDebug UP-TO-DATE
-> Task :app:compileDebugJavaWithJavac UP-TO-DATE
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest FROM-CACHE
-> Task :app:bundleDebugClassesToRuntimeJar
-> Task :app:bundleDebugClassesToCompileJar
-> Task :app:mergeDebugShaders UP-TO-DATE
-> Task :app:compileDebugShaders NO-SOURCE
-> Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAssets UP-TO-DATE
-> Task :app:packageDebugUnitTestForUnitTest
-> Task :app:generateDebugUnitTestConfig
-> Task :app:processDebugJavaRes UP-TO-DATE
-
-> Task :app:compileDebugUnitTestKotlin
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:83:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:91:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:100:42 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
-
-> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
-> Task :app:processDebugUnitTestJavaRes
-> Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1793458323162.json
-
-BUILD SUCCESSFUL in 51s
+BUILD FAILED in 55s
 28 actionable tasks: 7 executed, 1 from cache, 20 up-to-date
 ====== assemble.log (tail) ======
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
@@ -118,18 +123,18 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
+> Task :app:processDebugManifestForPackage
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
 > Task :app:desugarDebugFileDependencies
-> Task :app:processDebugManifestForPackage
+> Task :app:mergeDebugJniLibFolders
 > Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugNativeLibs NO-SOURCE
 > Task :app:processDebugResources
 > Task :app:mergeExtDexDebug
-> Task :app:mergeDebugJniLibFolders
-> Task :app:mergeLibDexDebug
-> Task :app:mergeDebugNativeLibs NO-SOURCE
 > Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:mergeLibDexDebug
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
@@ -163,16 +168,16 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:generateReleaseAssets UP-TO-DATE
 > Task :app:mergeReleaseAssets
 > Task :app:compressReleaseAssets
-> Task :app:processReleaseResources
 > Task :app:extractReleaseVersionControlInfo
-> Task :app:optimizeReleaseResources
 > Task :app:collectReleaseDependencies
-> Task :app:mergeExtDexRelease
+> Task :app:processReleaseResources
 > Task :app:sdkReleaseDependencyData
+> Task :app:optimizeReleaseResources
 > Task :app:validateSigningRelease
 > Task :app:writeReleaseAppMetadata
 > Task :app:writeReleaseSigningConfigVersions
 > Task :app:processApplicationManifestReleaseForBundle
+> Task :app:mergeExtDexRelease
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig
 > Task :app:bundleReleaseResources
@@ -218,10 +223,10 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 > Task :app:mergeProjectDexDebug
 > Task :app:compileReleaseJavaWithJavac
 > Task :app:dexBuilderRelease
-> Task :app:mergeReleaseGlobalSynthetics
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
+> Task :app:mergeReleaseGlobalSynthetics
 > Task :app:processReleaseJavaRes
 > Task :app:mergeReleaseJavaResource
 > Task :app:mergeDexRelease
@@ -235,9 +240,9 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793458207172.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793461500810.json
 
-BUILD SUCCESSFUL in 1m 57s
+BUILD SUCCESSFUL in 2m 14s
 86 actionable tasks: 82 executed, 4 from cache
 ====== verification report ======
 === APK verification: dist/GossipAudio-1.0.1-release.apk
@@ -283,7 +288,7 @@ BUILD SUCCESSFUL in 1m 57s
   "entries": 32,
   "uncompressed_bytes": 3208602,
   "dex_bytes": 2826140,
-  "apk_sha256": "2a823b3a9dd5d8c7c3586eff61377b6a1131f490b235b2dd728a9e28ffa691ed"
+  "apk_sha256": "3467241bfd81dbfe1d6c5cdaed2ad82a81f51ea983478222d3d8e18225562458"
 }
 
 --- notes
@@ -295,7 +300,22 @@ BUILD SUCCESSFUL in 1m 57s
  * dex files: classes.dex (2826140 bytes uncompressed)
 
 --- problems
- ! unexpected versionName 1.0.1
+ none — APK structure, manifest, signing and dex contents check out
+
+[OK  ] MP3 dist/samples/pipeline-sample.mp3  73603 bytes
+         {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 173, 'duration_ms': 4519, 'audio_bytes': 72306}, 'size': 73603}
+[OK  ] WAV dist/samples/pipeline-sample.wav  196728 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4460}
+[OK  ] WAV dist/samples/voice-arjun.wav  192872 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
+[OK  ] WAV dist/samples/voice-bot.wav  189162 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4288}
+[OK  ] WAV dist/samples/voice-maya.wav  185596 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4208}
+[OK  ] WAV dist/samples/voice-riya.wav  192872 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
+
+all audio files valid
 ====== sdk.txt ======
 sdk ok
 android-34
