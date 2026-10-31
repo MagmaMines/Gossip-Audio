@@ -33,13 +33,12 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
 > Task :app:desugarDebugFileDependencies
-> Task :app:mergeDebugJniLibFolders
-> Task :app:checkDebugDuplicateClasses
 > Task :app:processDebugResources
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs NO-SOURCE
 > Task :app:stripDebugDebugSymbols NO-SOURCE
-> Task :app:mergeLibDexDebug
-> Task :app:mergeExtDexDebug
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
@@ -50,6 +49,7 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:extractReleaseNativeSymbolTables NO-SOURCE
 > Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
 > Task :app:checkReleaseDuplicateClasses
+> Task :app:mergeExtDexDebug
 > Task :app:buildKotlinToolingMetadata
 > Task :app:generateReleaseBuildConfig
 > Task :app:checkReleaseAarMetadata
@@ -65,114 +65,49 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:javaPreCompileRelease FROM-CACHE
 > Task :app:desugarReleaseFileDependencies
 > Task :app:mergeReleaseStartupProfile
-> Task :app:mergeReleaseResources
-> Task :app:mergeReleaseArtProfile
 > Task :app:processReleaseManifestForPackage
+> Task :app:mergeReleaseResources
+> Task :app:processReleaseResources
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:46 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:74 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:36 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:27 Unresolved reference 'dpf'.
+
+> Task :app:mergeReleaseArtProfile
 > Task :app:mergeReleaseShaders
 > Task :app:compileReleaseShaders NO-SOURCE
 > Task :app:generateReleaseAssets UP-TO-DATE
 > Task :app:mergeReleaseAssets
 > Task :app:compressReleaseAssets
 > Task :app:extractReleaseVersionControlInfo
-> Task :app:processReleaseResources
 > Task :app:collectReleaseDependencies
-
-> Task :app:compileDebugKotlin
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:168:22 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Short' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ga'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'mpg'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ver'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'vbr'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:45:24 No value passed for parameter 'tk'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'bs'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'rv'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'qupvt'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'tk'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'bits'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'ver'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'i'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'c'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:43:41 Unresolved reference 'length'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:334:74 Argument type mismatch: actual type is 'xyz.beyoneer.gossipaudio.core.NanoVoice.Phone', but 'kotlin.String' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:382:46 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:41 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:63 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:79 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:53 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:82 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:110 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:152:86 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:155:73 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:25 Unresolved reference 'FrameLayout'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:47 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:53 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:152:17 Unresolved reference 'background'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:19 Unresolved reference 'addView'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:88 Unresolved reference 'FrameLayout'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:197:13 'val' cannot be reassigned.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:346:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:28 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:32 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-
-> Task :app:compileDebugKotlin FAILED
 > Task :app:sdkReleaseDependencyData
 > Task :app:validateSigningRelease
+> Task :app:optimizeReleaseResources
 > Task :app:writeReleaseAppMetadata
 > Task :app:writeReleaseSigningConfigVersions
 > Task :app:processApplicationManifestReleaseForBundle
-> Task :app:optimizeReleaseResources
-> Task :app:mergeExtDexRelease
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig
 > Task :app:bundleReleaseResources
+> Task :app:mergeExtDexRelease
 
 > Task :app:compileReleaseKotlin FAILED
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:168:22 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Short' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ga'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'mpg'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ver'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'vbr'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:45:24 No value passed for parameter 'tk'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'bs'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'rv'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'qupvt'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'tk'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'bits'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'ver'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'i'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'c'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:43:41 Unresolved reference 'length'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:334:74 Argument type mismatch: actual type is 'xyz.beyoneer.gossipaudio.core.NanoVoice.Phone', but 'kotlin.String' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:382:46 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:41 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:63 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:79 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:53 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:82 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:110 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:152:86 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:155:73 Unresolved reference 'palette'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:25 Unresolved reference 'FrameLayout'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:47 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:53 Cannot infer type for this parameter. Please specify it explicitly.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:152:17 Unresolved reference 'background'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:19 Unresolved reference 'addView'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:88 Unresolved reference 'FrameLayout'.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:197:13 'val' cannot be reassigned.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:346:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:28 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:32 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793450949388.json
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:46 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:74 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:36 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:27 Unresolved reference 'dpf'.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:27 Unresolved reference 'dpf'.
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793451212115.json
 
 FAILURE: Build completed with 2 failures.
 
@@ -219,6 +154,35 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:com
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
@@ -348,6 +312,35 @@ Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionExcept
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
@@ -664,5 +657,5 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 
 ==============================================================================
 
-BUILD FAILED in 1m 29s
+BUILD FAILED in 1m 17s
 64 actionable tasks: 60 executed, 4 from cache

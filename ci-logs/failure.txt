@@ -1,6 +1,6 @@
-run: 41202732090
-commit: ad7af98e441c098a3b05de20fdcb0270f2456fe4
-time: Sat Oct 31 12:50:36 UTC 2026
+run: 41203012797
+commit: 9621a08c059a0a70f59662582e1e2260f91f54d7
+time: Sat Oct 31 12:54:47 UTC 2026
 ====== kotlin errors (test.log) ======
 e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:168:22 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Short' was expected.
 e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ga'.
@@ -43,86 +43,22 @@ e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:
 e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
 e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
 ====== kotlin errors (assemble.log) ======
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:168:22 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Short' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ga'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'mpg'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ver'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'vbr'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:45:24 No value passed for parameter 'tk'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'bs'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'rv'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'qupvt'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'tk'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'bits'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'ver'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'i'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'c'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:43:41 Unresolved reference 'length'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:334:74 Argument type mismatch: actual type is 'xyz.beyoneer.gossipaudio.core.NanoVoice.Phone', but 'kotlin.String' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:382:46 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:41 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:63 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:79 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:53 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:82 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:110 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:152:86 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:155:73 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:25 Unresolved reference 'FrameLayout'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:47 Cannot infer type for this parameter. Please specify it explicitly.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:53 Cannot infer type for this parameter. Please specify it explicitly.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:152:17 Unresolved reference 'background'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:19 Unresolved reference 'addView'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:88 Unresolved reference 'FrameLayout'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:197:13 'val' cannot be reassigned.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:346:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:28 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:32 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:168:22 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Short' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ga'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'mpg'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ver'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'vbr'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:45:24 No value passed for parameter 'tk'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'bs'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'rv'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'qupvt'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'tk'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'bits'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'ver'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'i'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'c'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:43:41 Unresolved reference 'length'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:334:74 Argument type mismatch: actual type is 'xyz.beyoneer.gossipaudio.core.NanoVoice.Phone', but 'kotlin.String' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:382:46 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:41 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:63 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:79 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:53 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:82 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:110 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:152:86 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:155:73 Unresolved reference 'palette'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:25 Unresolved reference 'FrameLayout'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:47 Cannot infer type for this parameter. Please specify it explicitly.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:53 Cannot infer type for this parameter. Please specify it explicitly.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:152:17 Unresolved reference 'background'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:19 Unresolved reference 'addView'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:88 Unresolved reference 'FrameLayout'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:197:13 'val' cannot be reassigned.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:346:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:28 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:32 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:46 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:74 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:36 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:46 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:74 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:36 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:27 Unresolved reference 'dpf'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:27 Unresolved reference 'dpf'.
 ====== warnings that matter ======
 ci-logs/test.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:168:22 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Short' was expected.
 ci-logs/test.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ga'.
@@ -164,46 +100,22 @@ ci-logs/test.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/m
 ci-logs/test.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
 ci-logs/test.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
 ci-logs/test.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:168:22 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Short' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ga'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'mpg'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'ver'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:43:22 No value passed for parameter 'vbr'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:45:24 No value passed for parameter 'tk'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'bs'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'rv'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'qupvt'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:46:21 No value passed for parameter 'tk'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'bits'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:49:19 No value passed for parameter 'ver'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'i'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Mp3Encoder.kt:50:19 No value passed for parameter 'c'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:43:41 Unresolved reference 'length'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:334:74 Argument type mismatch: actual type is 'xyz.beyoneer.gossipaudio.core.NanoVoice.Phone', but 'kotlin.String' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:382:46 Argument type mismatch: actual type is 'kotlin.Any', but 'kotlin.String' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:41 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:63 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:124:79 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:53 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:82 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:129:110 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:152:86 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/SttSheet.kt:155:73 Unresolved reference 'palette'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:25 Unresolved reference 'FrameLayout'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:47 Cannot infer type for this parameter. Please specify it explicitly.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:151:53 Cannot infer type for this parameter. Please specify it explicitly.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:152:17 Unresolved reference 'background'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:19 Unresolved reference 'addView'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/tabs/VoicesTab.kt:154:88 Unresolved reference 'FrameLayout'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:197:13 'val' cannot be reassigned.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:346:62 Argument type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:28 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:32 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:23 Assignment type mismatch: actual type is 'kotlin.Int', but 'kotlin.Float' was expected.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:46 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:74 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:36 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:144:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:150:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:46 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:262:74 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:267:36 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:298:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:436:27 Unresolved reference 'dpf'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Visualizers.kt:440:27 Unresolved reference 'dpf'.
 ====== what went wrong ======
 * What went wrong:
 Execution failed for task ':app:compileDebugKotlin'.
@@ -499,7 +411,7 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 
 ==============================================================================
 
-BUILD FAILED in 1m 29s
+BUILD FAILED in 1m 17s
 64 actionable tasks: 60 executed, 4 from cache
 ====== sdk.txt ======
 sdk ok
