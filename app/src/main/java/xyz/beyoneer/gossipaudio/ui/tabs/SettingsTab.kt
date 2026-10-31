@@ -382,53 +382,69 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
     }
 
     /** Everything the app knows about the voice engines actually installed on this phone. */
-    private fun showEngineAndLanguages(): Unit {
-        val engines = runCatching {
-            TextToSpeech(activity).engines.map { it.label ?: it.name }
-        }.getOrDefault(emptyList())
-        val rows = ArrayList<Pair<String, String>>()
-        rows.add("NanoVoice (bundled)" to "always available, offline")
-        rows.add("Device engines" to if (engines.isEmpty()) "none found" else engines.joinToString(", "))
-        listOf("en-IN", "hi-IN", "en-US", "en-GB", "ja-JP").forEach { tag ->
-            val voice = VoiceCatalog.all.firstOrNull { it.locale == tag }
-            val name = voice?.name ?: tag
-            val status = runCatching {
-                val tts = TextToSpeech(activity)
-                val result = tts.isLanguageAvailable(Locale.forLanguageTag(tag))
-                tts.shutdown()
-                when {
-                    result >= TextToSpeech.LANG_AVAILABLE -> "ready"
-                    result == TextToSpeech.LANG_MISSING_DATA -> "needs data"
-                    else -> "not supported"
+    private fun showEngineAndLanguages() {
+        val holder = arrayOfNulls<android.speech.tts.TextToSpeech>(1)
+        val probe = android.speech.tts.TextToSpeech(activity) { status ->
+            activity.runOnUiThread {
+                val engine = holder[0]
+                if (status != android.speech.tts.TextToSpeech.SUCCESS || engine == null) {
+                    Overlays.info(
+                        activity,
+                        "No speech engine found",
+                        listOf(
+                            "NanoVoice (bundled)" to "always works, offline",
+                            "System engine" to "not installed on this phone"
+                        )
+                    )
+                    return@runOnUiThread
                 }
-            }.getOrDefault("unknown")
-            rows.add("$name · $tag" to status)
-        }
-        Overlays.info(activity, "Voice engines on this phone", rows)
-        val missing = rows.any { it.second == "needs data" }
-        if (missing) {
-            Overlays.confirm(
-                activity,
-                "Install a language?",
-                "Your phone can download more voices for free from the TTS engine. Open the installer now?",
-                confirmLabel = "Open installer"
-            ) {
-                runCatching {
-                    activity.startActivity(Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA))
-                }.onFailure { activity.toast("Open Settings → System → Languages → Text-to-speech") }
+                val rows = ArrayList<Pair<String, String>>()
+                rows.add("NanoVoice (bundled)" to "always available, offline")
+                val names = engine.engines.map { it.label ?: it.name }
+                rows.add(
+                    "Device engines" to
+                        if (names.isEmpty()) "none found" else names.joinToString(", ").take(160)
+                )
+                listOf("en-IN", "hi-IN", "en-US", "en-GB", "ja-JP").forEach { tag ->
+                    val voice = VoiceCatalog.all.firstOrNull { it.locale == tag }
+                    val label = (voice?.name ?: tag) + " · " + tag
+                    val availability = runCatching {
+                        when (engine.isLanguageAvailable(Locale.forLanguageTag(tag))) {
+                            android.speech.tts.TextToSpeech.LANG_AVAILABLE,
+                            android.speech.tts.TextToSpeech.LANG_COUNTRY_AVAILABLE,
+                            android.speech.tts.TextToSpeech.LANG_COUNTRY_VAR_AVAILABLE -> "ready"
+                            android.speech.tts.TextToSpeech.LANG_MISSING_DATA -> "needs data"
+                            else -> "not supported"
+                        }
+                    }.getOrDefault("unknown")
+                    rows.add(label to availability)
+                }
+                engine.shutdown()
+                Overlays.info(activity, "Voice engines on this phone", rows)
+                if (rows.any { it.second == "needs data" }) {
+                    Overlays.confirm(
+                        activity,
+                        "Install a language?",
+                        "Your phone can download extra voices for free from the speech engine. " +
+                            "Open the installer now?",
+                        confirmLabel = "Open installer"
+                    ) {
+                        runCatching {
+                            activity.startActivity(
+                                Intent(android.speech.tts.TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA)
+                            )
+                        }.onFailure {
+                            activity.toast("Settings → System → Languages → Text-to-speech")
+                        }
+                    }
+                }
             }
         }
+        holder[0] = probe
     }
 
-    private fun engineSummary(): String {
-        val engines = runCatching { TextToSpeech(activity).engines.size }.getOrDefault(0)
-        return if (engines == 0) {
-            "No system engine installed — NanoVoice speaks"
-        } else {
-            "$engines on-device engine${if (engines == 1) "" else "s"} + NanoVoice fallback"
-        }
-    }
-
+    private fun engineSummary(): String =
+        "Check which languages this phone can already speak"
 
     private fun topMargin(): LinearLayout.LayoutParams =
         LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {

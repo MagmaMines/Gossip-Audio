@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - arena/b73dc5e5-gossip-audio
+      - 'arena/**'
       - main
     paths-ignore:
       - 'dist/**'

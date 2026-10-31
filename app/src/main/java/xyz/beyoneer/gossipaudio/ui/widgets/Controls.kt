@@ -263,9 +263,13 @@ class Segmented(context: Context, private val palette: Palette, options: List<St
         background = Ui.rounded(palette.card, Ui.dpf(context, 100f), palette.outline, Ui.dp(context, 1f))
         setPadding(Ui.dp(context, 4f), Ui.dp(context, 4f), Ui.dp(context, 4f), Ui.dp(context, 4f))
         indicator.background = Ui.gradient(
-            intArrayOf(palette.yellowBright, palette.yellow), Ui.dpf(context, 100f)
+            intArrayOf(palette.yellowBright, palette.yellow), Ui.dpf(context, 100f),
+            strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(context, 1f)
         )
-        indicator.elevation = Ui.dpf(context, 2f)
+        // No elevation here: a raised indicator draws *above* the label row and hides
+        // the selected word behind its own pill (that is why "System" and "MP3" were
+        // invisible in the screenshots).
+        indicator.elevation = 0f
         addView(indicator, LayoutParams(0, LayoutParams.MATCH_PARENT))
         val row = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
         options.forEachIndexed { index, option ->
