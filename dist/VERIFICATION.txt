@@ -1,0 +1,62 @@
+=== APK verification: dist/GossipAudio-1.0.0-release.apk
+{
+  "package": "xyz.beyoneer.gossipaudio",
+  "versionName": "1.0.0",
+  "versionCode": "1",
+  "minSdk": "24",
+  "targetSdk": "35",
+  "appClass": "xyz.beyoneer.gossipaudio.GossipApp",
+  "label": "@ref/0x7f040001",
+  "icon": "@ref/0x7f030000",
+  "permissions": [
+    "android.permission.VIBRATE",
+    "android.permission.RECORD_AUDIO",
+    "android.permission.POST_NOTIFICATIONS",
+    "android.permission.FOREGROUND_SERVICE",
+    "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+    "android.permission.WAKE_LOCK",
+    "android.permission.RECEIVE_BOOT_COMPLETED",
+    "android.permission.SCHEDULE_EXACT_ALARM",
+    "android.permission.WRITE_EXTERNAL_STORAGE"
+  ],
+  "activities": [
+    "xyz.beyoneer.gossipaudio.ui.MainActivity"
+  ],
+  "services": [
+    "xyz.beyoneer.gossipaudio.playback.PlaybackService"
+  ],
+  "receivers": [
+    "xyz.beyoneer.gossipaudio.notify.ReminderReceiver",
+    "xyz.beyoneer.gossipaudio.notify.BootReceiver"
+  ],
+  "providers": [],
+  "entries": 30,
+  "uncompressed_bytes": 4088,
+  "dex_bytes": 2815464,
+  "apk_sha256": "3b761427f1dd3c9246eb7e3aba0b43996eefe8ca56f0a9ac35aca31f66798a6f"
+}
+
+--- notes
+ * packaged PNG resources: 17 (names are obfuscated by AGP)
+ * no INTERNET permission — audio pipeline is genuinely offline
+ * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
+ * v1 signature files: none (fine for minSdk 24+)
+ * dex files: classes.dex (2815464 bytes uncompressed)
+
+--- problems
+ none — APK structure, manifest, signing and dex contents check out
+
+[OK  ] MP3 dist/samples/pipeline-sample.mp3  73603 bytes
+         {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 173, 'duration_ms': 4519, 'audio_bytes': 72306}, 'size': 73603}
+[OK  ] WAV dist/samples/pipeline-sample.wav  196728 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4460}
+[OK  ] WAV dist/samples/voice-arjun.wav  192872 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
+[OK  ] WAV dist/samples/voice-bot.wav  189162 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4288}
+[OK  ] WAV dist/samples/voice-maya.wav  185596 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4208}
+[OK  ] WAV dist/samples/voice-riya.wav  192872 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
+
+all audio files valid
