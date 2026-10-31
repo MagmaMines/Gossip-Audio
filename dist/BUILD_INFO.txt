@@ -1,0 +1,19 @@
+GossipAudio build report
+version: 1.0.0 (1)
+commit: 6c0bc46e08aab9aa2f35d71fb18761ead837da44
+built: 2026-10-31T12:31:38Z
+runner: Linux X64
+java: openjdk version "17.0.21" 2026-10-20
+gradle: Gradle 8.11.1
+
+sha256:
+c42b2341eff9b2985efd50895bd8733de0850d54bba2ff005d852535d98547c9  dist/GossipAudio-1.0.0-debug.apk
+cdf5d3d8d33675382ea0870440177fee972f07120e3a301b964df6c060f35381  dist/GossipAudio-1.0.0-release.apk
+ae5d54430b18fbbb15d8eea2101d8825edafdb1d4f794e2b87c4b925ad8e37ea  dist/GossipAudio-1.0.0.aab
+
+apk size:
+total 3044
+-rw-r--r-- 1 runner runner     517 Oct 31 12:31 BUILD_INFO.txt
+-rw-r--r-- 1 runner runner 1167231 Oct 31 12:31 GossipAudio-1.0.0-debug.apk
+-rw-r--r-- 1 runner runner  970897 Oct 31 12:31 GossipAudio-1.0.0-release.apk
+-rw-r--r-- 1 runner runner  970037 Oct 31 12:31 GossipAudio-1.0.0.aab
