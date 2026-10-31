@@ -1,6 +1,6 @@
 harmonic_ratio_median=1.000
-voiced_frames=139
+voiced_frames=140
 duration_ms=4186
 peak=31968
-bands_percent=0-300=10.1 300-800=56.3 800-2000=15.0 2000-4000=5.1 4000-8000=13.6
+bands_percent=0-300=10.3 300-800=56.6 800-2000=14.1 2000-4000=5.1 4000-8000=13.9
 estimate=v4 cascade formant synthesiser
