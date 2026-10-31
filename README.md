@@ -21,6 +21,20 @@ file you can download and share. No account, no cloud, no "premium" wall, no fak
 
 ---
 
+## Look at it first
+
+| | |
+|---|---|
+| ![Studio](dist/shots/01-shell-studio.png) | ![Voices](dist/shots/02-voices.png) |
+| Studio — composer, 10 voices, 8 moods, live telemetry | Voices — 4 girls · 5 boys · 1 not human, previews included |
+| ![Player](dist/shots/05-player.png) | ![Dark](dist/shots/09-shell-dark.png) |
+| Player — vinyl, seekable waveform, download/share/sleep | Dark theme — same yellow, system black |
+
+These are **real renders**: CI boots the activity, walks the tabs and rasterises the view tree
+(`UiSmokeTest`). Full gallery: [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
+
+---
+
 ## Install in 30 seconds
 
 1. Download [`dist/GossipAudio-1.0.0-release.apk`](dist/GossipAudio-1.0.0-release.apk) on your phone.
@@ -118,7 +132,8 @@ butter-yellow gradients. No vector assets to bloat the APK, no third-party UI ki
 
 Full details: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · formats, [`docs/AUDIO-FORMATS.md`](docs/AUDIO-FORMATS.md)
 · voices, [`docs/VOICES.md`](docs/VOICES.md) · feature-by-feature proof, [`docs/FEATURES.md`](docs/FEATURES.md)
-· build & CI, [`docs/BUILD.md`](docs/BUILD.md).
+· build & CI, [`docs/BUILD.md`](docs/BUILD.md) · screenshots, [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md)
+· manual QA, [`docs/QA-CHECKLIST.md`](docs/QA-CHECKLIST.md) · store listing, [`docs/STORE.md`](docs/STORE.md).
 
 ---
 
@@ -157,6 +172,14 @@ PipelineTest > silenceAndEmptyInputAreHandledGracefully PASSED
 
 The tests run the **same** classes the APK runs, and write real audio into
 `app/build/test-samples/` (published to [`dist/samples/`](dist/samples/)).
+
+Two more suites keep the app honest:
+
+* `UiSmokeTest` — Robolectric boots `MainActivity`, waits out the splash, opens all four tabs, the player,
+  About, Help and Diagnostics, asserts on the rendered text and saves nine PNG screenshots.
+* `tools/verify_apk.py` + `tools/verify_audio.py` — run in CI after every build; they parse the binary
+  manifest, the APK signing block, the dex string table, RIFF/WAVE headers, ID3v2.3 frames and MPEG
+  frame headers. Output is committed as [`dist/VERIFICATION.txt`](dist/VERIFICATION.txt).
 
 ---
 
