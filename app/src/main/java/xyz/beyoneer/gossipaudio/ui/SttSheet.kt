@@ -109,7 +109,7 @@ object SttSheet {
         private val core = Paint(Paint.ANTI_ALIAS_FLAG)
         private val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.STROKE
-            color = palette.yellow
+            color = paletteRef.yellow
             strokeWidth = (2f * resources.displayMetrics.density)
         }
         private val glow = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -121,12 +121,12 @@ object SttSheet {
             super.onSizeChanged(w, h, oldw, oldh)
             core.shader = RadialGradient(
                 w * 0.4f, h * 0.35f, w * 0.6f,
-                intArrayOf(Color.WHITE, palette.yellowBright, palette.yellow, palette.yellowDeep),
+                intArrayOf(Color.WHITE, paletteRef.yellowBright, paletteRef.yellow, paletteRef.yellowDeep),
                 floatArrayOf(0f, 0.35f, 0.7f, 1f), Shader.TileMode.CLAMP
             )
             glow.shader = RadialGradient(
                 w / 2f, h / 2f, w * 0.52f,
-                intArrayOf(Color.argb(90, Color.red(palette.yellow), Color.green(palette.yellow), Color.blue(palette.yellow)), Color.TRANSPARENT),
+                intArrayOf(Color.argb(90, Color.red(paletteRef.yellow), Color.green(paletteRef.yellow), Color.blue(paletteRef.yellow)), Color.TRANSPARENT),
                 floatArrayOf(0f, 1f), Shader.TileMode.CLAMP
             )
         }
@@ -149,10 +149,10 @@ object SttSheet {
             val iconSize = width * 0.22f
             canvas.save()
             canvas.translate(cx - iconSize / 2, cy - iconSize / 2)
-            Icons.draw(canvas, Icons.Kind.MIC, iconSize / 2, iconSize / 2, iconSize, palette.onYellow, iconSize * 0.12f)
+            Icons.draw(canvas, Icons.Kind.MIC, iconSize / 2, iconSize / 2, iconSize, paletteRef.onYellow, iconSize * 0.12f)
             canvas.restore()
             if (listening) {
-                val wave = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = palette.yellow }
+                val wave = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = paletteRef.yellow }
                 for (i in 0 until 7) {
                     val h = (8 + 14 * kotlin.math.abs(sin((t * 6.28 + i * 0.9).toDouble()))).toFloat()
                     val x = cx - width * 0.2f + i * width * 0.066f

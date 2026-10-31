@@ -177,9 +177,9 @@ class Chip(
 }
 
 /** Minimal custom switch with a springy knob. */
-class ToggleSwitch(context: Context, private val palette: Palette, checked: Boolean = false) : View(context) {
+class ToggleSwitch(context: Context, private val palette: Palette, initial: Boolean = false) : View(context) {
 
-    var checked = checked
+    var checked = initial
         set(value) {
             field = value
             animate()
@@ -189,7 +189,7 @@ class ToggleSwitch(context: Context, private val palette: Palette, checked: Bool
 
     private val track = Paint(Paint.ANTI_ALIAS_FLAG)
     private val knob = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var anim = if (checked) 1f else 0f
+    private var anim = if (initial) 1f else 0f
 
     init {
         layoutParams = ViewGroup.LayoutParams(Ui.dp(context, 52f), Ui.dp(context, 30f))
@@ -343,7 +343,7 @@ class NeonSlider(
             MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
                 parent?.requestDisallowInterceptTouchEvent(true)
                 val pad = Ui.dpf(context, 14f)
-                val usable = (width - pad * 2).coerceAtLeast(1)
+                val usable = (width - pad * 2).coerceAtLeast(1f)
                 val frac = ((event.x - pad) / usable).coerceIn(0f, 1f)
                 val raw = min + frac * (max - min)
                 val snapped = (raw / step).roundToInt() * step

@@ -42,8 +42,8 @@ public class MPGLib {
     byte[] pnt;
     int size;
     int pos;
-    buf next;
-    buf prev;
+     buf next;
+     buf prev;
   };
 
   public static class framebuf {
@@ -55,7 +55,7 @@ public class MPGLib {
 
   public static class mpstr_tag {
     buf head;
-    buf tail; /* buffer linked list pointers, tail points to oldest buffer */
+     buf tail; /* buffer linked list pointers, tail points to oldest buffer */
     boolean vbr_header; /* 1 if valid Xing vbr header detected */
     int num_frames; /* set if vbr header present */
     int enc_delay; /* set if vbr header present */

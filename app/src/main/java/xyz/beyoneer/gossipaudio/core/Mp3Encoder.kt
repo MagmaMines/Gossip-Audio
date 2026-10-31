@@ -9,8 +9,12 @@ import ru.wowa.jump3r.mp3.MPEGMode
 import ru.wowa.jump3r.mp3.Presets
 import ru.wowa.jump3r.mp3.Quantize
 import ru.wowa.jump3r.mp3.QuantizePVT
+import ru.wowa.jump3r.mp3.Reservoir
+import ru.wowa.jump3r.mp3.Takehiro
 import ru.wowa.jump3r.mp3.VBRTag
 import ru.wowa.jump3r.mp3.Version
+import ru.wowa.jump3r.mpg.Common
+import ru.wowa.jump3r.mpg.Interface
 import ru.wowa.jump3r.mpg.MPGLib
 
 /**
@@ -38,17 +42,24 @@ object Mp3Encoder {
         gfp.copyright = 0
         gfp.disable_reservoir = false
 
-        val lame = Lame(
-            GainAnalysis(),
-            BitStream(),
-            Presets(),
-            QuantizePVT(),
-            Quantize(),
-            VBRTag(),
-            Version(),
-            ID3Tag(),
-            MPGLib()
-        )
+        // Wire the LAME modules exactly the way jump3r's own encoder does.
+        val ver = Version()
+        val ga = GainAnalysis()
+        val vbr = VBRTag()
+        val tak = Takehiro()
+        val common = Common()
+        val intf = Interface(common)
+        val mpg = MPGLib(intf, common)
+        val bs = BitStream(ga, mpg, ver, vbr)
+        val id3 = ID3Tag(bs, ver)
+        val presets = Presets()
+        val qupvt = QuantizePVT(tak)
+        val rv = Reservoir(bs)
+        val qu = Quantize(bs, rv, qupvt, tak)
+        val lame = Lame(ga, bs, presets, qupvt, qu, vbr, ver, id3, mpg)
+        id3.setModules(bs, ver)
+        tak.setModules(qupvt)
+        vbr.setModules(lame, bs, ver)
         val rc = lame.lame_init_params(gfp)
         if (rc < 0) throw IllegalStateException("LAME init failed ($rc)")
 

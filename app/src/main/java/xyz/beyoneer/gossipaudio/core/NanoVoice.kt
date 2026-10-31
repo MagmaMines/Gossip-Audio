@@ -40,7 +40,7 @@ object NanoVoice {
         val sentences = splitSentences(clean)
         var absolute = 0.0
         var total = 0.0
-        for (s in sentences) total += s.length + 12
+        for (s in sentences) total += s.text.length + 12
         for (sentence in sentences) {
             val words = parseWords(sentence.text)
             appendWords(words, sentence, frames, options)
@@ -331,7 +331,7 @@ object NanoVoice {
         o: Options
     ) {
         if (words.isEmpty()) return
-        val totalSyl = words.sumOf { w -> w.first.phones.count { isVowel(it) } }.coerceAtLeast(1)
+        val totalSyl = words.sumOf { w -> w.first.phones.count { isVowel(it.sym) } }.coerceAtLeast(1)
         var sylSpoken = 0
         for ((wordIndex, pair) in words.withIndex()) {
             val word = pair.first
@@ -347,7 +347,7 @@ object NanoVoice {
                 if (o.vibrato > 0) f0 *= 1.0 + o.vibrato * sin(2.0 * PI * 5.0 * sylSpoken / 3.0)
                 val durScale = if (phone.stress) 1.18 else 1.0
                 val rawDur = base.durMs * durScale
-                val nextSym = word.phones.getOrNull(pi + 1) ?: ""
+                val nextSym = word.phones.getOrNull(pi + 1)?.sym ?: ""
                 when (base.kind) {
                     Kind.VOWEL -> {
                         if (phone.sym in DIPHTHONGS) {

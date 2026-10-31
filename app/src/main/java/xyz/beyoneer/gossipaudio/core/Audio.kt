@@ -165,7 +165,7 @@ object Wav {
         val out = ShortArray(usable / 2)
         var p = 0
         for (i in out.indices) {
-            out[i] = getShortLE(bytes, p)
+            out[i] = getShortLE(bytes, p).toShort()
             p += 2
         }
         return Pcm(sampleRate, channels, out)

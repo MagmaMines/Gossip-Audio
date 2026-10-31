@@ -141,13 +141,13 @@ class Sparkline(context: Context, private val palette: Palette) : View(context) 
     private var data: List<Pair<Float, Float>> = emptyList()
     private val cpuPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = Ui2.dp(context, 2f)
+        strokeWidth = Ui2.dpf(context, 2f)
         color = palette.yellow
         strokeCap = Paint.Cap.ROUND
     }
     private val memPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = Ui2.dp(context, 1.5f)
+        strokeWidth = Ui2.dpf(context, 1.5f)
         color = if (palette.dark) 0x99FFFFFF.toInt() else 0x998A6A00.toInt()
         strokeCap = Paint.Cap.ROUND
     }
@@ -259,12 +259,12 @@ class AvatarView(
         canvas.drawCircle(cx, cy, r * 1.35f, glow)
         canvas.drawCircle(cx, cy, r, fill)
         ring.color = if (selected) palette.yellow else Ui2Alpha(palette.outline, 0.9f)
-        ring.strokeWidth = if (selected) Ui2.dp(context, 2.5f) else Ui2.dp(context, 1.2f)
+        ring.strokeWidth = if (selected) Ui2.dpf(context, 2.5f) else Ui2.dpf(context, 1.2f)
         canvas.drawCircle(cx, cy, r, ring)
         canvas.drawText(initial, cx, cy + textPaint.textSize * 0.36f, textPaint)
         if (selected) {
             ring.color = Ui2Alpha(palette.yellow, 0.35f)
-            ring.strokeWidth = Ui2.dp(context, 1f)
+            ring.strokeWidth = Ui2.dpf(context, 1f)
             canvas.drawCircle(cx, cy, r + Ui2.dp(context, 4f), ring)
         }
     }
@@ -295,7 +295,7 @@ class CoverView(context: Context, private val palette: Palette, private val size
     private val border = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         color = palette.yellowDeep
-        strokeWidth = Ui2.dp(context, 1.2f)
+        strokeWidth = Ui2.dpf(context, 1.2f)
     }
     private var fallback: Bitmap? = null
     private val rect = RectF()
@@ -433,11 +433,11 @@ class VinylView(context: Context, private val palette: Palette, private val size
     private val groove = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         color = if (palette.dark) 0x22FFFFFF else 0x22000000
-        strokeWidth = Ui2.dp(context, 1f)
+        strokeWidth = Ui2.dpf(context, 1f)
     }
     private val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
-        strokeWidth = Ui2.dp(context, 2f)
+        strokeWidth = Ui2.dpf(context, 2f)
         color = palette.yellowDeep
     }
     private val glow = Paint(Paint.ANTI_ALIAS_FLAG)
