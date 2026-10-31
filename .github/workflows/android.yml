@@ -127,7 +127,7 @@ jobs:
           cp ci-logs/test-report.txt dist/TEST_REPORT.txt
           cp app/build/test-samples/*.wav dist/samples/ 2>/dev/null || true
           cp app/build/test-samples/*.mp3 dist/samples/ 2>/dev/null || true
-          cp app/build/test-samples/pipeline-sample.txt dist/samples/ 2>/dev/null || true
+          cp app/build/test-samples/*.txt dist/samples/ 2>/dev/null || true
           ls -l dist/samples || true
           cp app/build/outputs/apk/release/app-release.apk "dist/GossipAudio-${VERSION}-release.apk"
           cp app/build/outputs/apk/debug/app-debug.apk "dist/GossipAudio-${VERSION}-debug.apk"

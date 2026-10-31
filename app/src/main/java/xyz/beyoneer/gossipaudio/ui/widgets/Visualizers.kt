@@ -442,6 +442,7 @@ class VinylView(context: Context, private val palette: Palette, private val size
     }
     private val glow = Paint(Paint.ANTI_ALIAS_FLAG)
     private val art = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
+    private val spindle = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     private val fallback = BitmapFactory.decodeResource(context.resources, R.drawable.gossipaudio_glyph)
 
     init {
@@ -456,6 +457,7 @@ class VinylView(context: Context, private val palette: Palette, private val size
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         disc.color = if (palette.dark) 0xFF17171A.toInt() else 0xFFFFFFFF.toInt()
+        spindle.color = palette.bg
         glow.shader = RadialGradient(
             w / 2f, h / 2f, w * 0.52f,
             intArrayOf(Color.argb(70, Color.red(palette.yellow), Color.green(palette.yellow), Color.blue(palette.yellow)), Color.TRANSPARENT),
@@ -497,23 +499,25 @@ class VinylView(context: Context, private val palette: Palette, private val size
         for (i in 1..5) {
             canvas.drawCircle(cx, cy, r * (0.55f + i * 0.075f), groove)
         }
+        val artR = r * 0.52f
+        // label area: a clean disc, then the artwork *contained* inside it (cover
+        // art used to be cropped to a circle, which decapitated our own logo)
+        canvas.drawCircle(cx, cy, artR, disc)
         canvas.save()
         canvas.rotate(angle, cx, cy)
-        val artR = r * 0.5f
         val bmp = bitmap ?: fallback
         if (bmp != null) {
-            val path = Path().apply { addCircle(cx, cy, artR, Path.Direction.CW) }
-            canvas.save()
-            canvas.clipPath(path)
-            val scale = (artR * 2) / minOf(bmp.width, bmp.height)
+            val box = artR * 1.62f
+            val scale = minOf(box / bmp.width, box / bmp.height)
             val w = bmp.width * scale
             val h = bmp.height * scale
             canvas.drawBitmap(bmp, null, RectF(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2), art)
-            canvas.restore()
         }
         canvas.restore()
         canvas.drawCircle(cx, cy, artR, ring)
         canvas.drawCircle(cx, cy, r, ring)
-        canvas.drawCircle(cx, cy, r * 0.055f, ring)
+        // spindle
+        canvas.drawCircle(cx, cy, r * 0.045f, spindle)
+        canvas.drawCircle(cx, cy, r * 0.045f, ring)
     }
 }

@@ -72,6 +72,7 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
             orientation = LinearLayout.VERTICAL
             setPadding(Ui.dp(activity, 18f), Ui.dp(activity, 8f), Ui.dp(activity, 18f), Ui.dp(activity, 28f))
         }
+        Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
         column.addView(Ui.text(activity, "Your library", 25f, palette.text, bold = true))

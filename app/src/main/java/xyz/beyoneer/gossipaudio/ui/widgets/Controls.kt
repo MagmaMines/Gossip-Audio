@@ -10,6 +10,7 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.Typeface
 import android.view.Gravity
+import android.view.animation.PathInterpolator
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -89,21 +90,6 @@ class BrandButton(
         addView(label)
 
         Ui.pressable(this, 0.96f)
-        if (variant == Variant.PRIMARY && Motion.enabled) startGlow()
-    }
-
-    private fun startGlow() {
-        // a very soft breathing glow — subtle, 120fps friendly, can be disabled
-        ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 2800
-            repeatCount = ValueAnimator.INFINITE
-            repeatMode = ValueAnimator.REVERSE
-            addUpdateListener { v ->
-                val f = v.animatedValue as Float
-                elevation = Ui.dpf(context, 2.5f + f * 3.5f)
-            }
-            start()
-        }
     }
 
     fun setText(value: String) {
@@ -277,9 +263,9 @@ class Segmented(context: Context, private val palette: Palette, options: List<St
         background = Ui.rounded(palette.card, Ui.dpf(context, 100f), palette.outline, Ui.dp(context, 1f))
         setPadding(Ui.dp(context, 4f), Ui.dp(context, 4f), Ui.dp(context, 4f), Ui.dp(context, 4f))
         indicator.background = Ui.gradient(
-            intArrayOf(palette.yellowBright, palette.yellow), Ui.dpf(context, 100f),
-            strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(context, 1.5f)
+            intArrayOf(palette.yellowBright, palette.yellow), Ui.dpf(context, 100f)
         )
+        indicator.elevation = Ui.dpf(context, 2f)
         addView(indicator, LayoutParams(0, LayoutParams.MATCH_PARENT))
         val row = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
         options.forEachIndexed { index, option ->
@@ -301,22 +287,32 @@ class Segmented(context: Context, private val palette: Palette, options: List<St
         post { layoutIndicator() }
     }
 
+    private var placed = false
+
     private fun select(index: Int) {
         selectedIndex = index
         updateColors()
-        layoutIndicator()
+        layoutIndicator(animate = true)
         onSelect?.invoke(index)
     }
 
-    private fun layoutIndicator() {
+    private fun layoutIndicator(animate: Boolean = false) {
         if (width == 0 || labels.isEmpty()) return
         val cell = width.toFloat() / labels.size
         val lp = indicator.layoutParams as LayoutParams
         lp.width = (cell - Ui.dp(context, 1f)).toInt()
         lp.height = height - Ui.dp(context, 8f)
-        lp.leftMargin = (cell * selectedIndex).toInt() + Ui.dp(context, 1f)
+        lp.leftMargin = Ui.dp(context, 1f)
         lp.topMargin = Ui.dp(context, 4f)
         indicator.layoutParams = lp
+        val target = cell * selectedIndex
+        if (animate && placed && Motion.enabled) {
+            indicator.animate().translationX(target).setDuration(260)
+                .setInterpolator(PathInterpolator(0.2f, 0f, 0f, 1f)).start()
+        } else {
+            indicator.translationX = target
+            placed = true
+        }
     }
 
     private fun updateColors() {

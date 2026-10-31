@@ -53,6 +53,7 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
             orientation = LinearLayout.VERTICAL
             setPadding(Ui.dp(activity, 20f), Ui.dp(activity, 8f), Ui.dp(activity, 20f), Ui.dp(activity, 30f))
         }
+        Ui.capWidth(column, 20f)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
         val top = LinearLayout(activity).apply {

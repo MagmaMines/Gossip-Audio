@@ -126,9 +126,13 @@ class PipelineTest {
     @Test
     fun audioEffectsAreStable() {
         val pcm = NanoVoice.speak("Effects test.", NanoVoice.Options(baseF0 = 110.0))
-        val normalized = AudioFx.normalize(pcm, -1.0)
-        assertTrue("normalize should not clip", normalized.peak() <= 32767)
-        assertTrue("normalize should raise level", normalized.peak() >= pcm.peak())
+        // NanoVoice v2 already lands near full scale, so test both directions of
+        // normalize instead of assuming the old, very quiet output.
+        val quiet = AudioFx.gain(pcm, 0.2)
+        val raised = AudioFx.normalize(quiet, -1.0)
+        assertTrue("normalize should raise a quiet signal", raised.peak() > quiet.peak())
+        val tamed = AudioFx.normalize(pcm, -1.0)
+        assertTrue("normalize should not clip", tamed.peak() in 1..32767)
 
         val faded = AudioFx.fade(pcm, 20, 60)
         assertEquals(pcm.samples.size, faded.samples.size)
@@ -255,7 +259,15 @@ class PipelineTest {
         assertTrue("not enough voiced frames: ${ratios.size}", ratios.size > 20)
         val median = ratios.sorted()[ratios.size / 2]
         assertTrue("harmonic ratio $median is noise-like (ticks!), expected > 0.65", median > 0.65)
-        println("NanoVoice harmonic ratio median=$median frames=${ratios.size}")
+        val report = buildString {
+            append("harmonic_ratio_median=").append(String.format("%.3f", median)).append('\n')
+            append("voiced_frames=").append(ratios.size).append('\n')
+            append("duration_ms=").append(pcm.durationMs).append('\n')
+            append("peak=").append(pcm.peak()).append('\n')
+            append("estimate=").append("v2 continuous-voicing formant synthesiser").append('\n')
+        }
+        File(sampleDir, "quality.txt").writeText(report)
+        println(report)
     }
 
     @Test

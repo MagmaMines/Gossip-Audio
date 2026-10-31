@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.CycleInterpolator
 import android.widget.EditText
 import android.widget.FrameLayout
-import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -34,6 +33,7 @@ import xyz.beyoneer.gossipaudio.ui.screens.ShellScreen
 import xyz.beyoneer.gossipaudio.ui.theme.Ui
 import xyz.beyoneer.gossipaudio.ui.widgets.AvatarView
 import xyz.beyoneer.gossipaudio.ui.widgets.BrandButton
+import xyz.beyoneer.gossipaudio.ui.widgets.FadeRow
 import xyz.beyoneer.gossipaudio.ui.widgets.Chip
 import xyz.beyoneer.gossipaudio.ui.widgets.CoverView
 import xyz.beyoneer.gossipaudio.ui.widgets.IconView
@@ -101,6 +101,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             orientation = LinearLayout.VERTICAL
             setPadding(Ui.dp(activity, 18f), Ui.dp(activity, 8f), Ui.dp(activity, 18f), Ui.dp(activity, 28f))
         }
+        Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
         // greeting
@@ -141,10 +142,9 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         column.addView(sectionHeader("Voice", "tap to select"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 20f) })
-        val voiceScroll = HorizontalScrollView(activity).apply { isHorizontalScrollBarEnabled = false }
-        voiceStrip = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL }
-        voiceScroll.addView(voiceStrip)
-        column.addView(voiceScroll, LinearLayout.LayoutParams(
+        val voiceRow = FadeRow(activity, palette)
+        voiceStrip = voiceRow.content
+        column.addView(voiceRow, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 10f) })
 
@@ -162,10 +162,9 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         column.addView(sectionHeader("Style", "how it should sound"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 18f) })
-        val styleScroll = HorizontalScrollView(activity).apply { isHorizontalScrollBarEnabled = false }
-        styleStrip = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL }
-        styleScroll.addView(styleStrip)
-        column.addView(styleScroll, LinearLayout.LayoutParams(
+        val styleRow = FadeRow(activity, palette)
+        styleStrip = styleRow.content
+        column.addView(styleRow, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 10f) })
 
@@ -191,10 +190,9 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         column.addView(sectionHeader("Recent", "your last voices"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 22f) })
-        val recentScroll = HorizontalScrollView(activity).apply { isHorizontalScrollBarEnabled = false }
-        recentStrip = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL }
-        recentScroll.addView(recentStrip)
-        column.addView(recentScroll, LinearLayout.LayoutParams(
+        val recentRow = FadeRow(activity, palette)
+        recentStrip = recentRow.content
+        column.addView(recentRow, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 10f) })
         recentEmpty = Ui.text(activity, "Nothing yet \u2014 your first gossip is one tap away.", 12f, palette.textDim)

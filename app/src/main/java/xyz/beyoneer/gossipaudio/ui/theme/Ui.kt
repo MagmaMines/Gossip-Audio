@@ -158,6 +158,25 @@ object Ui {
         return view
     }
 
+
+    /**
+     * Responsive width cap: on phones nothing changes, but on tablets/foldables the
+     * content column stops at [maxContentDp] and centres itself instead of stretching
+     * text across 900 dp. Called once per screen on the scrolling column.
+     */
+    fun capWidth(view: View, baseHorizontalDp: Float = 18f, maxContentDp: Float = 680f) {
+        view.addOnLayoutChangeListener { v, left, _, right, _, _, _, _, _ ->
+            val width = right - left
+            if (width <= 0) return@addOnLayoutChangeListener
+            val maxPx = dpf(v.context, maxContentDp)
+            val extra = ((width - maxPx) / 2f).coerceAtLeast(0f)
+            val target = dp(v.context, baseHorizontalDp) + extra.toInt()
+            if (v.paddingLeft != target) {
+                v.setPadding(target, v.paddingTop, target, v.paddingBottom)
+            }
+        }
+    }
+
     fun fadeInUp(view: View, delay: Long = 0, distanceDp: Float = 18f) {
         if (!Motion.enabled) {
             view.alpha = 1f

@@ -13,7 +13,7 @@
 | 7 | **Jordan** | Male | `en-US` | USA 🇺🇸 | 0.74 | 0.95 | 0.34 | device TTS → NanoVoice |
 | 8 | **Oliver** | Male | `en-GB` | UK 🇬🇧 | 0.90 | 1.00 | 0.50 | device TTS → NanoVoice |
 | 9 | **Kenji** | Male | `ja-JP` | Japan 🇯🇵 | 0.95 | 0.98 | 0.46 | device TTS → NanoVoice |
-| 10 | **Beyoneer Bot** | Not human | `en-US` | The Internet 🤖 | 1.00 | 1.04 | 0.92 | **NanoVoice only** |
+| 10 | **Beyoneer Bot** | Not human | `en-US` | The Internet 🤖 | 1.00 | 1.04 | 0.92 | **NanoVoice only** (ring-modulated, not human on purpose) |
 
 Counts are asserted by `PipelineTest.catalogHasTenVoicesAndEightStyles`:
 `4 female`, `5 male`, `1 non-human`, `10 total` — so a future refactor cannot quietly break the brief.
@@ -107,3 +107,21 @@ voice-*.wav          RIFF/WAVE · PCM 16-bit · 22050 Hz · mono · 4.2–4.4 s
 
 Each voice file has a different pitch (measured fundamental ≈ 134–146 Hz in the rendered demos) and a
 different file hash — they are genuinely different renders, not one file copied ten times.
+
+## Languages
+
+| Input | Who speaks it | Notes |
+|---|---|---|
+| English (typed in Latin) | device TTS, else NanoVoice 2 | Rule-based G2P: digraphs, magic-e, syllabic stress, schwa reduction, ~360 irregular words and contractions. |
+| Hindi (Devanagari) | device TTS `hi-IN`, else NanoVoice 2 | Matras, virama, anusvara/visarga, precomposed nukta, word-final schwa deletion, irregular words (`है`, `मैं`, `क्या`…). |
+| Hinglish (romanised Hindi) | device TTS `hi-IN`, else NanoVoice 2 | `kh/gh/chh/bh/dh/th/ph/jh` + `aa/ee/oo/ai/au`; switches per message when ≥25 % of words look Hindi, so `kaise ho bhai` never gets read as English. |
+| Japanese, other locales | device TTS | The on-device engine handles the language; NanoVoice reads Latin text with English rules as a last resort. |
+
+A message like `मेरा नाम Riya है` is fine: the phonemiser switches per word, not per message.
+
+## The engine actually used
+
+Every render records an engine label (`system` or `nano`) that the Player screen shows under **Engine**.
+A system-TTS capture is accepted only if it has real level, a plausible amount of voiced audio for the
+amount of text, and a sane duration — otherwise it is discarded and NanoVoice renders the line, so the
+"installed engine but no voice data" case can never hand you silence or clicks again.

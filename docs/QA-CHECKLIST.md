@@ -4,10 +4,17 @@ Open the app and work down this list. Anything that fails is a bug worth reporti
 **Settings → Diagnostics → Run self-test** covers the audio pipeline automatically (8 checks).
 
 ## Install & launch
-- [ ] `dist/GossipAudio-1.0.1-release.apk` installs without "invalid package" (v2 signature verified in CI).
+- [ ] `dist/GossipAudio-1.0.2-release.apk` installs without "invalid package" (v2 signature verified in CI).
 - [ ] Launcher icon is the yellow logo, label reads **GossipAudio**.
 - [ ] Cold start shows the butterfly splash, then onboarding (first run) or the Studio tab.
 - [ ] Rotating the phone does not lose the composer text or stop playback.
+
+## Audio quality (the 1.0.2 fix)
+- [ ] Generate a sentence, save WAV, play it: continuous voice, no ticks/hiss between words.
+- [ ] Type `नमस्ते दोस्तों, आज की गॉसिप सुनो।` → audio is Hindi-ish, not silence.
+- [ ] Type `kaise ho bhai, sab badhiya hai?` → Hinglish, not spelled-out English.
+- [ ] On a phone without TTS data, generate anyway: NanoVoice fills in, engine label says NanoVoice.
+- [ ] Player → Engine shows `system` when your phone's engine produced it.
 
 ## Studio
 - [ ] Typing updates the word count and the estimated duration live.
@@ -24,6 +31,14 @@ Open the app and work down this list. Anything that fails is a bug worth reporti
 - [ ] Speed chips change playback speed live without pitch artefacts.
 - [ ] Sleep timer 5 min stops playback when it expires.
 - [ ] Home button + screen off: audio keeps playing, notification shows pause/stop.
+
+## Responsiveness & polish
+- [ ] On a 320 dp phone and on a tablet, every tab scrolls without a single clipped card edge.
+- [ ] Tablet: the reading column stops growing and centres (≈680 dp cap).
+- [ ] Horizontal rows (voices, styles, speed) fade at the edge instead of chopping a card.
+- [ ] Raise the system font size to 130 %: nothing overlaps, nothing is cut off.
+- [ ] TalkBack: every icon button announces a name; switches announce on/off.
+- [ ] Reduce motion ON: no splash flight, no fade storms, UI still fully usable.
 
 ## Export
 - [ ] Download → WAV produces a `.wav` in `Downloads/GossipAudio` that plays in the system player.

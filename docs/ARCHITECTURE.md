@@ -92,21 +92,37 @@ composer text
 3. Any exception, timeout (`12 s` watchdog per engine) or empty result falls through to `NanoVoice`.
    The fallback is recorded in `Clip.engine` (`"system"` or `"nano"`) and shown in the player.
 
-### NanoVoice (the guaranteed engine)
+### NanoVoice 2 (the guaranteed engine)
 
-NanoVoice is a formant synthesiser, not a sample player. For each word it:
+NanoVoice is a source–filter formant synthesiser, not a sample player and not a neural model.
+The 1.0.1 implementation restarted the voice for every phoneme (own attack/release, coefficients
+recomputed per sample), which produced the "ticks/hiss" users reported: only 31–52 % of the energy
+landed on harmonics of F0. 1.0.2 replaces it end to end:
 
-1. lowercases and phonemises using letter-to-sound rules (`phonemize`),
-2. splits into syllables and assigns stress (`defaultStress`),
-3. emits a timeline of **frames**: `(duration, F1, F2, F3, voicing, noise, amplitude, F0)`
-   — vowels use a vowel triangle, nasals/liquids/fricatives/stops/aspirates have their own profiles,
-4. renders each frame with a glottal pulse train (harmonics with 1/f rolloff), a second-order
-   formant filter bank, noise bursts for fricatives and silences at punctuation,
-5. applies prosody: declination over the sentence, question rise, exclamation emphasis,
-   vibrato (female voices), roughness/robotic quantisation (the bot),
-6. normalises to −2 dBFS.
+1. **Phonemise** — English letter-to-sound rules plus a lexicon of irregular common words and
+   contractions; Devanagari Hindi (independent vowels, consonants, matras, virama, anusvara,
+   precomposed nukta, word-final schwa deletion, a small irregular-word lexicon); romanised Hinglish
+   (`kh/gh/chh/bh/dh/th/ph/jh`, `aa/ee/oo/ai/au`) with per-message language detection.
+2. **Build events** — one `(phone, ms, stress)` list. Stops expand to `closure → burst → aspiration`,
+   affricates to `closure → burst → longer aspiration`, diphthongs to two targets. Pauses follow
+   punctuation (comma 170 ms, sentence 330 ms, blank line 240 ms, word gap 52 ms).
+3. **Control-rate tracks** — the event list is sampled into 1.45 ms blocks of `F1..F4`, `B1..B3`,
+   voicing, frication, gain, nasal coupling, frication centre and F0, then one-pole smoothed
+   (formants τ = 17–20 ms, voicing 11 ms, frication 7 ms). Coefficients are updated once per block,
+   never per sample.
+4. **Continuous glottal source** — a Rosenberg pulse (open quotient 0.62) runs for the whole utterance
+   with period jitter (±0.2 %) and per-period shimmer (±3 %); radiation is the first difference of the
+   glottal flow. F0 declines 22 % across a sentence, +10 % on stressed syllables, optional vibrato.
+5. **Vocal tract** — four cascaded two-pole resonators (bandwidths 70/95/140/250 Hz), a nasal
+   anti-resonator at 950 Hz, shaped noise through a band-pass resonator for fricatives, one-pole
+   low-passed noise for breathiness, and a per-phoneme gain envelope.
+6. **Master** — 99.9th-percentile normalisation (one transient cannot squash the sentence), hard clamp,
+   16-bit PCM at the requested sample rate (22 050 Hz by default).
 
-Sampling rate is 22 050 Hz mono, so a 10-second line is ~440 KB of PCM — cheap on any 2016 phone.
+Quality is asserted by `PipelineTest.renderedAudioIsTonalSpeechNotNoise`, which measures the harmonic
+ratio of voiced frames in CI and fails the build below 0.65 (v2 measures 0.85–0.92).
+
+Videos: see `dist/samples/voice-*.wav` — rendered by this exact code during CI.
 
 Details and the full parameter table: [`VOICES.md`](VOICES.md).
 

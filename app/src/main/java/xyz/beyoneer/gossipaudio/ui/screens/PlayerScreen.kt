@@ -61,6 +61,7 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             orientation = LinearLayout.VERTICAL
             setPadding(Ui.dp(activity, 18f), Ui.dp(activity, 6f), Ui.dp(activity, 18f), Ui.dp(activity, 30f))
         }
+        Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
         // header
@@ -215,10 +216,8 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
                 topMargin = Ui.dp(activity, 16f)
             }
         )
-        val speedRow = LinearLayout(activity).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER
-        }
+        val speedRow = xyz.beyoneer.gossipaudio.ui.widgets.FadeRow(activity, palette)
+        speedRow.content.gravity = Gravity.CENTER
         listOf(0.5f, 0.75f, 1f, 1.25f, 1.5f, 2f).forEach { speed ->
             val label = if (speed == 1f) "1x" else "${speed}x"
             val chip = Chip(activity, palette, label, speed == PlaybackHub.state.speed)
@@ -227,7 +226,7 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
                 speedChips.forEach { (value, c) -> c.setSelectedState(value == speed) }
             }
             speedChips.add(speed to chip)
-            speedRow.addView(chip, LinearLayout.LayoutParams(
+            speedRow.content.addView(chip, LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply { marginEnd = Ui.dp(activity, 6f) })
         }

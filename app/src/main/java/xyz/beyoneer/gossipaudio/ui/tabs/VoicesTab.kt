@@ -45,6 +45,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
             orientation = LinearLayout.VERTICAL
             setPadding(Ui.dp(activity, 18f), Ui.dp(activity, 8f), Ui.dp(activity, 18f), Ui.dp(activity, 30f))
         }
+        Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
         column.addView(Ui.text(activity, "10 voices", 25f, palette.text, bold = true))

@@ -73,7 +73,22 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
 
         val column = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
         column.addView(buildTopBar())
-        column.addView(host, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
+        val hostWrap = FrameLayout(activity)
+        hostWrap.addView(host, FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        ))
+        val bottomFade = View(activity).apply {
+            background = android.graphics.drawable.GradientDrawable(
+                android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(android.graphics.Color.TRANSPARENT, palette.bg)
+            )
+            isClickable = false
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }
+        hostWrap.addView(bottomFade, FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 26f), Gravity.BOTTOM
+        ))
+        column.addView(hostWrap, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f))
         miniHost = FrameLayout(activity)
         mini = MiniPlayerView()
         miniHost.addView(mini, FrameLayout.LayoutParams(
