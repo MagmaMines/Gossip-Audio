@@ -1,15 +1,15 @@
 # Install GossipAudio (the APK, not a zip)
 
-> Short version: the download is **`GossipAudio-1.0.0-release.apk`** — one file, tap it, install it.
+> Short version: the download is **`GossipAudio-1.0.1-release.apk`** — one file, tap it, install it.
 > You do **not** need to unzip anything, and you should not rename it to `.zip`.
 
 ## 1. The file you want
 
 | File | What it is | Use it? |
 |---|---|---|
-| [`dist/GossipAudio-1.0.0-release.apk`](../dist/GossipAudio-1.0.0-release.apk) | Signed release build (RSA-4096, APK Signature Scheme v2) | **Yes — this is the app** |
-| [`dist/GossipAudio-1.0.0-debug.apk`](../dist/GossipAudio-1.0.0-debug.apk) | Same code, debug signature, app id ends in `.debug` | Only if you develop |
-| [`dist/GossipAudio-1.0.0.aab`](../dist/GossipAudio-1.0.0.aab) | Play-Store bundle, **not installable by hand** | Upload to Play Console only |
+| [`dist/GossipAudio-1.0.1-release.apk`](../dist/GossipAudio-1.0.1-release.apk) | Signed release build (RSA-4096, APK Signature Scheme v2) | **Yes — this is the app** |
+| [`dist/GossipAudio-1.0.1-debug.apk`](../dist/GossipAudio-1.0.1-debug.apk) | Same code, debug signature, app id ends in `.debug` | Only if you develop |
+| [`dist/GossipAudio-1.0.1.aab`](../dist/GossipAudio-1.0.1.aab) | Play-Store bundle, **not installable by hand** | Upload to Play Console only |
 
 Both APKs are built by CI from the exact commit in [`dist/BUILD_INFO.txt`](../dist/BUILD_INFO.txt)
 and re-verified on every run by `tools/verify_apk.py`.
@@ -30,7 +30,7 @@ source archive from GitHub's green "Code" button, not the app.
 You can prove the file is a signed, installable app yourself:
 
 ```bash
-python3 tools/verify_apk.py dist/GossipAudio-1.0.0-release.apk
+python3 tools/verify_apk.py dist/GossipAudio-1.0.1-release.apk
 ```
 
 ```
@@ -47,7 +47,7 @@ archive and it fails. Try it:
 
 ```bash
 python3 - <<'PY'
-data = bytearray(open("dist/GossipAudio-1.0.0-release.apk", "rb").read())
+data = bytearray(open("dist/GossipAudio-1.0.1-release.apk", "rb").read())
 data[700000] ^= 1
 open("/tmp/tampered.apk", "wb").write(data)
 PY
@@ -70,7 +70,7 @@ you use dictation or turn on reminders.
 ## 4. Install over USB / ADB
 
 ```bash
-adb install -r dist/GossipAudio-1.0.0-release.apk
+adb install -r dist/GossipAudio-1.0.1-release.apk
 ```
 
 `-r` reinstalls over an older build. If you previously installed the debug build, uninstall it first —

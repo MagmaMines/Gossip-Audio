@@ -4,7 +4,7 @@ Open the app and work down this list. Anything that fails is a bug worth reporti
 **Settings → Diagnostics → Run self-test** covers the audio pipeline automatically (8 checks).
 
 ## Install & launch
-- [ ] `dist/GossipAudio-1.0.0-release.apk` installs without "invalid package" (v2 signature verified in CI).
+- [ ] `dist/GossipAudio-1.0.1-release.apk` installs without "invalid package" (v2 signature verified in CI).
 - [ ] Launcher icon is the yellow logo, label reads **GossipAudio**.
 - [ ] Cold start shows the butterfly splash, then onboarding (first run) or the Studio tab.
 - [ ] Rotating the phone does not lose the composer text or stop playback.

@@ -1,6 +1,6 @@
 # Play Store listing pack
 
-Copy-paste ready. Everything here matches the shipped APK (`dist/GossipAudio-1.0.0-release.apk`).
+Copy-paste ready. Everything here matches the shipped APK (`dist/GossipAudio-1.0.1-release.apk`).
 
 ---
 
@@ -100,10 +100,21 @@ GossipAudio by Beyoneer XYZ. Made with an unreasonable amount of yellow.
 | 7-inch tablet | optional | same renders, letterboxed |
 | Promo video | optional | screen-record the Studio → Download flow |
 
-## Release notes (v1.0.0)
+## Release notes (v1.0.1)
 
 ```
-First release.
+Second build — accessibility, haptics and back-gesture release.
+
+• Every icon-only control now has a spoken name; TalkBack reads real labels everywhere
+• Custom switches and sliders report proper Switch / SeekBar roles and can be driven by TalkBack
+• Haptics setting now actually vibrates (tap, confirm, error) and is off in one tap
+• Reduce motion also follows the system "Remove animations" setting
+• Predictive back on Android 14/15 pops the in-app screen stack instead of closing the app
+• App survives process death without showing a blank screen
+• Notification-denied states revert the switch and offer a shortcut to system settings
+• Reminders re-register themselves after an app update
+
+First release features:
 
 • 10 voices (4 female, 5 male, 1 robot) across Indian, American, British and Japanese accents
 • 8 emotion presets, speed 0.5x–2x, pitch fine-tuning
