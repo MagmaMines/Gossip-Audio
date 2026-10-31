@@ -160,15 +160,14 @@ Signing keys are read from `GA_STORE_PASSWORD`, `GA_KEY_ALIAS`, `GA_KEY_PASSWORD
 
 ```
 $ gradle testDebugUnitTest
-PipelineTest > catalogHasTenVoicesAndEightStyles      PASSED
-PipelineTest > everyVoiceSynthesisesAudibleSpeech     PASSED   (10/10 voices, > 1.5 s each, audible peak)
-PipelineTest > wavRoundTripPreservesSamples           PASSED
-PipelineTest > mp3EncoderProducesRealFramesAndTags    PASSED   (frame sync + ID3v2.3 + bitrate sanity)
-PipelineTest > stylesChangeRateAndPitchNumerically    PASSED
-PipelineTest > audioEffectsAreStable                  PASSED
-PipelineTest > textKitEstimatesMatchRenderedAudio     PASSED
-PipelineTest > silenceAndEmptyInputAreHandledGracefully PASSED
+PipelineTest            8 tests   0 failed   NanoVoice → WAV → MP3 → ID3, styles, effects, text tools
+StudioGenerateTest      1 test    0 failed   type → Generate → real clip + cover + MP3 re-export (11 s)
+UiSmokeTest             4 tests   0 failed   boot, all tabs, player, About/Help/Diagnostics, dark theme
+TOTAL                  13 tests  0 failed
 ```
+
+The committed run is [`dist/TEST_REPORT.txt`](dist/TEST_REPORT.txt); CI regenerates it on every push and
+fails the build on any regression.
 
 The tests run the **same** classes the APK runs, and write real audio into
 `app/build/test-samples/` (published to [`dist/samples/`](dist/samples/)).
