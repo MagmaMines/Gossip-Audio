@@ -63,8 +63,8 @@ Measured on the samples in [`dist/samples/`](dist/samples) — the same files th
 | | v1.0.1 | v1.0.2 (shipped) | v1.0.3 |
 |---|---|---|---|
 | Autocorrelation at the pitch period | 0.58–0.64 | **0.14–0.35** (vowels were silent) | **0.65–0.83** |
-| Energy under 800 Hz | — | 79 % | **73 %** |
-| Energy in 2–4 kHz | — | 1.8 % | **3.1 %** |
+| Energy under 800 Hz | — | 41 % (no vowels) | **73 %** |
+| Energy in 2–4 kHz | — | 15.6 % | **3.1 %** |
 | Energy above 4 kHz | 54.9 % | 20.8 % | **7.9 %** |
 | Sounds like | a modem having a bad day | clicks and hiss | a robot with a cold, but a *voice* |
 
