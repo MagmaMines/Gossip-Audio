@@ -4,12 +4,27 @@
 This intentionally avoids external tooling (no aapt/apksigner available in the
 sandbox) and parses Android's binary XML + APK Signing Block by hand.
 """
-import struct, sys, zipfile, os, json, hashlib
+import struct, sys, zipfile, os, json, hashlib, re
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import apksig  # noqa: E402  (local module, real v2/v3 signature verification)
 
-APK = sys.argv[1] if len(sys.argv) > 1 else "dist/GossipAudio-1.0.0-release.apk"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def gradle_version():
+    """Read the expected version straight from build.gradle.kts so bumps never desync CI."""
+    try:
+        text = open(os.path.join(ROOT, "app", "build.gradle.kts"), encoding="utf-8").read()
+        name = re.search(r'versionName\s*=\s*"([^"]+)"', text).group(1)
+        code = re.search(r"versionCode\s*=\s*(\d+)", text).group(1)
+        return name, code
+    except Exception:
+        return None, None
+
+
+EXPECTED_NAME, EXPECTED_CODE = gradle_version()
+APK = sys.argv[1] if len(sys.argv) > 1 else "dist/GossipAudio-%s-release.apk" % (EXPECTED_NAME or "1.0.0")
 
 RES_STRING_POOL = 0x0001
 RES_XML = 0x0003
@@ -159,8 +174,14 @@ def verify(apk):
     }
     if manifest_info["package"] != "xyz.beyoneer.gossipaudio":
         problems.append(f"unexpected package {manifest_info['package']}")
-    if manifest_info["versionName"] != "1.0.0":
-        problems.append(f"unexpected versionName {manifest_info['versionName']}")
+    if EXPECTED_NAME and manifest_info["versionName"] != EXPECTED_NAME:
+        problems.append(
+            f"versionName {manifest_info['versionName']} does not match build.gradle.kts ({EXPECTED_NAME})"
+        )
+    if EXPECTED_CODE and str(manifest_info["versionCode"]) != str(EXPECTED_CODE):
+        problems.append(
+            f"versionCode {manifest_info['versionCode']} does not match build.gradle.kts ({EXPECTED_CODE})"
+        )
     if not manifest_info["activities"]:
         problems.append("no activity declared")
     launcher = False
