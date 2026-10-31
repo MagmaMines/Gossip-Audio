@@ -15,3 +15,6 @@ Thumbs.db
 
 # Local secrets (the demo keystore is intentionally committed for reproducible builds)
 *.jks.bak
+
+__pycache__/
+*.pyc
