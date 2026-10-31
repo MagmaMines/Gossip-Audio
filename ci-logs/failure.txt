@@ -1,70 +1,162 @@
-run: 41217157587
-commit: 7f05d6ede2a01aae2053279f7f835517fe9bbaaf
-time: Sat Oct 31 15:59:54 UTC 2026
+run: 41220114570
+commit: c9b28bc34c430a244e337338dd80aa56d8797ba6
+time: Sat Oct 31 16:34:04 UTC 2026
 ====== kotlin errors (test.log) ======
 ====== kotlin errors (assemble.log) ======
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:204:17 Unresolved reference 'sqrt'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:204:17 Unresolved reference 'sqrt'.
 ====== warnings that matter ======
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:204:17 Unresolved reference 'sqrt'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/NanoVoice.kt:204:17 Unresolved reference 'sqrt'.
 ====== test output (layout + audio quality) ======
-harmonic_ratio_median=1.000
-voiced_frames=30
-duration_ms=4452
-peak=31968
-estimate=v2 continuous-voicing formant synthesiser
 ====== failing tests ======
-ResponsiveLayoutTest > tinyPhoneFitsEveryTab FAILED
-    java.lang.AssertionError at ResponsiveLayoutTest.kt:94
-> Task :app:testDebugUnitTest FAILED
-BUILD FAILED in 50s
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.AccessibilityTest.xml
-  <testcase name="backPopsTheScreenStackBeforeLeavingTheApp" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="10.838"/>
-  <testcase name="hapticsSwitchActuallyGatesVibration" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.4"/>
-  <testcase name="everyTappableControlHasAName" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.701"/>
-  <testcase name="switchesAndSlidersAdvertiseTheirAccessibilityRole" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.338"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.PipelineTest.xml
-  <testcase name="silenceAndEmptyInputAreHandledGracefully" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.063"/>
-  <testcase name="renderedAudioIsTonalSpeechNotNoise" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.145"/>
-  <testcase name="mp3EncoderProducesRealFramesAndTags" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.164"/>
-  <testcase name="stylesChangeRateAndPitchNumerically" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.018"/>
-  <testcase name="everyVoiceSynthesisesAudibleSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.204"/>
-  <testcase name="audioEffectsAreStable" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.016"/>
-  <testcase name="wavRoundTripPreservesSamples" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.008"/>
-  <testcase name="textKitEstimatesMatchRenderedAudio" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.019"/>
-  <testcase name="hindiAndHinglishBothProduceSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.016"/>
-  <testcase name="catalogHasTenVoicesAndEightStyles" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.0"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.ResponsiveLayoutTest.xml
-  <testcase name="tinyPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="3.684">
-    <failure message="java.lang.AssertionError: a control sticks out of its parent:&#10;TAB 0 overflow @320px:&#10;  root/DecorView/FrameLayout/FrameLayout/FrameLayout/FrameLayout/LinearLayout/FrameLayout/FrameLayout/ScrollView/LinearLayout/LinearLayout/LinearLayout[8] 178..252 in 248px wide LinearLayout&#10;" type="java.lang.AssertionError">java.lang.AssertionError: a control sticks out of its parent:
-  </testcase>
-  <testcase name="tabletFitsEveryTabAndCapsTheReadingColumn" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.625"/>
-  <testcase name="pixelPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.493"/>
-  <testcase name="largeFontsStillFit" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.464"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.StudioGenerateTest.xml
-  <testcase name="typingAndTappingGenerateCreatesAPlayableClip" classname="xyz.beyoneer.gossipaudio.StudioGenerateTest" time="0.933"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.UiSmokeTest.xml
-  <testcase name="appBootsIntoShellAndRendersEveryTab" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="1.24"/>
-  <testcase name="darkThemeStillUsesBrandYellow" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.328"/>
-  <testcase name="aboutHelpAndDiagnosticsScreensRender" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.871"/>
-  <testcase name="playerScreenOpensForARealClip" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.439"/>
 ====== what went wrong ======
 * What went wrong:
-Execution failed for task ':app:testDebugUnitTest'.
-> There were failing tests. See the report at: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/build/reports/tests/testDebugUnitTest/index.html
+Execution failed for task ':app:compileReleaseKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
 
 * Try:
+> Run with --info or --debug option to get more log output.
 > Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileReleaseKotlin'.
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
-	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+--
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugKotlin'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
 ====== compiled files (last lines) ======
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:83:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:91:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:100:42 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
 ====== test.log (tail) ======
-eWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+====== assemble.log (tail) ======
+onRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:287)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:335)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:318)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:323)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:252)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeAndStoreInCache(BuildCacheStep.java:145)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$executeWithCache$4(BuildCacheStep.java:101)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$executeWithCache$5(BuildCacheStep.java:101)
+	at org.gradle.internal.Try$Success.map(Try.java:175)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithCache(BuildCacheStep.java:85)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$0(BuildCacheStep.java:74)
+	at org.gradle.internal.Either$Left.fold(Either.java:115)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:61)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
 	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
 	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
 	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
@@ -99,168 +191,54 @@ eWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:3
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
+	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:119)
+	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:132)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	... 5 more
 
+==============================================================================
 
-BUILD FAILED in 50s
-28 actionable tasks: 7 executed, 1 from cache, 20 up-to-date
-====== assemble.log (tail) ======
-To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
-
-> Configure project :app
-WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
-The current default is 'false'.
-It will be removed in version 9.0 of the Android Gradle plugin.
-To keep using this feature, add the following to your module-level build.gradle files:
-    android.buildFeatures.buildConfig = true
-or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`.
-
-> Task :app:preBuild UP-TO-DATE
-> Task :app:preDebugBuild UP-TO-DATE
-> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
-> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
-> Task :app:generateDebugBuildConfig
-> Task :app:checkDebugAarMetadata
-> Task :app:generateDebugResValues
-> Task :app:mapDebugSourceSetPaths
-> Task :app:generateDebugResources
-> Task :app:packageDebugResources
-> Task :app:mergeDebugResources
-> Task :app:createDebugCompatibleScreenManifests
-> Task :app:extractDeepLinksDebug
-> Task :app:parseDebugLocalResources
-> Task :app:processDebugMainManifest
-> Task :app:processDebugManifest
-> Task :app:javaPreCompileDebug
-> Task :app:mergeDebugShaders
-> Task :app:compileDebugShaders NO-SOURCE
-> Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAssets
-> Task :app:compressDebugAssets
-> Task :app:desugarDebugFileDependencies
-> Task :app:mergeDebugJniLibFolders
-> Task :app:mergeDebugNativeLibs NO-SOURCE
-> Task :app:stripDebugDebugSymbols NO-SOURCE
-> Task :app:checkDebugDuplicateClasses
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
-> Task :app:mergeLibDexDebug
-> Task :app:writeDebugSigningConfigVersions
-> Task :app:preReleaseBuild UP-TO-DATE
-> Task :app:mergeReleaseJniLibFolders
-> Task :app:mergeReleaseNativeLibs NO-SOURCE
-> Task :app:processDebugManifestForPackage
-> Task :app:stripReleaseDebugSymbols NO-SOURCE
-> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
-> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
-> Task :app:checkReleaseDuplicateClasses
-> Task :app:buildKotlinToolingMetadata
-> Task :app:generateReleaseBuildConfig
-> Task :app:checkReleaseAarMetadata
-> Task :app:generateReleaseResValues FROM-CACHE
-> Task :app:mapReleaseSourceSetPaths
-> Task :app:generateReleaseResources
-> Task :app:processDebugResources
-> Task :app:mergeExtDexDebug
-> Task :app:mergeReleaseResources
-> Task :app:packageReleaseResources
-> Task :app:parseReleaseLocalResources FROM-CACHE
-> Task :app:createReleaseCompatibleScreenManifests
-> Task :app:extractDeepLinksRelease FROM-CACHE
-> Task :app:processReleaseMainManifest
-> Task :app:processReleaseManifest
-> Task :app:javaPreCompileRelease FROM-CACHE
-> Task :app:desugarReleaseFileDependencies
-> Task :app:mergeReleaseStartupProfile
-> Task :app:processReleaseManifestForPackage
-> Task :app:mergeReleaseArtProfile
-> Task :app:processReleaseResources
-> Task :app:mergeReleaseShaders
-> Task :app:compileReleaseShaders NO-SOURCE
-> Task :app:generateReleaseAssets UP-TO-DATE
-> Task :app:mergeReleaseAssets
-> Task :app:compressReleaseAssets
-> Task :app:extractReleaseVersionControlInfo
-> Task :app:optimizeReleaseResources
-> Task :app:collectReleaseDependencies
-> Task :app:mergeExtDexRelease
-> Task :app:sdkReleaseDependencyData
-> Task :app:validateSigningRelease
-> Task :app:writeReleaseAppMetadata
-> Task :app:writeReleaseSigningConfigVersions
-> Task :app:processApplicationManifestReleaseForBundle
-> Task :app:configureReleaseDependencies
-> Task :app:parseReleaseIntegrityConfig
-> Task :app:bundleReleaseResources
-> Task :app:compileDebugKotlin
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:93:47 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:95:33 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/playback/PlaybackService.kt:65:17 'fun stopForeground(p0: Boolean): Unit' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:78:16 'var statusBarColor: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:79:16 'var navigationBarColor: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:80:38 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:82:27 'static field SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:82:67 'static field SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:84:28 'static field SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:84:75 'static field SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:86:26 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:212:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Please add the '@Deprecated' annotation or suppress the diagnostic.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/theme/Haptics.kt:35:45 'static field FLAG_IGNORE_GLOBAL_SETTING: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/ButterflyLoader.kt:43:53 'field scaledDensity: Float' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:376:58 'static fun obtain(p0: Int, p1: Float, p2: Float, p3: Float): AccessibilityNodeInfo.RangeInfo!' is deprecated. Deprecated in Java.
-
-> Task :app:compileReleaseKotlin
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:93:47 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:95:33 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/playback/PlaybackService.kt:65:17 'fun stopForeground(p0: Boolean): Unit' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:78:16 'var statusBarColor: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:79:16 'var navigationBarColor: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:80:38 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:82:27 'static field SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:82:67 'static field SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:84:28 'static field SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:84:75 'static field SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:86:26 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:212:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Please add the '@Deprecated' annotation or suppress the diagnostic.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/theme/Haptics.kt:35:45 'static field FLAG_IGNORE_GLOBAL_SETTING: Int' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/ButterflyLoader.kt:43:53 'field scaledDensity: Float' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:376:58 'static fun obtain(p0: Int, p1: Float, p2: Float, p3: Float): AccessibilityNodeInfo.RangeInfo!' is deprecated. Deprecated in Java.
-
-> Task :app:compileReleaseJavaWithJavac
-> Task :app:compileDebugJavaWithJavac
-> Task :app:dexBuilderDebug
-> Task :app:mergeDebugGlobalSynthetics
-> Task :app:processDebugJavaRes
-> Task :app:mergeDebugJavaResource
-> Task :app:mergeProjectDexDebug
-> Task :app:dexBuilderRelease
-> Task :app:mergeReleaseGlobalSynthetics
-> Task :app:processReleaseJavaRes
-> Task :app:mergeReleaseJavaResource
-> Task :app:packageDebug
-> Task :app:createDebugApkListingFileRedirect
-> Task :app:assembleDebug
-> Task :app:mergeDexRelease
-> Task :app:compileReleaseArtProfile
-> Task :app:buildReleasePreBundle
-> Task :app:packageRelease
-> Task :app:createReleaseApkListingFileRedirect
-> Task :app:assembleRelease
-> Task :app:packageReleaseBundle
-> Task :app:signReleaseBundle
-> Task :app:produceReleaseBundleIdeListingFile
-> Task :app:createReleaseBundleListingFileRedirect
-> Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793462234004.json
-
-BUILD SUCCESSFUL in 1m 53s
-86 actionable tasks: 82 executed, 4 from cache
+BUILD FAILED in 1m 11s
+64 actionable tasks: 60 executed, 4 from cache
 ====== verification report ======
-=== APK verification: dist/GossipAudio-1.0.1-release.apk
+=== APK verification: dist/GossipAudio-1.0.2-release.apk
 {
   "package": "xyz.beyoneer.gossipaudio",
-  "versionName": "1.0.1",
-  "versionCode": "2",
+  "versionName": "1.0.2",
+  "versionCode": "3",
   "minSdk": "24",
   "targetSdk": "35",
   "appClass": "xyz.beyoneer.gossipaudio.GossipApp",
@@ -297,9 +275,9 @@ BUILD SUCCESSFUL in 1m 53s
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
   "entries": 32,
-  "uncompressed_bytes": 3208602,
-  "dex_bytes": 2826140,
-  "apk_sha256": "3467241bfd81dbfe1d6c5cdaed2ad82a81f51ea983478222d3d8e18225562458"
+  "uncompressed_bytes": 3235182,
+  "dex_bytes": 2852720,
+  "apk_sha256": "72d057a5713dae64845a1ec20a453baf9af900f1a6eb927737c2baa7df5b40d7"
 }
 
 --- notes
@@ -308,23 +286,27 @@ BUILD SUCCESSFUL in 1m 53s
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
  * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
- * dex files: classes.dex (2826140 bytes uncompressed)
+ * dex files: classes.dex (2852720 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
 
-[OK  ] MP3 dist/samples/pipeline-sample.mp3  73603 bytes
-         {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 173, 'duration_ms': 4519, 'audio_bytes': 72306}, 'size': 73603}
-[OK  ] WAV dist/samples/pipeline-sample.wav  196728 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4460}
-[OK  ] WAV dist/samples/voice-arjun.wav  192872 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
-[OK  ] WAV dist/samples/voice-bot.wav  189162 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4288}
-[OK  ] WAV dist/samples/voice-maya.wav  185596 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4208}
-[OK  ] WAV dist/samples/voice-riya.wav  192872 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
+[OK  ] MP3 dist/samples/pipeline-sample.mp3  73186 bytes
+         {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 172, 'duration_ms': 4493, 'audio_bytes': 71889}, 'size': 73186}
+[OK  ] WAV dist/samples/pipeline-sample.wav  194910 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4419}
+[OK  ] WAV dist/samples/voice-arjun.wav  179888 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4078}
+[OK  ] WAV dist/samples/voice-bot.wav  176510 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4001}
+[OK  ] WAV dist/samples/voice-hindi.wav  113802 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2580}
+[OK  ] WAV dist/samples/voice-hinglish.wav  88886 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2015}
+[OK  ] WAV dist/samples/voice-maya.wav  172968 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 3921}
+[OK  ] WAV dist/samples/voice-riya.wav  179716 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4074}
 
 all audio files valid
 ====== sdk.txt ======
