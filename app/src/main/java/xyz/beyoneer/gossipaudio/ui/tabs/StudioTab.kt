@@ -139,6 +139,19 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 14f) })
 
+        // The one thing every session needs: put it above the fold instead of
+        // making people scroll past three option rows to find it.
+        generateButton = BrandButton(activity, palette, "Generate voice", BrandButton.Variant.PRIMARY, Icons.Kind.WAVE)
+        generateButton.layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 56f)
+        ).apply { topMargin = Ui.dp(activity, 14f) }
+        generateButton.setOnClick { generate() }
+        column.addView(generateButton)
+
+        estimate = Ui.text(activity, "", 11.5f, palette.textDim, gravity = Gravity.CENTER)
+        estimate.setPadding(0, Ui.dp(activity, 7f), 0, 0)
+        column.addView(estimate)
+
         column.addView(sectionHeader("Voice", "tap to select"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 20f) })
@@ -171,17 +184,6 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         column.addView(tuningCard(), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 16f) })
-
-        generateButton = BrandButton(activity, palette, "Generate voice", BrandButton.Variant.PRIMARY, Icons.Kind.WAVE)
-        generateButton.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 58f)
-        ).apply { topMargin = Ui.dp(activity, 18f) }
-        generateButton.setOnClick { generate() }
-        column.addView(generateButton)
-
-        estimate = Ui.text(activity, "", 11.5f, palette.textDim, gravity = Gravity.CENTER)
-        estimate.setPadding(0, Ui.dp(activity, 8f), 0, 0)
-        column.addView(estimate)
 
         column.addView(telemetryCard(), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
