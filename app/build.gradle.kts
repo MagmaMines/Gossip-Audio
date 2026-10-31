@@ -55,6 +55,7 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
+        unitTests.isIncludeAndroidResources = true
     }
 
     lint {
@@ -69,4 +70,7 @@ android {
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
+    // Robolectric boots the real activity + views on the JVM so CI can prove the UI renders.
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("androidx.test:core:1.6.1")
 }

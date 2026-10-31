@@ -227,7 +227,7 @@ def verify(apk):
             problems.append(f"resources.arsc missing string: {needle}")
 
     manifest_info["entries"] = len(names)
-    manifest_info["uncompressed_bytes"] = total
+    manifest_info["uncompressed_bytes"] = sum(i.file_size for i in z.infolist())
     manifest_info["dex_bytes"] = sum(z.getinfo(n).file_size for n in dexes)
     manifest_info["apk_sha256"] = hashlib.sha256(open(apk, "rb").read()).hexdigest()
     return problems, notes, manifest_info

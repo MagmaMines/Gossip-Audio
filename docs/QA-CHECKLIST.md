@@ -1,0 +1,54 @@
+# QA checklist — 10 minutes, every box verifiable
+
+Open the app and work down this list. Anything that fails is a bug worth reporting; the in-app
+**Settings → Diagnostics → Run self-test** covers the audio pipeline automatically (8 checks).
+
+## Install & launch
+- [ ] `dist/GossipAudio-1.0.0-release.apk` installs without "invalid package" (v2 signature verified in CI).
+- [ ] Launcher icon is the yellow logo, label reads **GossipAudio**.
+- [ ] Cold start shows the butterfly splash, then onboarding (first run) or the Studio tab.
+- [ ] Rotating the phone does not lose the composer text or stop playback.
+
+## Studio
+- [ ] Typing updates the word count and the estimated duration live.
+- [ ] Dice fills with a random sentence; the mic opens the dictation sheet (permission prompt appears once).
+- [ ] Voice strip shows 10 voices; tapping one changes the chip label and the voice in the composer.
+- [ ] Style chips switch between the 8 moods.
+- [ ] Speed and pitch sliders move smoothly (no jank, no snap-back).
+- [ ] Generate shows the butterfly overlay with a percentage; **Cancel** stops it and produces no clip.
+- [ ] Result appears in the recents carousel and the mini-player; audio is audible and intelligible.
+
+## Player
+- [ ] Play / pause / stop / replay / next / previous all act on the right clip.
+- [ ] Tapping the waveform seeks; the elapsed/total labels track.
+- [ ] Speed chips change playback speed live without pitch artefacts.
+- [ ] Sleep timer 5 min stops playback when it expires.
+- [ ] Home button + screen off: audio keeps playing, notification shows pause/stop.
+
+## Export
+- [ ] Download → WAV produces a `.wav` in `Downloads/GossipAudio` that plays in the system player.
+- [ ] Download → MP3 produces a `.mp3` that plays and shows a title/artist/cover.
+- [ ] Download → M4A produces a `.m4a` (AAC) with cover art.
+- [ ] Pick image → custom cover appears in the export preview and inside the exported file.
+- [ ] Share encodes MP3 and opens the system share sheet.
+- [ ] On Android 9 and below, the storage permission rationale appears once and the file still lands in Downloads.
+
+## Library
+- [ ] Every generated clip appears with voice, duration, date and cover.
+- [ ] Search filters by title/text/voice; the "Liked ♥" filter shows only favourites.
+- [ ] Like / rename / delete / delete all behave and the list refreshes immediately.
+- [ ] Clean orphan files reports 0 on a healthy install.
+
+## Settings & system
+- [ ] Theme: System / Light / Dark applies instantly, and yellow buttons keep their thin darker outline.
+- [ ] Reduce motion stops the butterfly/transition animations.
+- [ ] Default format + quality persist across restarts.
+- [ ] Daily reminder: enable, pick a time, kill the app — the notification arrives.
+- [ ] Diagnostics: live CPU/RAM/GPU values update every ~1.4 s; self-test reports 8/8 passed.
+- [ ] Help shows 24 answers and they expand/collapse.
+- [ ] About shows the exact tagline, the version and the licence list.
+
+## Regression checks run by CI
+- [ ] `PipelineTest` 8/8 green (synthesis, WAV round-trip, MP3 frames + ID3, styles, effects, text kit, silence).
+- [ ] `tools/verify_apk.py` → "none — APK structure, manifest, signing and dex contents check out".
+- [ ] `tools/verify_audio.py` → "all audio files valid".

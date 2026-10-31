@@ -89,7 +89,9 @@ jobs:
           VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
           VCODE=$(grep -oP 'versionCode = \K[0-9]+' app/build.gradle.kts | head -1)
           mkdir -p dist
-          mkdir -p dist/samples
+          mkdir -p dist/samples dist/shots
+          cp app/build/ui-shots/*.png dist/shots/ 2>/dev/null || true
+          ls -l dist/shots || true
           cp app/build/test-samples/*.wav dist/samples/ 2>/dev/null || true
           cp app/build/test-samples/*.mp3 dist/samples/ 2>/dev/null || true
           cp app/build/test-samples/pipeline-sample.txt dist/samples/ 2>/dev/null || true
