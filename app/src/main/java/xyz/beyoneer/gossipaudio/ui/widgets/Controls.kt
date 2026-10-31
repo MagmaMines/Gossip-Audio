@@ -365,7 +365,7 @@ class NeonSlider(
     }
 
     /** Set the value programmatically (snapped) and notify the listener. */
-    fun setValue(v: Float) {
+    fun setProgress(v: Float) {
         val snapped = ((v / step).roundToInt() * step).coerceIn(min, max)
         if (abs(snapped - value) < step * 0.5f) return
         value = snapped
@@ -391,18 +391,18 @@ class NeonSlider(
             android.R.id.accessibilityActionSetProgress -> {
                 val target = args?.getFloat(AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE)
                 if (target != null) {
-                    setValue(target)
+                    setProgress(target)
                     sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
                     return true
                 }
             }
             AccessibilityNodeInfo.ACTION_SCROLL_FORWARD -> {
-                setValue(value + stride)
+                setProgress(value + stride)
                 sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
                 return true
             }
             AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD -> {
-                setValue(value - stride)
+                setProgress(value - stride)
                 sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED)
                 return true
             }
