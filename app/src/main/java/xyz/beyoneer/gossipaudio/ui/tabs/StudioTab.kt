@@ -318,14 +318,21 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                 activity.toast("Pasted from clipboard.")
             }
         }
+        // On a 320 dp phone four 40 dp buttons plus the voice chip do not fit on one
+        // line (measured: 4 px of overflow), so the chip moves to its own row and
+        // keeps a full 40 dp touch target instead of being squeezed.
+        val narrow = activity.resources.configuration.screenWidthDp < 360
+        val gap = if (narrow) 4f else 6f
         actions.addView(dice)
-        actions.addView(space(6f))
+        actions.addView(space(gap))
         actions.addView(mic)
-        actions.addView(space(6f))
+        actions.addView(space(gap))
         actions.addView(paste)
-        actions.addView(space(6f))
+        actions.addView(space(gap))
         actions.addView(clear)
-        actions.addView(Ui.space(activity, 1), LinearLayout.LayoutParams(0, 1, 1f))
+        if (!narrow) {
+            actions.addView(Ui.space(activity, 1), LinearLayout.LayoutParams(0, 1, 1f))
+        }
         val voiceChip = LinearLayout(activity).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -339,12 +346,26 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         composerVoiceName = chipName
         voiceChip.addView(chipName)
         Ui.pressable(voiceChip, 0.94f) { shell.selectTab(1) }
-        actions.addView(voiceChip, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ))
+        if (!narrow) {
+            actions.addView(voiceChip, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ))
+        }
         card.addView(actions, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 6f) })
+        if (narrow) {
+            val voiceRow = LinearLayout(activity).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.END
+            }
+            voiceRow.addView(voiceChip, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ))
+            card.addView(voiceRow, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = Ui.dp(activity, 8f) })
+        }
         return card
     }
 
