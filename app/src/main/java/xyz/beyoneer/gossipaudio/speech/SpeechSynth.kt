@@ -66,7 +66,8 @@ class SpeechSynth(private val context: Context) {
         val finalPitch = (pitch * style.pitchFactor * voice.pitch).coerceIn(0.3f, 2.6f)
         val finalRate = (rate * style.rateFactor * voice.rate).coerceIn(0.4f, 2.2f)
 
-        if (voice.engine == VoiceEngine.SYSTEM_TTS) {
+        val systemUsable = voice.engine == VoiceEngine.SYSTEM_TTS && hasSystemEngine()
+        if (systemUsable) {
             systemPath(clean, voice, finalPitch, finalRate, callback) { pcm, note ->
                 if (pcm != null) {
                     finish(pcm, "system", note, startedAt, sampler, callback)
@@ -99,7 +100,7 @@ class SpeechSynth(private val context: Context) {
                 done(null, "System voice timed out")
             }
         }
-        main.postDelayed(watchdog, 120_000)
+        main.postDelayed(watchdog, 45_000)
 
         val onFinal: (Pcm?, String?) -> Unit = { pcm, note ->
             if (!finished) {
@@ -162,7 +163,7 @@ class SpeechSynth(private val context: Context) {
                 finishOnce(null, "Voice engine timed out")
             }
         }
-        main.postDelayed(timeout, 60_000)
+        main.postDelayed(timeout, 20_000)
 
         try {
             tts = TextToSpeech(context) { status ->

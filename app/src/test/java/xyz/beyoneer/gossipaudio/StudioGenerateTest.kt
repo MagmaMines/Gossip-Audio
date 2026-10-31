@@ -68,7 +68,7 @@ class StudioGenerateTest {
         var waited = 0
         while (clip == null && waited < 90_000) {
             Thread.sleep(200)
-            mainLooper.idle()
+            mainLooper.idleFor(Duration.ofMillis(400))
             waited += 200
             clip = app.store.all().firstOrNull()
         }
