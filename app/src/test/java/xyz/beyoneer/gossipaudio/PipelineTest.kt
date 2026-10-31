@@ -160,7 +160,7 @@ class PipelineTest {
         val empty = NanoVoice.speak("   ", NanoVoice.Options())
         assertEquals(0, empty.samples.size)
         val silent = Pcm(22050, 1, ShortArray(22050))
-        assertEquals(22050L, silent.durationMs)
+        assertEquals(1000L, silent.durationMs)
         val silentMp3 = Mp3Encoder.encode(silent, 96)
         assertTrue("silence still yields a decodable stream", silentMp3.isEmpty() || Mp3Encoder.looksLikeMp3(silentMp3))
     }
