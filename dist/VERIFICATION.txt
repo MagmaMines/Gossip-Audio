@@ -31,9 +31,9 @@
   ],
   "providers": [],
   "entries": 30,
-  "uncompressed_bytes": 4088,
+  "uncompressed_bytes": 3195778,
   "dex_bytes": 2815464,
-  "apk_sha256": "3b761427f1dd3c9246eb7e3aba0b43996eefe8ca56f0a9ac35aca31f66798a6f"
+  "apk_sha256": "f370b2b0e44ecb978783eae1f011554d7539f15dc7b302e3dc51d5489a3c66bc"
 }
 
 --- notes
