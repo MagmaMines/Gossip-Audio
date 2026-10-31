@@ -52,7 +52,8 @@ class PipelineTest {
             val pcm = NanoVoice.speak(
                 line,
                 NanoVoice.Options(
-                    baseF0 = 92.0 + voice.pitch * 34.0,
+                    baseF0 = xyz.beyoneer.gossipaudio.core.VoiceTuning.baseF0(voice),
+                    formantScale = xyz.beyoneer.gossipaudio.core.VoiceTuning.formantScale(voice),
                     rate = voice.rate.toDouble(),
                     robotic = voice.engine == xyz.beyoneer.gossipaudio.core.VoiceEngine.NANO_VOICE && voice.gender == VoiceGender.NONHUMAN,
                     sampleRate = 22050

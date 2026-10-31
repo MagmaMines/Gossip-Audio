@@ -237,6 +237,36 @@ object StyleCatalog {
 }
 
 /** Text helpers: counting, estimating, sanitising and generating chaos. */
+/**
+ * Gender-aware synthesis tuning, shared by the app and by the CI demo renderer so a
+ * published sample cannot disagree with what the phone actually plays.
+ *
+ * A female voice is not a male voice with a bigger number: F0 moves by ~1.8x and the
+ * vocal tract is rescaled, which is why this lives in one place instead of being
+ * copy-pasted into two call sites.
+ */
+object VoiceTuning {
+
+    fun baseF0(voice: VoiceProfile): Double {
+        val base = when (voice.gender) {
+            VoiceGender.FEMALE -> 170.0
+            VoiceGender.MALE -> 120.0
+            VoiceGender.NONHUMAN -> 140.0
+        }
+        return (base * voice.pitch).coerceIn(70.0, 330.0)
+    }
+
+    fun formantScale(voice: VoiceProfile): Double {
+        val pitch = voice.pitch.toDouble()
+        val scale = when (voice.gender) {
+            VoiceGender.FEMALE -> 1.10 + (pitch - 1.0) * 1.20
+            VoiceGender.MALE -> 0.92 + (pitch - 0.86) * 0.90
+            VoiceGender.NONHUMAN -> 1.0
+        }
+        return scale.coerceIn(0.85, 1.35)
+    }
+}
+
 object TextKit {
 
     fun sanitize(input: CharSequence?): String {
