@@ -3,6 +3,20 @@
 > Short version: the download is **`GossipAudio-1.0.1-release.apk`** — one file, tap it, install it.
 > You do **not** need to unzip anything, and you should not rename it to `.zip`.
 
+## 0. One link, one file
+
+**[⬇ `GossipAudio-1.0.1-release.apk`](https://github.com/MagmaMines/Gossip-Audio/raw/arena/b73dc5e5-gossip-audio/dist/GossipAudio-1.0.1-release.apk)** — tap it on the phone and install.
+The same file is attached to the [v1.0.1 release](https://github.com/MagmaMines/Gossip-Audio/releases/tag/v1.0.1)
+and committed at [`dist/GossipAudio-1.0.1-release.apk`](../dist/GossipAudio-1.0.1-release.apk).
+
+### "I got `gossipaudio-apk.zip` instead" — that was GitHub, not us
+
+GitHub Actions **always** re-packs workflow artifacts into a zip. Our old CI step was named
+`GossipAudio-apk` and uploaded `dist/`, so the artifact download arrived as `GossipAudio-apk.zip`.
+That step is gone: CI now uploads `GossipAudio-CI-reports` (logs and reports only) and the APK is
+delivered as a real file through the two links above. If you still see a zip, you are on an old run
+page or an old download — ignore it and use the `.apk`.
+
 ## 1. The file you want
 
 | File | What it is | Use it? |

@@ -161,16 +161,54 @@ jobs:
           echo "" | tee -a dist/VERIFICATION.txt
           python3 tools/verify_audio.py 2>&1 | tee -a dist/VERIFICATION.txt | tail -20
 
-      - name: Upload artifacts (workflow run)
+      - name: Attach the APK to the GitHub release
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
+          TAG="v${VERSION}"
+          APK="dist/GossipAudio-${VERSION}-release.apk"
+          DEBUG="dist/GossipAudio-${VERSION}-debug.apk"
+          gh release view "$TAG" >/dev/null 2>&1             || gh release create "$TAG" --title "GossipAudio ${VERSION}" --notes "Installable APK built from ${GITHUB_SHA}." || true
+          gh release upload "$TAG" "$APK" "$DEBUG" --clobber             || echo "::warning title=Release asset upload failed::The APK is still committed in dist/ on this branch."
+
+      - name: Upload CI reports (no APK bundle)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: GossipAudio-apk
+          # Deliberately NOT named after the app and deliberately WITHOUT the APK:
+          # GitHub always wraps workflow artifacts in a zip, which is how people end up
+          # downloading "gossipaudio-apk.zip" and thinking we shipped an archive.
+          name: GossipAudio-CI-reports
           path: |
-            dist/
             ci-logs/
-          retention-days: 90
+            dist/TEST_REPORT.txt
+            dist/VERIFICATION.txt
+            dist/BUILD_INFO.txt
+          retention-days: 30
           if-no-files-found: warn
+
+      - name: Run summary - where the APK actually is
+        if: success()
+        run: |
+          set -euo pipefail
+          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
+          APK="dist/GossipAudio-${VERSION}-release.apk"
+          SHA=$(sha256sum "$APK" | cut -d' ' -f1)
+          {
+            echo "## The installable file is an .apk, not a zip"
+            echo ""
+            echo "| What | Where |"
+            echo "|---|---|"
+            echo "| Direct APK download | [\`${APK}\`](https://github.com/${GITHUB_REPOSITORY}/raw/${GITHUB_REF_NAME}/${APK}) |"
+            echo "| Release asset | [v${VERSION} release](https://github.com/${GITHUB_REPOSITORY}/releases/tag/v${VERSION}) |"
+            echo "| sha256 | \`${SHA}\` |"
+            echo ""
+            echo "GitHub re-zips **workflow artifacts** by design - that is where any \`*-apk.zip\` came from."
+            echo "This workflow no longer uploads the APK as an artifact at all; the links above are the app."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Publish APK into the repository
         if: success()
@@ -230,3 +268,30 @@ jobs:
           git add -f ci-logs
           git commit -m "ci: failure diagnostics [skip ci]" || true
           git push origin "HEAD:${GITHUB_REF_NAME}" || true
+
+  cleanup-legacy-zips:
+    name: Remove legacy zipped APK bundles
+    # The old artifact was literally called "GossipAudio-apk" and GitHub zipped it,
+    # so downloads looked like gossipaudio-apk.zip. Delete those leftovers.
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Delete legacy GossipAudio-apk artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -uo pipefail
+          ids=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" \
+                  --jq '.artifacts[] | select(.name=="GossipAudio-apk") | .id' || true)
+          if [ -z "$ids" ]; then
+            echo "nothing to clean"
+            exit 0
+          fi
+          for id in $ids; do
+            if gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}" > /dev/null 2>&1; then
+              echo "deleted legacy artifact ${id}"
+            else
+              echo "::warning title=Cleanup skipped::could not delete artifact ${id}"
+            fi
+          done
