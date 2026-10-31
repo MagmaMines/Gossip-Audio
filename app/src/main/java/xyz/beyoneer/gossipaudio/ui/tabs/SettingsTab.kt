@@ -30,6 +30,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
     private val palette get() = shell.colors
     private lateinit var scroll: ScrollView
     private var reminderRow: View? = null
+    private var reminderTimeValue: TextView? = null
 
     override val root: View by lazy { build() }
 
@@ -152,7 +153,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
                     if (enabled) activity.requestNotifications()
                 },
                 reminder,
-                actionRow(Icons.Kind.TIMER, "Reminder time", reminderTimeLabel()) { pickTime() }
+                actionRowTitled(Icons.Kind.TIMER, "Reminder time", reminderTimeLabel()) { pickTime() }
             )
         )
 
@@ -306,6 +307,23 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
         return row
     }
 
+    /** Same as [actionRow] but keeps a handle on the value label so it can be refreshed. */
+    private fun actionRowTitled(icon: Icons.Kind, title: String, subtitle: String, action: () -> Unit): View {
+        val row = actionRow(icon, title, subtitle, action)
+        reminderTimeValue = findValueLabel(row)
+        return row
+    }
+
+    private fun findValueLabel(view: View): TextView? {
+        if (view is TextView && view.text?.toString() == reminderTimeLabel()) return view
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                findValueLabel(view.getChildAt(i))?.let { return it }
+            }
+        }
+        return null
+    }
+
     private fun actionRow(icon: Icons.Kind, title: String, subtitle: String, action: () -> Unit): View {
         val row = LinearLayout(activity).apply {
             orientation = LinearLayout.HORIZONTAL
@@ -349,9 +367,11 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
                 activity.prefs.reminderMinute = minute
                 if (activity.prefs.dailyReminder) {
                     ReminderScheduler.schedule(activity, hour, minute)
+                    activity.toast("Reminder moved to ${reminderTimeLabel()}")
+                } else {
+                    activity.toast("Saved ${reminderTimeLabel()} \u2014 enable the nudge to use it")
                 }
-                activity.toast("Reminder set for ${reminderTimeLabel()}")
-                shell.selectTab(3)
+                reminderTimeValue?.text = reminderTimeLabel()
             },
             activity.prefs.reminderHour,
             activity.prefs.reminderMinute,
@@ -360,6 +380,8 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
     }
 
     fun focusReminder() {
+        // Building the root lazily is fine here: the tab is already the visible one.
+        if (!::scroll.isInitialized) root
         val row = reminderRow ?: return
         scroll.post {
             scroll.smoothScrollTo(0, maxOf(0, row.top - Ui.dp(activity, 180f)))

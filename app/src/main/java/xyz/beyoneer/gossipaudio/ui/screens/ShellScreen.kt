@@ -112,8 +112,8 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         ) { activity.toggleTheme() }
         bar.addView(theme)
         val bell = iconButton(Icons.Kind.BELL) {
-            settings.focusReminder()
             selectTab(3)
+            settings.focusReminder()
         }
         bar.addView(bell)
         val info = iconButton(Icons.Kind.INFO) { openAbout() }
