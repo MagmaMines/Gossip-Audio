@@ -212,7 +212,7 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
         }
         listBox.removeAllViews()
         val bytes = all.sumOf { it.sizeBytes }
-        summary.text = "${all.size} clip${if (all.size == 1) "" else "s"} \u00B7 ${TextKit.formatBytes(bytes)} \u00B7 ${TextKit.formatBytes(activity.app.store.totalBytes())} on disk"
+        summary.text = "${all.size} clip${if (all.size == 1) "" else "s"} \u00B7 ${TextKit.formatBytes(bytes)} of audio on disk"
         emptyBox.visibility = if (filtered.isEmpty()) View.VISIBLE else View.GONE
         filtered.forEach { clip ->
             listBox.addView(clipRow(clip), LinearLayout.LayoutParams(

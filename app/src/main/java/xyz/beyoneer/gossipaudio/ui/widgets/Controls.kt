@@ -236,7 +236,6 @@ class Segmented(context: Context, private val palette: Palette, options: List<St
             intArrayOf(palette.yellowBright, palette.yellow), Ui.dpf(context, 100f),
             strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(context, 1.5f)
         )
-        indicator.elevation = Ui.dpf(context, 2f)
         addView(indicator, LayoutParams(0, LayoutParams.MATCH_PARENT))
         val row = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL }
         options.forEachIndexed { index, option ->

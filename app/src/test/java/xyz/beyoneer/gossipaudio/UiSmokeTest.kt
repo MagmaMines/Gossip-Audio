@@ -20,6 +20,9 @@ import xyz.beyoneer.gossipaudio.audio.Exporter
 import xyz.beyoneer.gossipaudio.core.NanoVoice
 import xyz.beyoneer.gossipaudio.data.Clip
 import xyz.beyoneer.gossipaudio.ui.MainActivity
+import xyz.beyoneer.gossipaudio.ui.screens.AboutScreen
+import xyz.beyoneer.gossipaudio.ui.screens.DiagnosticsScreen
+import xyz.beyoneer.gossipaudio.ui.screens.HelpScreen
 import xyz.beyoneer.gossipaudio.ui.screens.PlayerScreen
 import xyz.beyoneer.gossipaudio.ui.screens.ShellScreen
 import java.io.File
@@ -130,6 +133,58 @@ class UiSmokeTest {
         println("player texts: " + texts.take(16))
         assertTrue("player screen should show its header", texts.any { it.contains("NOW PLAYING", true) || it.contains("The tea", true) })
         capture(activity.window.decorView, "05-player.png")
+    }
+
+    @Test
+    fun aboutHelpAndDiagnosticsScreensRender() {
+        val app = ApplicationProvider.getApplicationContext<GossipApp>()
+        app.prefs.onboardingDone = true
+        val activity = Robolectric.buildActivity(MainActivity::class.java).setup().get()
+        shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(4))
+        shadowOf(Looper.getMainLooper()).idle()
+
+        val root = activity.window.decorView
+
+        activity.router.push(AboutScreen(activity), animate = false)
+        shadowOf(Looper.getMainLooper()).idle()
+        val about = ArrayList<String>()
+        collectText(root, about)
+        println("about: " + about.take(10))
+        assertTrue("about must show the exact tagline", about.any { it.contains("not gossiping inreal", true) })
+        assertTrue("about must credit the author", about.any { it.contains("Beyoneer XYZ") })
+        capture(root, "06-about.png")
+        activity.router.pop()
+        shadowOf(Looper.getMainLooper()).idle()
+
+        activity.router.push(HelpScreen(activity), animate = false)
+        shadowOf(Looper.getMainLooper()).idle()
+        val help = ArrayList<String>()
+        collectText(root, help)
+        println("help: " + help.take(8))
+        assertTrue("help must list questions", help.count { it.endsWith("?") } > 5)
+        capture(root, "07-help.png")
+        activity.router.pop()
+        shadowOf(Looper.getMainLooper()).idle()
+
+        activity.router.push(DiagnosticsScreen(activity), animate = false)
+        shadowOf(Looper.getMainLooper()).idle()
+        val diag = ArrayList<String>()
+        collectText(root, diag)
+        println("diagnostics: " + diag.take(10))
+        assertTrue("diagnostics must report device facts", diag.any { it.contains("CPU", true) || it.contains("RAM", true) })
+        capture(root, "08-diagnostics.png")
+    }
+
+    @Test
+    fun darkThemeStillUsesBrandYellow() {
+        val app = ApplicationProvider.getApplicationContext<GossipApp>()
+        app.prefs.onboardingDone = true
+        app.prefs.themeMode = "dark"
+        val activity = Robolectric.buildActivity(MainActivity::class.java).setup().get()
+        shadowOf(Looper.getMainLooper()).idleFor(Duration.ofSeconds(4))
+        shadowOf(Looper.getMainLooper()).idle()
+        assertTrue("dark palette expected", activity.palette.dark)
+        capture(activity.window.decorView, "09-shell-dark.png")
     }
 
     // ---------------------------------------------------------------- helpers

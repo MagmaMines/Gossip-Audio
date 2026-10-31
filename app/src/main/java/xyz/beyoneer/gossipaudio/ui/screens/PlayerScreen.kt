@@ -183,23 +183,25 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
         }
-        quick.addView(actionPill(Icons.Kind.HEART, "Like") {
+        fun addPill(pill: View, isLast: Boolean) {
+            quick.addView(pill, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
+                if (!isLast) marginEnd = Ui.dp(activity, 8f)
+            })
+        }
+        addPill(actionPill(Icons.Kind.HEART, "Like") {
             clip?.let {
                 activity.app.store.toggleLike(it.id)
                 refreshFromStore()
                 activity.toast(if (it.liked) "Unliked" else "Liked \u2764\uFE0F")
             }
-        })
-        quick.addView(Ui.space(activity, Ui.dp(activity, 8f)))
-        quick.addView(actionPill(Icons.Kind.DOWNLOAD, "Download") {
+        }, false)
+        addPill(actionPill(Icons.Kind.DOWNLOAD, "Save") {
             clip?.let { ExportFlow.open(activity, it) }
-        })
-        quick.addView(Ui.space(activity, Ui.dp(activity, 8f)))
-        quick.addView(actionPill(Icons.Kind.SHARE, "Share") {
+        }, false)
+        addPill(actionPill(Icons.Kind.SHARE, "Share") {
             clip?.let { ExportFlow.quickShare(activity, it) }
-        })
-        quick.addView(Ui.space(activity, Ui.dp(activity, 8f)))
-        quick.addView(actionPill(Icons.Kind.TIMER, "Sleep") { showSleepTimer() })
+        }, false)
+        addPill(actionPill(Icons.Kind.TIMER, "Sleep") { showSleepTimer() }, true)
         column.addView(quick, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 18f) })
@@ -300,6 +302,8 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             Ui.dp(activity, 18f), Ui.dp(activity, 18f)
         ))
         val tv = Ui.text(activity, label, 9.5f, palette.textDim, bold = true, font = "sans-serif-medium", gravity = Gravity.CENTER)
+        tv.maxLines = 1
+        tv.isSingleLine = true
         tv.setPadding(0, Ui.dp(activity, 4f), 0, 0)
         pill.addView(tv)
         Ui.pressable(pill, 0.92f, action)
