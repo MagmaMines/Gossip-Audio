@@ -1,66 +1,71 @@
-run: 41204318156
-commit: 7c11bc26830c4edf6dd23341425d9c00ac4adb70
-time: Sat Oct 31 13:12:17 UTC 2026
+run: 41204937785
+commit: c02fc9f09dbb18d6da75fe41f6eac2f99f174081
+time: Sat Oct 31 13:21:11 UTC 2026
 ====== kotlin errors (test.log) ======
 ====== kotlin errors (assemble.log) ======
 ====== warnings that matter ======
+ci-logs/test.log:	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:594)
+ci-logs/test.log:	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:594)
+ci-logs/test.log:	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:594)
+ci-logs/test.log:	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:594)
+ci-logs/test.log:	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:594)
+ci-logs/test.log:	at org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection$UnresolvedItemsCollector.visitContents(DefaultConfigurableFileCollection.java:594)
 ====== failing tests ======
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.PipelineTest.xml
-  <testcase name="silenceAndEmptyInputAreHandledGracefully" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.067"/>
-  <testcase name="mp3EncoderProducesRealFramesAndTags" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.16"/>
-  <testcase name="stylesChangeRateAndPitchNumerically" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.009"/>
-  <testcase name="everyVoiceSynthesisesAudibleSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.166"/>
-  <testcase name="audioEffectsAreStable" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.029"/>
-  <testcase name="wavRoundTripPreservesSamples" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.02"/>
-  <testcase name="textKitEstimatesMatchRenderedAudio" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.014"/>
-  <testcase name="catalogHasTenVoicesAndEightStyles" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.001"/>
+> Task :app:compileDebugUnitTestKotlin FAILED
+BUILD FAILED in 14s
 ====== what went wrong ======
+* What went wrong:
+Execution failed for task ':app:compileDebugUnitTestKotlin'.
+> Error while evaluating property 'friendPathsSet$kotlin_gradle_plugin_common' of task ':app:compileDebugUnitTestKotlin'.
+   > Could not resolve all dependencies for configuration ':app:debugUnitTestCompileClasspath'.
+      > Configuration `:app:debugUnitTestRuntimeClasspath` contains AndroidX dependencies, but the `android.useAndroidX` property is not enabled, which may cause runtime issues.
+        Set `android.useAndroidX=true` in the `gradle.properties` file and retry.
+        The following AndroidX dependencies are detected:
+        :app:debugUnitTestRuntimeClasspath -> org.robolectric:robolectric:4.14.1 -> androidx.test.espresso:espresso-idling-resource:3.6.1
+        :app:debugUnitTestRuntimeClasspath -> org.robolectric:robolectric:4.14.1 -> androidx.test:monitor:1.7.2
+        :app:debugUnitTestRuntimeClasspath -> androidx.test:core:1.6.1 -> androidx.annotation:annotation:1.7.0-beta01
+        :app:debugUnitTestRuntimeClasspath -> androidx.test:core:1.6.1 -> androidx.annotation:annotation:1.7.0-beta01 -> androidx.annotation:annotation-jvm:1.7.0-beta01
+        :app:debugUnitTestRuntimeClasspath -> androidx.test:core:1.6.1 -> androidx.tracing:tracing:1.1.0
+        :app:debugUnitTestRuntimeClasspath -> androidx.test:core:1.6.1
 ====== compiled files (last lines) ======
 ====== test.log (tail) ======
-To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
-Daemon will be stopped at the end of the build 
+.DefaultConfiguration$1.call(DefaultConfiguration.java:791)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.resolveGraphInBuildOperation(DefaultConfiguration.java:791)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.lambda$resolveExclusivelyIfRequired$5(DefaultConfiguration.java:783)
+	at org.gradle.api.internal.project.DefaultProjectStateRegistry$CalculatedModelValueImpl.update(DefaultProjectStateRegistry.java:509)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.resolveExclusivelyIfRequired(DefaultConfiguration.java:778)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.resolveGraphIfRequired(DefaultConfiguration.java:771)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.access$1100(DefaultConfiguration.java:159)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration$ResolverResultsResolutionResultProvider.getValue(DefaultConfiguration.java:745)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration$ResolverResultsResolutionResultProvider.getValue(DefaultConfiguration.java:706)
+	at org.gradle.api.internal.artifacts.resolver.DefaultResolutionOutputs.getVisitedGraphResults(DefaultResolutionOutputs.java:106)
+	at org.gradle.api.internal.artifacts.resolver.DefaultResolutionOutputs.lambda$getRootComponent$1(DefaultResolutionOutputs.java:99)
+	at org.gradle.api.internal.provider.DefaultProvider.calculateOwnValue(DefaultProvider.java:72)
+	at org.gradle.api.internal.provider.AbstractMinimalProvider.calculateOwnPresentValue(AbstractMinimalProvider.java:80)
+	at org.gradle.api.internal.provider.AbstractMinimalProvider.get(AbstractMinimalProvider.java:100)
+	at org.gradle.api.internal.artifacts.result.DefaultResolutionResult.getRoot(DefaultResolutionResult.java:54)
+	at org.gradle.api.internal.artifacts.result.DefaultResolutionResult.getAllComponents(DefaultResolutionResult.java:93)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.getConsistentResolutionConstraints(DefaultConfiguration.java:880)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.generateSyntheticDependencies(DefaultConfiguration.java:1364)
+	at org.gradle.internal.lazy.UnsafeLazy.get(UnsafeLazy.java:35)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration.getSyntheticDependencies(DefaultConfiguration.java:1338)
+	at org.gradle.api.internal.artifacts.configurations.DefaultUnlockedConfiguration_Decorated.getSyntheticDependencies(Unknown Source)
+	at org.gradle.api.internal.artifacts.ivyservice.DefaultConfigurationResolver.doResolve(DefaultConfigurationResolver.java:404)
+	at org.gradle.api.internal.artifacts.ivyservice.DefaultConfigurationResolver.resolveGraph(DefaultConfigurationResolver.java:284)
+	at org.gradle.api.internal.artifacts.ivyservice.ShortCircuitEmptyConfigurationResolver.resolveGraph(ShortCircuitEmptyConfigurationResolver.java:88)
+	at org.gradle.api.internal.artifacts.configurations.DefaultConfiguration$1.call(DefaultConfiguration.java:799)
+	... 150 more
 
-> Configure project :app
-WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
-The current default is 'false'.
-It will be removed in version 9.0 of the Android Gradle plugin.
-To keep using this feature, add the following to your module-level build.gradle files:
-    android.buildFeatures.buildConfig = true
-or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`.
 
-> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
-> Task :app:preBuild UP-TO-DATE
-> Task :app:preDebugBuild UP-TO-DATE
-> Task :app:generateDebugBuildConfig UP-TO-DATE
-> Task :app:checkDebugAarMetadata UP-TO-DATE
-> Task :app:generateDebugResValues UP-TO-DATE
-> Task :app:mapDebugSourceSetPaths UP-TO-DATE
-> Task :app:generateDebugResources UP-TO-DATE
-> Task :app:mergeDebugResources UP-TO-DATE
-> Task :app:packageDebugResources UP-TO-DATE
-> Task :app:parseDebugLocalResources UP-TO-DATE
-> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
-> Task :app:extractDeepLinksDebug UP-TO-DATE
-> Task :app:processDebugMainManifest UP-TO-DATE
-> Task :app:processDebugManifest UP-TO-DATE
-> Task :app:processDebugManifestForPackage UP-TO-DATE
-> Task :app:processDebugResources UP-TO-DATE
-> Task :app:compileDebugKotlin UP-TO-DATE
-> Task :app:javaPreCompileDebug UP-TO-DATE
-> Task :app:compileDebugJavaWithJavac UP-TO-DATE
-> Task :app:preDebugUnitTestBuild UP-TO-DATE
-> Task :app:javaPreCompileDebugUnitTest FROM-CACHE
-> Task :app:processDebugJavaRes UP-TO-DATE
-> Task :app:bundleDebugClassesToCompileJar
-> Task :app:bundleDebugClassesToRuntimeJar
-> Task :app:compileDebugUnitTestKotlin
-> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
-> Task :app:processDebugUnitTestJavaRes
-> Task :app:testDebugUnitTest
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1793452322878.json
-
-BUILD SUCCESSFUL in 13s
-24 actionable tasks: 5 executed, 1 from cache, 18 up-to-date
+BUILD FAILED in 14s
+24 actionable tasks: 4 executed, 1 from cache, 19 up-to-date
 ====== assemble.log (tail) ======
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build 
@@ -78,8 +83,8 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
 > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
 > Task :app:generateDebugBuildConfig
-> Task :app:generateDebugResValues
 > Task :app:checkDebugAarMetadata
+> Task :app:generateDebugResValues
 > Task :app:mapDebugSourceSetPaths
 > Task :app:generateDebugResources
 > Task :app:packageDebugResources
@@ -89,27 +94,26 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
-> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets
+> Task :app:processDebugManifestForPackage
 > Task :app:desugarDebugFileDependencies
-> Task :app:processDebugResources
-> Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugJniLibFolders
-> Task :app:mergeLibDexDebug
 > Task :app:mergeDebugNativeLibs NO-SOURCE
 > Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:checkDebugDuplicateClasses
+> Task :app:processDebugResources
 > Task :app:validateSigningDebug
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
 > Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:mergeLibDexDebug
 > Task :app:mergeReleaseJniLibFolders
 > Task :app:mergeReleaseNativeLibs NO-SOURCE
-> Task :app:mergeExtDexDebug
 > Task :app:stripReleaseDebugSymbols NO-SOURCE
 > Task :app:extractReleaseNativeSymbolTables NO-SOURCE
 > Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
@@ -126,30 +130,33 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:extractDeepLinksRelease FROM-CACHE
 > Task :app:processReleaseMainManifest
 > Task :app:processReleaseManifest
-> Task :app:javaPreCompileRelease FROM-CACHE
 > Task :app:processReleaseManifestForPackage
+> Task :app:javaPreCompileRelease FROM-CACHE
 > Task :app:desugarReleaseFileDependencies
-> Task :app:mergeReleaseStartupProfile
 > Task :app:mergeReleaseResources
+> Task :app:mergeReleaseStartupProfile
+> Task :app:processReleaseResources
+> Task :app:mergeExtDexDebug
+> Task :app:compileDebugKotlin
 > Task :app:mergeReleaseArtProfile
 > Task :app:mergeReleaseShaders
 > Task :app:compileReleaseShaders NO-SOURCE
 > Task :app:generateReleaseAssets UP-TO-DATE
 > Task :app:mergeReleaseAssets
-> Task :app:processReleaseResources
 > Task :app:compressReleaseAssets
+> Task :app:mergeExtDexRelease
 > Task :app:extractReleaseVersionControlInfo
-> Task :app:optimizeReleaseResources
 > Task :app:collectReleaseDependencies
 > Task :app:sdkReleaseDependencyData
+> Task :app:optimizeReleaseResources
 > Task :app:validateSigningRelease
 > Task :app:writeReleaseAppMetadata
 > Task :app:writeReleaseSigningConfigVersions
 > Task :app:processApplicationManifestReleaseForBundle
-> Task :app:mergeExtDexRelease
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig
 > Task :app:bundleReleaseResources
+
 > Task :app:compileDebugKotlin
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:93:47 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:95:33 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
@@ -182,20 +189,20 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:183:19 'fun onBackPressed(): Unit' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/ButterflyLoader.kt:43:53 'field scaledDensity: Float' is deprecated. Deprecated in Java.
 
-> Task :app:compileReleaseJavaWithJavac
 > Task :app:compileDebugJavaWithJavac
 > Task :app:dexBuilderDebug
 > Task :app:mergeDebugGlobalSynthetics
 > Task :app:processDebugJavaRes
 > Task :app:mergeDebugJavaResource
 > Task :app:mergeProjectDexDebug
+> Task :app:compileReleaseJavaWithJavac
 > Task :app:dexBuilderRelease
-> Task :app:mergeReleaseGlobalSynthetics
-> Task :app:processReleaseJavaRes
-> Task :app:mergeReleaseJavaResource
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
+> Task :app:mergeReleaseGlobalSynthetics
+> Task :app:processReleaseJavaRes
+> Task :app:mergeReleaseJavaResource
 > Task :app:mergeDexRelease
 > Task :app:compileReleaseArtProfile
 > Task :app:buildReleasePreBundle
@@ -207,10 +214,73 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793452230520.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793452730066.json
 
-BUILD SUCCESSFUL in 1m 33s
+BUILD SUCCESSFUL in 2m 12s
 86 actionable tasks: 82 executed, 4 from cache
+====== verification report ======
+=== APK verification: dist/GossipAudio-1.0.0-release.apk
+{
+  "package": "xyz.beyoneer.gossipaudio",
+  "versionName": "1.0.0",
+  "versionCode": "1",
+  "minSdk": "24",
+  "targetSdk": "35",
+  "appClass": "xyz.beyoneer.gossipaudio.GossipApp",
+  "label": "@ref/0x7f040001",
+  "icon": "@ref/0x7f030000",
+  "permissions": [
+    "android.permission.VIBRATE",
+    "android.permission.RECORD_AUDIO",
+    "android.permission.POST_NOTIFICATIONS",
+    "android.permission.FOREGROUND_SERVICE",
+    "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+    "android.permission.WAKE_LOCK",
+    "android.permission.RECEIVE_BOOT_COMPLETED",
+    "android.permission.SCHEDULE_EXACT_ALARM",
+    "android.permission.WRITE_EXTERNAL_STORAGE"
+  ],
+  "activities": [
+    "xyz.beyoneer.gossipaudio.ui.MainActivity"
+  ],
+  "services": [
+    "xyz.beyoneer.gossipaudio.playback.PlaybackService"
+  ],
+  "receivers": [
+    "xyz.beyoneer.gossipaudio.notify.ReminderReceiver",
+    "xyz.beyoneer.gossipaudio.notify.BootReceiver"
+  ],
+  "providers": [],
+  "entries": 30,
+  "uncompressed_bytes": 4088,
+  "dex_bytes": 2815464,
+  "apk_sha256": "3b761427f1dd3c9246eb7e3aba0b43996eefe8ca56f0a9ac35aca31f66798a6f"
+}
+
+--- notes
+ * packaged PNG resources: 17 (names are obfuscated by AGP)
+ * no INTERNET permission — audio pipeline is genuinely offline
+ * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
+ * v1 signature files: none (fine for minSdk 24+)
+ * dex files: classes.dex (2815464 bytes uncompressed)
+
+--- problems
+ none — APK structure, manifest, signing and dex contents check out
+
+[OK  ] MP3 dist/samples/pipeline-sample.mp3  73603 bytes
+         {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 173, 'duration_ms': 4519, 'audio_bytes': 72306}, 'size': 73603}
+[OK  ] WAV dist/samples/pipeline-sample.wav  196728 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4460}
+[OK  ] WAV dist/samples/voice-arjun.wav  192872 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
+[OK  ] WAV dist/samples/voice-bot.wav  189162 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4288}
+[OK  ] WAV dist/samples/voice-maya.wav  185596 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4208}
+[OK  ] WAV dist/samples/voice-riya.wav  192872 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4373}
+
+all audio files valid
 ====== sdk.txt ======
 sdk ok
 android-34
