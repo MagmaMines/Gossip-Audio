@@ -1,0 +1,23 @@
+GossipAudio test report
+=======================
+
+PipelineTest: 8 tests, 0 failed, 0 skipped  (0.815 s)
+  [PASS] silenceAndEmptyInputAreHandledGracefully  0.132 s
+  [PASS] mp3EncoderProducesRealFramesAndTags  0.268 s
+  [PASS] stylesChangeRateAndPitchNumerically  0.017 s
+  [PASS] everyVoiceSynthesisesAudibleSpeech  0.267 s
+  [PASS] audioEffectsAreStable  0.044 s
+  [PASS] wavRoundTripPreservesSamples  0.036 s
+  [PASS] textKitEstimatesMatchRenderedAudio  0.049 s
+  [PASS] catalogHasTenVoicesAndEightStyles  0.0 s
+
+StudioGenerateTest: 1 tests, 0 failed, 0 skipped  (11.208 s)
+  [PASS] typingAndTappingGenerateCreatesAPlayableClip  11.208 s
+
+UiSmokeTest: 4 tests, 0 failed, 0 skipped  (5.581 s)
+  [PASS] appBootsIntoShellAndRendersEveryTab  2.539 s
+  [PASS] darkThemeStillUsesBrandYellow  0.625 s
+  [PASS] aboutHelpAndDiagnosticsScreensRender  1.672 s
+  [PASS] playerScreenOpensForARealClip  0.744 s
+
+TOTAL: 13 tests, 0 failed, 0 skipped
