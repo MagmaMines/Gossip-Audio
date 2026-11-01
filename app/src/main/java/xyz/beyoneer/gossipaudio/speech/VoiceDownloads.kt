@@ -17,53 +17,97 @@ object VoiceDownloads {
     private const val TELUGU_HASH = "104d1d0b1d88bd243b3543a208bd98405c69e3d77f05a18055359ce867a5649b"
     private const val TOKENS_HASH = "ef3a7e4a8d1af0c9d4dc45aaae1a6242ebe24a7ed6f3d025a49eb29682784c6d"
 
-    fun directory(context: Context, id: String): File {
-        require(id == "cori" || id == "ljspeech" || id == "padmavathi")
-        return File(context.filesDir, "voices/$id")
+    private const val SUPER_HASH = "82fa96f91c4ef8abaae3a14a3f4153facf88bed821d1f7331cec2700f432c427"
+    private const val ZH_HASH = "b78e1ac42b852e839cceaafbe88f66806bf5860992d1d7b9a3f2ad1198427aed"
+    private const val RELEASES = "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/"
+    private val superFiles = setOf("duration_predictor.int8.onnx", "text_encoder.int8.onnx", "vector_estimator.int8.onnx", "vocoder.int8.onnx", "tts.json", "unicode_indexer.bin", "voice.bin")
+    private val chineseFiles = setOf("model.onnx", "voices.bin", "tokens.txt", "lexicon-us-en.txt", "lexicon-zh.txt")
+    private val listeners = java.util.concurrent.CopyOnWriteArraySet<() -> Unit>()
+    private val active = java.util.concurrent.ConcurrentHashMap.newKeySet<String>()
+    private val main = android.os.Handler(android.os.Looper.getMainLooper())
+
+    fun packId(id: String): String = when (id) {
+        "hi_super", "ja_super", "fr_super" -> "supertonic3"
+        "zh_kokoro" -> "kokoro11"
+        "riya", "cori", "ljspeech", "padmavathi" -> id
+        else -> throw IllegalArgumentException("Unknown voice")
     }
+    fun addListener(listener: () -> Unit) { listeners.add(listener) }
+    fun removeListener(listener: () -> Unit) { listeners.remove(listener) }
+    private fun notifyChanged() { main.post { listeners.forEach { it() } } }
+    fun downloading(id: String): Boolean = active.contains(packId(id))
+    fun downloadDescription(id: String): String = when (packId(id)) {
+        "supertonic3" -> "One shared download (~129 MB) unlocks Hindi, Japanese and French. OpenRAIL-M use restrictions apply."
+        "kokoro11" -> "The full-precision Mandarin voice download is ~365 MB."
+        else -> "This voice download is approximately 65–70 MB."
+    }
+    fun directory(context: Context, id: String): File = File(context.filesDir, "voices/${packId(id)}")
     fun installed(context: Context, id: String): Boolean = id == "riya" || try {
         val dir = directory(context, id)
-        File(dir, ".complete").isFile && File(dir, "model.onnx").length() > 1000000 && File(dir, "tokens.txt").length() > 0
+        val required = when (packId(id)) {
+            "supertonic3" -> superFiles
+            "kokoro11" -> chineseFiles
+            else -> setOf("model.onnx", "tokens.txt")
+        }
+        File(dir, ".complete").isFile && required.all { File(dir, it).isFile && File(dir, it).length() > 0 }
     } catch (_: IllegalArgumentException) { false }
 
     @Synchronized fun download(context: Context, id: String) {
-        if (installed(context, id)) return
+        if (installed(context, id)) { notifyChanged(); return }
+        val pack = packId(id)
+        active.add(pack)
+        notifyChanged()
         val dir = directory(context, id)
-        val tmp = File(dir.parentFile, "$id.pending")
+        val tmp = File(dir.parentFile, "$pack.pending")
         tmp.deleteRecursively()
-        check(tmp.mkdirs()) { "Cannot create voice directory." }
         try {
-            if (id == "cori" || id == "ljspeech") {
-                val archive = File(tmp, "voice.tar.bz2")
-                fetch(if (id == "cori") CORI else LJ, archive, if (id == "cori") CORI_HASH else LJ_HASH, 70_000_000)
-                TarArchiveInputStream(BZip2CompressorInputStream(archive.inputStream().buffered())).use { tar ->
-                    var model = false
-                    var tokens = false
-                    while (true) {
-                        val entry = tar.nextTarEntry ?: break
-                        if (!entry.isFile) continue
-                        val leaf = entry.name.substringAfterLast('/')
-                        val target = when (leaf) {
-                            "en_GB-cori-medium.onnx", "en_US-ljspeech-medium.onnx" -> { check(!model); model = true; File(tmp, "model.onnx") }
-                            "tokens.txt" -> { check(!tokens); tokens = true; File(tmp, "tokens.txt") }
-                            else -> null
-                        }
-                        if (target != null) {
-                            check(entry.size in 1..70_000_000) { "Invalid voice archive." }
-                            target.outputStream().use { tar.copyTo(it) }
-                        }
-                    }
-                    check(model && tokens) { "Voice archive is incomplete." }
+            check(tmp.mkdirs()) { "Cannot create voice directory." }
+            when (pack) {
+                "cori", "ljspeech" -> {
+                    val files = if (pack == "cori") mapOf("en_GB-cori-medium.onnx" to "model.onnx", "tokens.txt" to "tokens.txt")
+                        else mapOf("en_US-ljspeech-medium.onnx" to "model.onnx", "tokens.txt" to "tokens.txt")
+                    installArchive(tmp, if (pack == "cori") CORI else LJ, if (pack == "cori") CORI_HASH else LJ_HASH, 70_000_000, files)
                 }
-                archive.delete()
-            } else {
-                fetch(TELUGU + "te_IN-padmavathi-medium.onnx", File(tmp, "model.onnx"), TELUGU_HASH, 70_000_000)
-                fetch(TELUGU + "tokens.txt", File(tmp, "tokens.txt"), TOKENS_HASH, 100_000)
+                "supertonic3" -> installArchive(tmp, RELEASES + "sherpa-onnx-supertonic-3-tts-int8-2026-05-11.tar.bz2", SUPER_HASH, 140_000_000, superFiles.associateWith { it })
+                "kokoro11" -> installArchive(tmp, RELEASES + "kokoro-multi-lang-v1_1.tar.bz2", ZH_HASH, 380_000_000, chineseFiles.associateWith { it })
+                "padmavathi" -> {
+                    fetch(TELUGU + "te_IN-padmavathi-medium.onnx", File(tmp, "model.onnx"), TELUGU_HASH, 70_000_000)
+                    fetch(TELUGU + "tokens.txt", File(tmp, "tokens.txt"), TOKENS_HASH, 100_000)
+                }
+                else -> error("Unsupported voice")
             }
             File(tmp, ".complete").writeText("1")
             if (dir.exists()) check(dir.deleteRecursively()) { "Cannot replace voice files." }
             check(tmp.renameTo(dir)) { "Cannot install voice files." }
-        } finally { tmp.deleteRecursively() }
+        } finally {
+            tmp.deleteRecursively()
+            active.remove(pack)
+            notifyChanged()
+        }
+    }
+
+    private fun installArchive(tmp: File, url: String, hash: String, maxBytes: Long, files: Map<String, String>) {
+        val archive = File(tmp, "voice.tar.bz2")
+        fetch(url, archive, hash, maxBytes)
+        val found = mutableSetOf<String>()
+        TarArchiveInputStream(BZip2CompressorInputStream(archive.inputStream().buffered())).use { tar ->
+            while (true) {
+                val entry = tar.nextTarEntry ?: break
+                if (!entry.isFile) continue
+                val leaf = entry.name.substringAfterLast('/')
+                if (leaf == "LICENSE" && !File(tmp, "LICENSE").exists()) {
+                    check(entry.size in 1..100_000) { "Invalid license file." }
+                    File(tmp, "LICENSE").outputStream().use { tar.copyTo(it) }
+                    continue
+                }
+                val target = files[leaf] ?: continue
+                check(found.add(leaf)) { "Duplicate voice file." }
+                check(entry.size in 1..400_000_000) { "Invalid voice archive." }
+                File(tmp, target).outputStream().use { tar.copyTo(it) }
+            }
+        }
+        check(found == files.keys) { "Voice archive is incomplete: ${files.keys - found}" }
+        archive.delete()
     }
 
     private fun fetch(url: String, target: File, hash: String, maxBytes: Long) {

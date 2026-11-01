@@ -60,6 +60,18 @@ object VoiceCatalog {
             bio = "Full-precision Piper voice trained from scratch on the public-domain LJ Speech dataset. Download once for offline use.",
             engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
         ),
+        VoiceProfile(id = "hi_super", name = "Hindi", gender = VoiceGender.FEMALE,
+            locale = "hi-IN", flag = "🇮🇳", region = "Hindi", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Hindi neural voice. One shared download unlocks Hindi, Japanese and French. OpenRAIL-M use restrictions apply.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "ja_super", name = "Japanese", gender = VoiceGender.FEMALE,
+            locale = "ja-JP", flag = "🇯🇵", region = "Japanese", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Japanese neural voice. Shared pack with Hindi and French. OpenRAIL-M use restrictions apply.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "fr_super", name = "French", gender = VoiceGender.FEMALE,
+            locale = "fr-FR", flag = "🇫🇷", region = "French", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "French neural voice. Shared pack with Hindi and Japanese. OpenRAIL-M use restrictions apply.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "zh_kokoro", name = "Mandarin", gender = VoiceGender.FEMALE,
+            locale = "zh-CN", flag = "🇨🇳", region = "Mandarin Chinese", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Kokoro 1.1 · full precision", bio = "Mandarin Chinese neural voice. Apache 2.0 model; a separate large download is required.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
         VoiceProfile(
             id = "padmavathi", name = "Padmavathi", gender = VoiceGender.FEMALE,
             locale = "te-IN", flag = "🇮🇳", region = "Telugu (India)",

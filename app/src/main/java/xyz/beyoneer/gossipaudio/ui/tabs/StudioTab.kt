@@ -505,7 +505,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                     ramValue.text = "${snap.usedMemMb}/${snap.totalMemMb}M"
                     coreValue.text = "${snap.cores}"
                     val hasEngine = xyz.beyoneer.gossipaudio.speech.NeuralEngine.available(activity)
-                    engineValue.text = if (hasEngine) "Offline neural model \u00B7 English \u00B7 CPU" else "Neural model missing from build"
+                    engineValue.text = if (hasEngine) "Offline neural model \u00B7 CPU" else "Neural model missing from build"
                     engineDot.background = Ui.rounded(if (hasEngine) palette.success else palette.yellow, Ui.dpf(activity, 20f))
                     val mem = if (snap.totalMemMb <= 0) 0f else snap.usedMemMb.toFloat() / snap.totalMemMb * 100f
                     telemetryHistory.add(snap.cpuPercent to mem)
@@ -558,6 +558,10 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             )
             card.addView(meta)
             Ui.pressable(card, 0.93f) {
+                if (!xyz.beyoneer.gossipaudio.speech.VoiceDownloads.installed(activity, voice.id)) {
+                    activity.toast("Download ${voice.name} in the Voices tab first.")
+                    return@pressable
+                }
                 activity.app.prefs.selectedVoiceId = voice.id
                 refreshVoiceStrip()
                 refreshVoiceChipLabel()

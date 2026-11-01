@@ -20,7 +20,14 @@ object VoicePreview {
     private val busy = HashSet<String>()
 
     private fun sampleFor(voice: VoiceProfile): String =
-        if (voice.id == "padmavathi") "నమస్కారం! మీ మాటలకు స్వాగతం." else "Hello! This is ${voice.name}. Your words, their wings."
+        when (voice.id) {
+            "padmavathi" -> "నమస్కారం! మీ మాటలకు స్వాగతం."
+            "hi_super" -> "नमस्ते! गॉसिप ऑडियो में आपका स्वागत है।"
+            "ja_super" -> "こんにちは。ゴシップオーディオへようこそ。"
+            "fr_super" -> "Bonjour et bienvenue sur Gossip Audio."
+            "zh_kokoro" -> "你好，欢迎来到语音工作室。"
+            else -> "Hello! This is ${voice.name}. Your words, their wings."
+        }
 
     fun preview(activity: MainActivity, voice: VoiceProfile, onState: (State) -> Unit) {
         val key = "preview-lessac-fp32-v2-${voice.id}-${activity.prefs.selectedStyleId}-${activity.prefs.pitch}-${activity.prefs.speed}"

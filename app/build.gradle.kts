@@ -11,8 +11,8 @@ android {
         applicationId = "xyz.beyoneer.gossipaudio"
         minSdk = 24
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.3.0"
+        versionCode = 7
+        versionName = "1.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resourceConfigurations += listOf("en", "hi")
         // The public APK targets 64-bit ARM; CI builds x86_64 separately for emulator testing.

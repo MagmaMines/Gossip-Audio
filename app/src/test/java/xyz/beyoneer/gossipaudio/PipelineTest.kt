@@ -30,7 +30,7 @@ class PipelineTest {
 
     @Test
     fun catalogHasNeuralVoicesAndEightStyles() {
-        assertEquals(4, VoiceCatalog.all.size)
+        assertEquals(8, VoiceCatalog.all.size)
         assertTrue(VoiceCatalog.all.all { it.engine == xyz.beyoneer.gossipaudio.core.VoiceEngine.NEURAL })
         assertEquals(xyz.beyoneer.gossipaudio.core.VoiceEngine.NEURAL, VoiceCatalog.all[0].engine)
         assertEquals(8, StyleCatalog.all.size)

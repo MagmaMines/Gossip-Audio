@@ -22,10 +22,16 @@ class SpeechSynth(private val context: Context) {
     fun synthesize(text: String, voice: VoiceProfile, style: StylePreset, pitch: Float, rate: Float, callback: Callback) {
         val clean = text.trim()
         if (clean.isEmpty()) { callback.onError("Type some text first."); return }
-        // The packaged model is English. Refuse unsupported scripts instead of
-        // returning plausible-looking but unintelligible speech.
-        if (clean.codePoints().anyMatch { Character.isLetter(it) && Character.UnicodeScript.of(it) != if (voice.id == "padmavathi") Character.UnicodeScript.TELUGU else Character.UnicodeScript.LATIN }) {
-            callback.onError(if (voice.id == "padmavathi") "Enter Telugu text for Padmavathi." else "Enter English text for this voice.")
+        // Guard against selecting a voice for an unrelated writing system.
+        val allowed = when (voice.id) {
+            "padmavathi" -> setOf(Character.UnicodeScript.TELUGU)
+            "hi_super" -> setOf(Character.UnicodeScript.DEVANAGARI, Character.UnicodeScript.LATIN)
+            "ja_super" -> setOf(Character.UnicodeScript.HAN, Character.UnicodeScript.HIRAGANA, Character.UnicodeScript.KATAKANA, Character.UnicodeScript.LATIN)
+            "zh_kokoro" -> setOf(Character.UnicodeScript.HAN, Character.UnicodeScript.LATIN)
+            else -> setOf(Character.UnicodeScript.LATIN)
+        }
+        if (clean.codePoints().anyMatch { Character.isLetter(it) && Character.UnicodeScript.of(it) !in allowed && Character.UnicodeScript.of(it) != Character.UnicodeScript.COMMON && Character.UnicodeScript.of(it) != Character.UnicodeScript.INHERITED }) {
+            callback.onError("Enter text supported by the selected ${voice.region} voice.")
             return
         }
         val speaker = 0

@@ -6,6 +6,6 @@ object Brand {
     const val BYLINE = "by Beyoneer XYZ"
     const val TAGLINE = "Your words, their wings."
     const val SHORT_TAGLINE = "Your words, their wings."
-    const val VERSION = "1.3.0"
+    const val VERSION = "1.4.0"
     const val FEATURE_COUNT = "28"
 }

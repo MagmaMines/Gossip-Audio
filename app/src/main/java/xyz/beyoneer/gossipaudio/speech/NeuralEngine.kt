@@ -5,6 +5,9 @@ import com.k2fsa.sherpa.onnx.OfflineTts
 import com.k2fsa.sherpa.onnx.OfflineTtsConfig
 import com.k2fsa.sherpa.onnx.OfflineTtsModelConfig
 import com.k2fsa.sherpa.onnx.OfflineTtsVitsModelConfig
+import com.k2fsa.sherpa.onnx.OfflineTtsSupertonicModelConfig
+import com.k2fsa.sherpa.onnx.OfflineTtsKokoroModelConfig
+import com.k2fsa.sherpa.onnx.GenerationConfig
 import xyz.beyoneer.gossipaudio.core.Pcm
 import java.io.File
 
@@ -29,28 +32,46 @@ object NeuralEngine {
             copyAssetTree(context, "$ASSET/espeak-ng-data", data)
             File(data, ".complete").writeText("ok")
         }
+        val supertonic = voiceId in setOf("hi_super", "ja_super", "fr_super")
+        val chinese = voiceId == "zh_kokoro"
+        val dir = if (!bundled) VoiceDownloads.directory(context, voiceId) else null
+        fun path(name: String): String = File(dir!!, name).absolutePath
         val config = OfflineTtsConfig(
             model = OfflineTtsModelConfig(
-                vits = OfflineTtsVitsModelConfig(
-                    model = if (bundled) "$ASSET/model.onnx" else File(VoiceDownloads.directory(context, voiceId), "model.onnx").absolutePath,
-                    tokens = if (bundled) "$ASSET/tokens.txt" else File(VoiceDownloads.directory(context, voiceId), "tokens.txt").absolutePath,
+                vits = if (supertonic || chinese) OfflineTtsVitsModelConfig() else OfflineTtsVitsModelConfig(
+                    model = if (bundled) "$ASSET/model.onnx" else path("model.onnx"),
+                    tokens = if (bundled) "$ASSET/tokens.txt" else path("tokens.txt"),
                     dataDir = data.absolutePath
+                ),
+                supertonic = if (!supertonic) OfflineTtsSupertonicModelConfig() else OfflineTtsSupertonicModelConfig(
+                    durationPredictor = path("duration_predictor.int8.onnx"),
+                    textEncoder = path("text_encoder.int8.onnx"),
+                    vectorEstimator = path("vector_estimator.int8.onnx"),
+                    vocoder = path("vocoder.int8.onnx"), ttsJson = path("tts.json"),
+                    unicodeIndexer = path("unicode_indexer.bin"), voiceStyle = path("voice.bin")
+                ),
+                kokoro = if (!chinese) OfflineTtsKokoroModelConfig() else OfflineTtsKokoroModelConfig(
+                    model = path("model.onnx"), voices = path("voices.bin"), tokens = path("tokens.txt"),
+                    dataDir = data.absolutePath, lexicon = path("lexicon-us-en.txt") + "," + path("lexicon-zh.txt")
                 ),
                 numThreads = minOf(4, Runtime.getRuntime().availableProcessors()).coerceAtLeast(1),
                 provider = "cpu"
-            ),
-            maxNumSentences = 1
+            ), maxNumSentences = 1
         )
         val engine = OfflineTts(if (bundled) context.assets else null, config)
         try {
+            val actualSpeaker = if (chinese) 3 else speaker
             val count = engine.numSpeakers()
-            check(speaker in 0 until count) { "This model does not contain speaker $speaker (found $count)." }
+            check(actualSpeaker in 0 until count) { "This model does not contain speaker $speaker (found $count)." }
             val pieces = ArrayList<FloatArray>()
             var sampleRate = 0
             var total = 0
             for ((index, chunk) in chunks.withIndex()) {
                 progress(index, chunks.size)
-                val audio = engine.generate(chunk, sid = speaker, speed = speed.coerceIn(0.5f, 2f))
+                val audio = if (supertonic) engine.generateWithConfig(chunk, GenerationConfig(
+                    sid = actualSpeaker, speed = speed.coerceIn(0.5f, 2f),
+                    extra = mapOf("lang" to voiceId.substringBefore("_"))
+                )) else engine.generate(chunk, sid = actualSpeaker, speed = speed.coerceIn(0.5f, 2f))
                 check(audio.samples.isNotEmpty() && audio.sampleRate > 0) { "The neural model returned no audio." }
                 check(sampleRate == 0 || sampleRate == audio.sampleRate) { "Inconsistent sample rate." }
                 sampleRate = audio.sampleRate

@@ -34,9 +34,12 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
 
     override val root: View by lazy { build() }
 
-    override fun onHide() = Unit
+    private val downloadsChanged: () -> Unit = { render() }
+
+    override fun onHide() { VoiceDownloads.removeListener(downloadsChanged) }
 
     override fun onShow() {
+        VoiceDownloads.addListener(downloadsChanged)
         render()
     }
 
@@ -82,6 +85,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
     private fun voiceCard(voice: VoiceProfile): View {
         val selected = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId).id == voice.id
         val installed = VoiceDownloads.installed(activity, voice.id)
+        val downloading = VoiceDownloads.downloading(voice.id)
         val card = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
             background = if (selected) {
@@ -147,7 +151,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         val preview = BrandButton(activity, palette, "Preview", BrandButton.Variant.GHOST, Icons.Kind.PLAY, compact = true)
         val use = BrandButton(
             activity, palette,
-            if (!installed) "Download" else if (selected) "Selected" else "Use this voice",
+            if (downloading) "Downloading…" else if (!installed) "Download" else if (selected) "Selected" else "Use this voice",
             if (selected) BrandButton.Variant.INK else BrandButton.Variant.PRIMARY,
             if (selected) Icons.Kind.CHECK else Icons.Kind.SPARKLE,
             compact = true
@@ -162,7 +166,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         // The whole card selects the voice — nobody should have to aim at a button.
         card.isClickable = true
         card.setOnClickListener {
-            if (!installed) { activity.toast("Download ${voice.name} first."); return@setOnClickListener }
+            if (!VoiceDownloads.installed(activity, voice.id)) { activity.toast("Download ${voice.name} first."); return@setOnClickListener }
             activity.app.prefs.selectedVoiceId = voice.id
             render()
             activity.toast("${voice.name} is now your gossip voice.")
@@ -171,7 +175,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         Ui.pressable(card, 0.985f)
 
         preview.setOnClick {
-            if (!installed) { activity.toast("Download ${voice.name} first."); return@setOnClick }
+            if (!VoiceDownloads.installed(activity, voice.id)) { activity.toast("Download ${voice.name} first."); return@setOnClick }
             if (previewing == voice.id) {
                 activity.toast("Already preparing that sample\u2026")
                 return@setOnClick
@@ -194,11 +198,20 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
             }
         }
         use.setOnClick {
-            if (!installed) {
+            if (VoiceDownloads.downloading(voice.id)) { activity.toast("Download in progress."); return@setOnClick }
+            if (!VoiceDownloads.installed(activity, voice.id)) {
                 android.app.AlertDialog.Builder(activity)
                     .setTitle("Download ${voice.name}?")
-                    .setMessage("Downloads approximately 65–70 MB over the internet. Text-to-speech stays on your device. Data charges may apply.")
+                    .setMessage(VoiceDownloads.downloadDescription(voice.id) + " Speech stays on your device. Data charges may apply.")
                     .setNegativeButton("Cancel", null)
+                    .setNeutralButton("License") { _, _ ->
+                        val url = when (VoiceDownloads.packId(voice.id)) {
+                            "supertonic3" -> "https://huggingface.co/Supertone/supertonic-3/blob/main/LICENSE"
+                            "kokoro11" -> "https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh/blob/main/LICENSE"
+                            else -> "https://github.com/MagmaMines/Gossip-Audio/blob/arena/4b4d4c7a-gossip-audio/docs/VOICES.md"
+                        }
+                        runCatching { activity.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))) }
+                    }
                     .setPositiveButton("Download") { _, _ ->
                         use.setLoading(true)
                         Thread {
@@ -206,7 +219,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
                             activity.runOnUiThread {
                                 if (!activity.isFinishing && !activity.isDestroyed) {
                                     use.setLoading(false)
-                                    if (failure == null) { render(); activity.toast("${voice.name} is ready offline.") }
+                                    if (failure == null) { activity.app.prefs.selectedVoiceId = voice.id; render(); activity.toast("${voice.name} is installed and selected.") }
                                     else activity.toast("Download failed: ${failure.message ?: "Please retry."}")
                                 }
                             }

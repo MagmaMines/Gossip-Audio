@@ -284,13 +284,16 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
     override fun onShown() {
         PlaybackHub.addListener(hubListener)
         hubListener(PlaybackHub.state)
+        if (current >= 0) tabs[current].onShow()
     }
 
     override fun onHidden() {
+        if (current >= 0) tabs[current].onHide()
         PlaybackHub.removeListener(hubListener)
     }
 
     override fun onDestroyed() {
+        if (current >= 0) tabs[current].onHide()
         PlaybackHub.removeListener(hubListener)
     }
 
