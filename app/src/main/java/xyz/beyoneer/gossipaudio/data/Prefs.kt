@@ -16,7 +16,7 @@ class Prefs(context: Context) {
         set(value) = sp.edit().putString("default_format", value).apply()
 
     var defaultBitrate: Int
-        get() = sp.getInt("default_bitrate", 128)
+        get() = sp.getInt("default_bitrate", 192)
         set(value) = sp.edit().putInt("default_bitrate", value).apply()
 
     var selectedVoiceId: String

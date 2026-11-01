@@ -8,6 +8,12 @@ import org.junit.runner.RunWith
 import xyz.beyoneer.gossipaudio.core.Wav
 import xyz.beyoneer.gossipaudio.core.Mp3Encoder
 import xyz.beyoneer.gossipaudio.speech.NeuralEngine
+import xyz.beyoneer.gossipaudio.speech.SpeechSynth
+import xyz.beyoneer.gossipaudio.core.VoiceCatalog
+import xyz.beyoneer.gossipaudio.core.StyleCatalog
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
 import android.content.ContentValues
 import android.os.Environment
 import android.provider.MediaStore
@@ -18,7 +24,20 @@ class NeuralSpeechTest {
     @Test fun fullPrecisionNeuralVoiceProducesUnclippedAudioAndExports() {
         val context = ApplicationProvider.getApplicationContext<GossipApp>()
         assertTrue("Neural model assets missing", NeuralEngine.available(context))
-        val pcm = NeuralEngine.render(context, listOf("Hello! Welcome to Gossip Audio. Your words, their wings."), 0, 1f) { _, _ -> }
+        val latch = CountDownLatch(1)
+        val outcome = AtomicReference<SpeechSynth.Outcome>()
+        val failure = AtomicReference<String>()
+        SpeechSynth(context).synthesize("Hello! Welcome to Gossip Audio. Your words, their wings.",
+            VoiceCatalog.all.single(), StyleCatalog.byId("natural"), 1f, 1f,
+            object : SpeechSynth.Callback {
+                override fun onProgress(fraction: Float, label: String) = Unit
+                override fun onSuccess(result: SpeechSynth.Outcome) { outcome.set(result); latch.countDown() }
+                override fun onError(message: String) { failure.set(message); latch.countDown() }
+            })
+        assertTrue("Neural synthesis timed out", latch.await(90, TimeUnit.SECONDS))
+        assertTrue("Neural synthesis failed: ${failure.get()}", outcome.get() != null)
+        assertTrue("Unexpected synthesis engine", outcome.get().engine == "neural")
+        val pcm = outcome.get().pcm
         assertTrue("Output is too short", pcm.durationMs > 1000)
         assertTrue("Output is silent", pcm.peak() > 200)
         assertTrue("Hard-clipped samples detected", pcm.samples.none { abs(it.toInt()) >= 32760 })
