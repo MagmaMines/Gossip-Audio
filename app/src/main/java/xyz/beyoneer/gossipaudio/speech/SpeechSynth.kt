@@ -67,7 +67,12 @@ class SpeechSynth(private val context: Context) {
         val telemetry = xyz.beyoneer.gossipaudio.util.Telemetry(context)
         val sampler = xyz.beyoneer.gossipaudio.util.Telemetry.Sampler(telemetry).also { it.start() }
         val startedAt = System.currentTimeMillis()
-        val systemUsable = voice.engine == VoiceEngine.SYSTEM_TTS && hasSystemEngine()
+        // Attempt the device engine whenever the voice asks for it. Gating on
+        // queryIntentServices() was fragile (package-visibility rules, odd vendor
+        // manifests), and the cost of being wrong is a fast failure that already falls
+        // through to NanoVoice — while the cost of a false negative is speaking every
+        // sentence with a formant synthesiser on a phone that had a neural voice.
+        val systemUsable = voice.engine == VoiceEngine.SYSTEM_TTS
 
         // Two different worlds, two different mixes.
         //
@@ -322,18 +327,27 @@ class SpeechSynth(private val context: Context) {
         } ?: return null
         val sameLocale = voices.filter { it.locale.language == locale.language }
         if (sameLocale.isEmpty()) return null
-        val female = sameLocale.filter { v ->
+        // Google ships two voices per language: "en-in-x-ene-local" (on the phone) and
+        // "...-network" (synthesised in the cloud). Picking the network one first means
+        // that in airplane mode, or on a phone without a data pack, every render throws
+        // and the user silently gets NanoVoice. Prefer the local voice, always.
+        val onDevice = sameLocale.filter { v ->
+            val n = v.name.lowercase()
+            !n.contains("network") && v.isNetworkConnectionRequired.not()
+        }
+        val pool = if (onDevice.isNotEmpty()) onDevice else sameLocale
+        val female = pool.filter { v ->
             val n = v.name.lowercase()
             (n.contains("female") || n.contains("woman")) && !n.contains("male_")
         }
-        val male = sameLocale.filter { v ->
+        val male = pool.filter { v ->
             val n = v.name.lowercase()
             n.contains("#male") || n.contains("_male") || (n.contains("male") && !n.contains("female"))
         }
         return when (gender) {
-            VoiceGender.FEMALE -> female.firstOrNull() ?: sameLocale.first()
-            VoiceGender.MALE -> male.firstOrNull() ?: sameLocale.first()
-            VoiceGender.NONHUMAN -> sameLocale.first()
+            VoiceGender.FEMALE -> female.firstOrNull() ?: pool.first()
+            VoiceGender.MALE -> male.firstOrNull() ?: pool.first()
+            VoiceGender.NONHUMAN -> pool.first()
         }
     }
 
