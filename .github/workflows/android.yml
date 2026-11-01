@@ -6,6 +6,7 @@ on:
       - arena/4b4d4c7a-gossip-audio
     paths-ignore:
       - 'dist/**'
+      - 'ci-logs/**'
 permissions:
   contents: write
 jobs:
@@ -42,8 +43,25 @@ jobs:
           target: google_apis
           disable-animations: true
           script: |
-            gradle --no-daemon --stacktrace -PneuralTestEmulator=true connectedDebugAndroidTest
-            adb pull /sdcard/Android/data/xyz.beyoneer.gossipaudio.debug/files/neural-sample.wav "$RUNNER_TEMP/neural-sample.wav"
+            set +e
+            gradle --no-daemon --stacktrace -PneuralTestEmulator=true connectedDebugAndroidTest > "$RUNNER_TEMP/neural-test.log" 2>&1
+            code=$?
+            adb logcat -d -s TestRunner:E AndroidRuntime:E DEBUG:E > "$RUNNER_TEMP/neural-logcat.log" 2>&1
+            if [ "$code" -eq 0 ]; then
+              adb pull /sdcard/Android/data/xyz.beyoneer.gossipaudio.debug/files/neural-sample.wav "$RUNNER_TEMP/neural-sample.wav" >> "$RUNNER_TEMP/neural-test.log" 2>&1
+              code=$?
+            fi
+            tail -n 60 "$RUNNER_TEMP/neural-test.log"
+            exit "$code"
+      - name: Record emulator failure details
+        if: failure() && github.ref_name == 'arena/4b4d4c7a-gossip-audio'
+        run: |
+          git config user.name "GossipAudio CI"
+          git config user.email "ci@beyoneer.xyz"
+          mkdir -p ci-logs
+          { tail -n 200 "$RUNNER_TEMP/neural-test.log" 2>/dev/null || true; tail -n 200 "$RUNNER_TEMP/neural-logcat.log" 2>/dev/null || true; find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} \; 2>/dev/null || true; } > ci-logs/neural-test-failure.txt
+          git add ci-logs/neural-test-failure.txt
+          git commit -m 'ci: capture neural test failure' && git push origin "HEAD:${GITHUB_REF_NAME}"
       - name: Upload APK and reports
         if: always()
         uses: actions/upload-artifact@v4
