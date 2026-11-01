@@ -1,13 +1,13 @@
-=== APK verification: dist/GossipAudio-1.0.6-release.apk
+=== APK verification: dist/GossipAudio-2.0.0-release.apk
 {
   "package": "xyz.beyoneer.gossipaudio",
-  "versionName": "1.0.6",
-  "versionCode": "7",
+  "versionName": "2.0.0",
+  "versionCode": "8",
   "minSdk": "24",
   "targetSdk": "35",
   "appClass": "xyz.beyoneer.gossipaudio.GossipApp",
-  "label": "@ref/0x7f040001",
-  "icon": "@ref/0x7f030000",
+  "label": "@ref/0x7f090001",
+  "icon": "@ref/0x7f080000",
   "permissions": [
     "android.permission.VIBRATE",
     "android.permission.RECORD_AUDIO",
@@ -16,7 +16,8 @@
     "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
     "android.permission.WAKE_LOCK",
     "android.permission.RECEIVE_BOOT_COMPLETED",
-    "android.permission.WRITE_EXTERNAL_STORAGE"
+    "android.permission.WRITE_EXTERNAL_STORAGE",
+    "android.permission.ACCESS_NETWORK_STATE"
   ],
   "activities": [
     "xyz.beyoneer.gossipaudio.ui.MainActivity"
@@ -38,19 +39,19 @@
     "key_bits": 4096,
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
-  "entries": 33,
-  "uncompressed_bytes": 3277354,
-  "dex_bytes": 2891932,
-  "apk_sha256": "3e21f3fdf3ab48f7ace08eed8bb1c8dea6b341719121d494d6932005fd687c70"
+  "entries": 66,
+  "uncompressed_bytes": 8858144,
+  "dex_bytes": 8447152,
+  "apk_sha256": "a8de5c13b1a0f9e2775d23860fb02b33ad1cc6192cd297cd04c9f237c70aa0e3"
 }
 
 --- notes
- * packaged PNG resources: 17 (names are obfuscated by AGP)
+ * packaged PNG resources: 32 (names are obfuscated by AGP)
  * no INTERNET permission — audio pipeline is genuinely offline
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
- * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
- * dex files: classes.dex (2891932 bytes uncompressed)
+ * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 8184-byte signed block, 6 chunks
+ * dex files: classes.dex (8447152 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
