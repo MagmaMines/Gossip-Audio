@@ -48,7 +48,7 @@ jobs:
             code=$?
             adb logcat -d -s TestRunner:E AndroidRuntime:E DEBUG:E > "$RUNNER_TEMP/neural-logcat.log" 2>&1
             if [ "$code" -eq 0 ]; then
-              adb pull /sdcard/Android/data/xyz.beyoneer.gossipaudio.debug/files/neural-sample.wav "$RUNNER_TEMP/neural-sample.wav" >> "$RUNNER_TEMP/neural-test.log" 2>&1
+              adb pull /sdcard/Download/gossipaudio-neural-sample.wav "$RUNNER_TEMP/neural-sample.wav" >> "$RUNNER_TEMP/neural-test.log" 2>&1
               code=$?
             fi
             tail -n 60 "$RUNNER_TEMP/neural-test.log"
