@@ -35,14 +35,14 @@ class OnboardingScreen(activity: MainActivity) : Screen(activity) {
             palette.yellow
         ),
         Page(
-            "10 voices.\n4 girls, 5 boys, 1 not.",
-            "Indian, American, Japanese and British voices, plus Beyoneer Bot who is definitely not a human. Preview any voice before you commit.",
+            "10 voices.\nOne small neural model.",
+            "Preview ten speakers from our bundled English neural model. No phone text-to-speech engine required.",
             Icons.Kind.PERSON,
             palette.yellowBright
         ),
         Page(
             "Download it.\nIt is actually free.",
-            "Export lossless WAV, proper MP3 with cover art, or M4A with an audio image. Save to Downloads, share anywhere, keep everything offline.",
+            "Export lossless WAV, proper MP3 with cover art, or M4A with an audio image. Save to Downloads or share. Speech generation runs locally; dictation uses your system recognizer.",
             Icons.Kind.DOWNLOAD,
             palette.yellow
         )

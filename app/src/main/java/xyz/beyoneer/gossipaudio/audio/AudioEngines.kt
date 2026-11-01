@@ -24,7 +24,10 @@ object AacEncoder {
         val rate = nearest(pcm.sampleRate)
         if (rate != pcm.sampleRate) pcm = AudioFx.resample(pcm, rate)
         return try {
-            runEncode(pcm, outFile, bitrateKbps)
+            if (runEncode(pcm, outFile, bitrateKbps)) true else {
+                outFile.delete()
+                false
+            }
         } catch (_: Throwable) {
             // Some encoders dislike 22.05 kHz; retry once at 44.1 kHz.
             try {
@@ -106,7 +109,7 @@ object AacEncoder {
                 }
                 if (inputDone && muxerStarted && info.size == 0 && outIndex == MediaCodec.INFO_TRY_AGAIN_LATER) {
                     // prevent a rare livelock on buggy encoders
-                    if (guard > 4000) outputDone = true
+                    if (guard > 4000) break
                 }
             }
         } finally {
@@ -123,7 +126,9 @@ object AacEncoder {
                 muxer.release()
             }
         }
-        return outFile.exists() && outFile.length() > 1024
+        // A nonempty MP4 is not proof of a complete encode. Never report a
+        // truncated file as a successful download if EOS was not observed.
+        return outputDone && muxerStarted && outFile.exists() && outFile.length() > 1024
     }
 
     private fun nearest(rate: Int): Int {

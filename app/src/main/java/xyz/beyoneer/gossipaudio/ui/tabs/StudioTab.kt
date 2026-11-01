@@ -66,6 +66,8 @@ class StudioTab(private val shell: ShellScreen) : Tab {
     private lateinit var engineValue: TextView
     private lateinit var engineDot: View
     private lateinit var overlay: LoadingOverlay
+    @Volatile private var generationToken = 0
+    private val telemetryHistory = ArrayList<Pair<Float, Float>>()
     private var composerVoiceName: TextView? = null
     private var speedSliderRef: NeonSlider? = null
     private var pitchSliderRef: NeonSlider? = null
@@ -204,6 +206,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
 
         overlay = LoadingOverlay(activity)
         overlay.onCancel = {
+            generationToken++
             busy = false
             synthJob = null
             generateButton.setLoading(false)
@@ -404,7 +407,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f
         ))
         val reset = Ui.text(activity, "reset", 11.5f, palette.yellowDeep, bold = true)
-        reset.contentDescription = "Reset speed and pitch to normal"
+        reset.contentDescription = "Reset speaking speed"
         Ui.pressable(reset) {
             activity.app.prefs.pitch = 1f
             activity.app.prefs.speed = 1f
@@ -434,20 +437,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         speedLabelRef = speedLabel
         card.addView(speedSlider)
 
-        val pitchLabel = Ui.text(activity, "", 11.5f, palette.textDim, bold = true, font = "sans-serif-medium")
-        card.addView(pitchLabel, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 8f) })
-        val pitchSlider = NeonSlider(activity, palette, 0.6f, 1.6f, activity.app.prefs.pitch, 0.02f)
-        pitchSlider.contentDescription = "Voice pitch"
-        pitchSlider.onChanged = {
-            activity.app.prefs.pitch = it
-            pitchLabel.text = "Pitch  ${"%.2f".format(it)}x"
-        }
-        pitchLabel.text = "Pitch  ${"%.2f".format(activity.app.prefs.pitch)}x"
-        pitchSliderRef = pitchSlider
-        pitchLabelRef = pitchLabel
-        card.addView(pitchSlider)
+        card.addView(Ui.text(activity, "Styles adjust speaking speed; independent pitch control is not available for this model.", 11f, palette.textDim))
         return card
     }
 
@@ -514,17 +504,13 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                     cpuValue.text = "${snap.cpuPercent.toInt()}%"
                     ramValue.text = "${snap.usedMemMb}/${snap.totalMemMb}M"
                     coreValue.text = "${snap.cores}"
-                    val hasEngine = SpeechSynth(activity).hasSystemEngine()
-                    engineValue.text = if (hasEngine) "On-device neural TTS ready \u00B7 GPU/NNAPI when available" else "NanoVoice DSP fallback active"
+                    val hasEngine = xyz.beyoneer.gossipaudio.speech.NeuralEngine.available(activity)
+                    engineValue.text = if (hasEngine) "Offline neural model \u00B7 English \u00B7 CPU" else "Neural model missing from build"
                     engineDot.background = Ui.rounded(if (hasEngine) palette.success else palette.yellow, Ui.dpf(activity, 20f))
-                    val series = ArrayList<Pair<Float, Float>>()
-                    var c = snap.cpuPercent
                     val mem = if (snap.totalMemMb <= 0) 0f else snap.usedMemMb.toFloat() / snap.totalMemMb * 100f
-                    for (i in 0 until 24) {
-                        c = (c * 0.7f + snap.cpuPercent * 0.3f + ((i * 7) % 11 - 5)).coerceIn(1f, 100f)
-                        series.add(c to mem)
-                    }
-                    spark.setData(series)
+                    telemetryHistory.add(snap.cpuPercent to mem)
+                    if (telemetryHistory.size > 24) telemetryHistory.removeAt(0)
+                    spark.setData(telemetryHistory.toList())
                 } catch (_: Throwable) {
                 }
                 handler.postDelayed(this, 1600)
@@ -691,39 +677,40 @@ class StudioTab(private val shell: ShellScreen) : Tab {
 
     private fun runSynthesis(text: String, voice: VoiceProfile, style: xyz.beyoneer.gossipaudio.core.StylePreset) {
         busy = true
+        val token = ++generationToken
         generateButton.setLoading(true)
-        overlay.show("Waking ${voice.name}\u2026", if (voice.engine == xyz.beyoneer.gossipaudio.core.VoiceEngine.NANO_VOICE) "Running NanoVoice on this device" else "Rendering on your on-device neural voice")
+        overlay.show("Waking ${voice.name}\u2026", "Running the bundled neural model on CPU")
         val job = SpeechSynth(activity)
         synthJob = job
         job.synthesize(text, voice, style, activity.app.prefs.pitch, activity.app.prefs.speed, object : SpeechSynth.Callback {
             override fun onProgress(fraction: Float, label: String) {
+                if (token != generationToken) return
                 overlay.setProgress(fraction, label)
             }
 
             override fun onSuccess(outcome: SpeechSynth.Outcome) {
+                if (token != generationToken) return
                 if (overlay.cancelled) {
                     busy = false
                     synthJob = null
                     generateButton.setLoading(false)
                     return
                 }
-                if (outcome.engine == "nano" && voice.engine != xyz.beyoneer.gossipaudio.core.VoiceEngine.NANO_VOICE) {
-                    overlay.setProgress(1f, "Used NanoVoice fallback")
-                }
-                saveClip(text, voice, style, outcome)
+                saveClip(text, voice, style, outcome, token)
             }
 
             override fun onError(message: String) {
+                if (token != generationToken) return
                 busy = false
                 synthJob = null
                 overlay.hide()
                 generateButton.setLoading(false)
-                promptFallback(message, text, style)
+                activity.toast(message)
             }
         })
     }
 
-    private fun saveClip(text: String, voice: VoiceProfile, style: xyz.beyoneer.gossipaudio.core.StylePreset, outcome: SpeechSynth.Outcome) {
+    private fun saveClip(text: String, voice: VoiceProfile, style: xyz.beyoneer.gossipaudio.core.StylePreset, outcome: SpeechSynth.Outcome, token: Int) {
         Thread {
             try {
                 val id = activity.app.store.newId()
@@ -750,10 +737,16 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                     fileName = "$id.wav",
                     coverName = "$id.jpg"
                 )
+                if (token != generationToken) {
+                    master.delete()
+                    cover.delete()
+                    return@Thread
+                }
                 activity.app.store.add(clip)
                 activity.app.prefs.totalGenerations = activity.app.prefs.totalGenerations + 1
                 activity.app.prefs.totalSpokenChars = activity.app.prefs.totalSpokenChars + text.length
                 handler.post {
+                    if (token != generationToken) return@post
                     busy = false
                     synthJob = null
                     overlay.hide()
@@ -768,6 +761,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                 }
             } catch (t: Throwable) {
                 handler.post {
+                    if (token != generationToken) return@post
                     busy = false
                     synthJob = null
                     overlay.hide()
@@ -778,35 +772,4 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         }.start()
     }
 
-    private fun promptFallback(message: String, text: String, style: xyz.beyoneer.gossipaudio.core.StylePreset) {
-        val content = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
-        content.addView(
-            Ui.text(
-                activity,
-                "$message\n\nThe on-device voice engine refused or timed out. NanoVoice (our own engine) works on every phone \u2014 want to try it?",
-                13f, palette.textDim
-            ).apply { setLineSpacing(Ui.dpf(activity, 4f), 1f) }
-        )
-        val bot = BrandButton(activity, palette, "Use Beyoneer Bot", BrandButton.Variant.PRIMARY, Icons.Kind.SPARKLE, compact = true)
-        val retry = BrandButton(activity, palette, "Retry", BrandButton.Variant.GHOST, Icons.Kind.REPLAY, compact = true)
-        val row = Ui.row(activity)
-        row.addView(retry)
-        row.addView(Ui.space(activity, Ui.dp(activity, 10f)))
-        row.addView(bot)
-        content.addView(row, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 16f) })
-        val handle = Overlays.sheet(activity, "Voice engine hiccup", content)
-        retry.setOnClick {
-            handle.dismiss()
-            generate()
-        }
-        bot.setOnClick {
-            handle.dismiss()
-            val voice = VoiceCatalog.byId("bot")
-            activity.app.prefs.selectedVoiceId = voice.id
-            refreshVoiceStrip()
-            runSynthesis(text, voice, style)
-        }
-    }
 }

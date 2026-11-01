@@ -52,37 +52,13 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         column.addView(
             Ui.text(
                 activity,
-                "${VoiceCatalog.femaleCount} girls \u00B7 ${VoiceCatalog.maleCount} boys \u00B7 ${VoiceCatalog.botCount} not human \u2014 all free.",
+                "Ten offline neural speakers from one English model. Preview each voice to find your favourite.",
                 12.5f, palette.textDim, font = "sans-serif-medium"
             ),
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
                 topMargin = Ui.dp(activity, 3f)
             }
         )
-
-        val filters = LinearLayout(activity).apply {
-            orientation = LinearLayout.HORIZONTAL
-        }
-        val options = listOf<Pair<VoiceGender?, String>>(
-            null to "All",
-            VoiceGender.FEMALE to "Girls",
-            VoiceGender.MALE to "Boys",
-            VoiceGender.NONHUMAN to "Not human"
-        )
-        options.forEachIndexed { index, (gender, label) ->
-            val chip = Chip(activity, palette, label, filter == gender)
-            chip.setOnClickListener {
-                filter = gender
-                filterChips.forEach { (g, c) -> c.setSelectedState(g == gender) }
-                render()
-            }
-            filterChips.add(gender to chip)
-            filters.addView(chip)
-            if (index < options.size - 1) filters.addView(Ui.space(activity, Ui.dp(activity, 8f)))
-        }
-        column.addView(filters, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 16f) })
 
         list = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
         column.addView(list, LinearLayout.LayoutParams(

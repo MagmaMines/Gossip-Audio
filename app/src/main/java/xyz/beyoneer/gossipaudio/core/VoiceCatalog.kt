@@ -3,7 +3,7 @@ package xyz.beyoneer.gossipaudio.core
 enum class VoiceGender { FEMALE, MALE, NONHUMAN }
 
 enum class VoiceEngine {
-    /** On-device neural TTS engine shipped with the phone (Google TTS, Samsung, etc.). */
+    /** Android system TTS engine installed on the phone (Google TTS, Samsung, etc.). */
     SYSTEM_TTS,
 
     /** GossipAudio's own zero-dependency formant engine ("NanoVoice"), always available. */
@@ -29,12 +29,7 @@ data class VoiceProfile(
     val engine: VoiceEngine,
     val accent: Int
 ) {
-    val genderLabel: String
-        get() = when (gender) {
-            VoiceGender.FEMALE -> "Female"
-            VoiceGender.MALE -> "Male"
-            VoiceGender.NONHUMAN -> "Not human"
-        }
+    val genderLabel: String get() = "Neural"
 }
 
 object VoiceCatalog {
@@ -108,7 +103,7 @@ object VoiceCatalog {
             rate = 1.00f,
             timbre = 0.74f,
             vibe = "Cute anime neighbour",
-            bio = "Japanese voice model with a soft high register. Yes, it will sound like an anime side character. No, we cannot fix that.",
+            bio = "Japanese locale preset with a higher pitch. Requires compatible Japanese voice data on your device.",
             engine = VoiceEngine.SYSTEM_TTS,
             accent = BUTTER
         ),
@@ -168,7 +163,7 @@ object VoiceCatalog {
             rate = 1.00f,
             timbre = 0.50f,
             vibe = "Posh documentary",
-            bio = "Received Pronunciation with a suspicious amount of confidence. Ideal for narrating other people's mistakes.",
+            bio = "British English locale preset. Actual accent depends on the installed voice engine.",
             engine = VoiceEngine.SYSTEM_TTS,
             accent = SUN
         ),
@@ -202,7 +197,13 @@ object VoiceCatalog {
             engine = VoiceEngine.NANO_VOICE,
             accent = NEON
         )
-    )
+    ).mapIndexed { index, voice ->
+        // Keep stable IDs so existing clips remain accessible, but describe the
+        // bundled VCTK speakers honestly rather than claiming unshipped locales.
+        voice.copy(name = "Voice ${index + 1}", locale = "en-GB", flag = "🇬🇧",
+            region = "English", vibe = "Offline neural speaker ${index + 1}",
+            bio = "Speaker ${index + 1} from the bundled English VITS model. Preview to hear this voice.")
+    }
 
     fun byId(id: String?): VoiceProfile = all.firstOrNull { it.id == id } ?: all[0]
 
@@ -323,7 +324,8 @@ object TextKit {
 
     /** Human-friendly summary used by the "engine" cards. */
     fun engineLabel(engineName: String): String = when (engineName) {
-        "system" -> "On-device neural TTS"
+        "neural" -> "Piper / sherpa-onnx"
+        "system" -> "System TTS (legacy clip)"
         "nano" -> "NanoVoice DSP"
         else -> engineName
     }

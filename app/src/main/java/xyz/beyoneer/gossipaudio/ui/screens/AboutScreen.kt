@@ -24,15 +24,15 @@ import xyz.beyoneer.gossipaudio.ui.widgets.Icons
 class AboutScreen(activity: MainActivity) : Screen(activity) {
 
     private val features = listOf(
-        "\uD83C\uDF99 10 voice personalities",
-        "\uD83D\uDC69 4 female \u00B7 5 male \u00B7 1 bot",
-        "\uD83C\uDDEE\uD83C\uDDF3 Indian accents",
-        "\uD83C\uDDFA\uD83C\uDDF8 American accents",
-        "\uD83C\uDDEF\uD83C\uDDF5 Japanese accents",
-        "\uD83C\uDDEC\uD83C\uDDE7 British accent",
-        "\uD83C\uDFAD 8 emotion presets",
+        "\uD83C\uDF99 10 neural English speakers",
+        "\uD83D\uDC69 Bundled English model",
+        "\uD83C\uDDEE\uD83C\uDDF3 Offline neural synthesis",
+        "\uD83C\uDDFA\uD83C\uDDF8 Runs on CPU",
+        "\uD83C\uDDEF\uD83C\uDDF5 No device TTS needed",
+        "\uD83C\uDDEC\uD83C\uDDE7 English language model",
+        "\uD83C\uDFAD 8 speed styles",
         "\u26A1 Speed 0.5x \u2013 2.0x",
-        "\uD83C\uDF9A Pitch fine-tune",
+        "\uD83C\uDF9A Voice previews",
         "\uD83C\uDFB2 Random gossip generator",
         "\uD83C\uDFA4 Speech-to-text dictation",
         "\uD83D\uDCE5 WAV export",
@@ -99,7 +99,7 @@ class AboutScreen(activity: MainActivity) : Screen(activity) {
 
         val about = Ui.text(
             activity,
-            "${Brand.NAME} is a tiny, offline-first voice studio. You type the gossip, it does the talking in ten very different voices, then hands you a WAV, MP3 or M4A you can keep forever. Nothing is uploaded, nothing needs an account, and the only subscription is your friend group's patience.",
+            "${Brand.NAME} is a tiny, offline-first voice studio. You type the gossip, it offers ten voice presets, then hands you a WAV, MP3 or M4A you can keep forever. Dictation services may use a network depending on your device; no account is required by GossipAudio, and the only subscription is your friend group's patience.",
             12.5f, palette.textDim, font = "sans-serif"
         )
         about.setLineSpacing(Ui.dpf(activity, 4f), 1f)
@@ -143,7 +143,7 @@ class AboutScreen(activity: MainActivity) : Screen(activity) {
         )
         val tech = Ui.card(activity, palette, 22f)
         listOf(
-            "Voice engine" to "On-device neural TTS + NanoVoice DSP fallback",
+            "Voice engine" to "Bundled Piper VITS + sherpa-onnx (CPU)",
             "MP3 encoder" to "LAME ported to pure Java (no NDK)",
             "M4A encoder" to "Android MediaCodec AAC + MP4 metadata",
             "Cover art" to "ID3 APIC + iTunes covr atoms",

@@ -86,14 +86,8 @@ object Exporter {
                     val file = File(dir, "$base.m4a")
                     val ok = AacEncoder.encodeToM4a(pcm, file, options.bitrateKbps)
                     if (!ok) {
-                        val fallback = File(dir, "$base.mp3")
-                        fallback.writeBytes(
-                            Id3.attachToMp3(
-                                Mp3Encoder.encode(pcm, options.bitrateKbps),
-                                Id3.Tags(title = options.title, artist = options.artist, album = options.album)
-                            )
-                        )
-                        Output(fallback, AudioFormat.MP3.mime, "$base.mp3")
+                        file.delete()
+                        return null
                     } else {
                         progress(80)
                         Mp4Tagger.tagFile(

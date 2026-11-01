@@ -441,15 +441,13 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
     }
 
     private fun showEngineInfo() {
-        val synth = SpeechSynth(activity)
         Overlays.info(
             activity,
             "Speech engines",
             listOf(
-                "System TTS" to if (synth.hasSystemEngine()) "available" else "missing",
-                "NanoVoice DSP" to "always available",
+                "Neural model" to if (xyz.beyoneer.gossipaudio.speech.NeuralEngine.available(activity)) "Piper VITS • English • CPU" else "missing from build",
                 "Output formats" to "WAV / MP3 / M4A",
-                "Cloud used" to "never (audio stays local)",
+                "Speech synthesis" to "on-device; no system TTS",
                 "Speech-to-text" to if (activity.prefs.preferOfflineStt) "offline preferred" else "system default"
             )
         )

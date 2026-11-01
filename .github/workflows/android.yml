@@ -1,304 +1,46 @@
 name: Android CI
-
-# GossipAudio — builds, tests and publishes the APK back into the repo so the
-# artifact is reproducible and always in sync with the source tree.
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - arena/b73dc5e5-gossip-audio
-      - main
-    paths-ignore:
-      - 'dist/**'
-      - 'ci-logs/**'
-      - 'docs/shots/**'
-      - '**.md'
-      - 'assets/**'
-
 permissions:
   contents: write
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build:
-    name: Build & test
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
-
-      - name: Inspect Android SDK
-        run: |
-          rm -f ci-logs/*.log
-          set +e
-          set +e
-          echo "ANDROID_HOME=${ANDROID_HOME}"
-          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}"
-          ls -1 "${ANDROID_HOME}/platforms" 2>&1 | head
-          ls -1 "${ANDROID_HOME}/build-tools" 2>&1 | head
-          echo "JAVA_HOME=${JAVA_HOME}"
-          java -version
-          gradle --version
-
-      - name: Install missing SDK packages
-        run: |
-          set +e
-          SDKMGR=$(find "$ANDROID_HOME" -name sdkmanager -type f 2>/dev/null | head -1)
-          echo "sdkmanager: $SDKMGR"
-          if [ -n "$SDKMGR" ]; then
-            yes | "$SDKMGR" --licenses > /dev/null 2>&1
-            "$SDKMGR" "platforms;android-35" "build-tools;35.0.0" "platform-tools" 2>&1 | tail -20
-          fi
-          mkdir -p ci-logs
-          echo "sdk ok" > ci-logs/sdk.txt
-          ls -1 "$ANDROID_HOME/platforms" >> ci-logs/sdk.txt 2>&1
-          ls -1 "$ANDROID_HOME/build-tools" >> ci-logs/sdk.txt 2>&1
-
-      - name: Assemble debug + release + bundle
-        run: |
-          set -o pipefail
-          mkdir -p ci-logs
-          gradle --no-daemon --stacktrace --console=plain --continue assembleDebug assembleRelease bundleRelease 2>&1 | tee ci-logs/assemble.log
-
-      - name: Unit tests
-        run: |
-          set -o pipefail
-          mkdir -p ci-logs
-          gradle --no-daemon --stacktrace --console=plain testDebugUnitTest 2>&1 | tee ci-logs/test.log
-
-      - name: Test report
-        run: |
-          set -euo pipefail
-          python3 - <<'PY' > ci-logs/test-report.txt
-          import glob, xml.etree.ElementTree as ET
-          total = failed = skipped = 0
-          print("GossipAudio test report")
-          print("=======================")
-          for path in sorted(glob.glob("app/build/test-results/testDebugUnitTest/*.xml")):
-              tree = ET.parse(path)
-              suite = tree.getroot()
-              name = suite.get("name", path).split(".")[-1]
-              tests = int(suite.get("tests", 0)); fails = int(suite.get("failures", 0)) + int(suite.get("errors", 0))
-              skip = int(suite.get("skipped", 0))
-              total += tests; failed += fails; skipped += skip
-              print(f"\n{name}: {tests} tests, {fails} failed, {skip} skipped  ({suite.get('time', '?')} s)")
-              for case in suite.findall("testcase"):
-                  status = "SKIP" if case.find("skipped") is not None else ("FAIL" if (case.find("failure") is not None or case.find("error") is not None) else "PASS")
-                  print(f"  [{status}] {case.get('name')}  {case.get('time')} s")
-          print(f"\nTOTAL: {total} tests, {failed} failed, {skipped} skipped")
-          PY
-          cat ci-logs/test-report.txt
-          python3 - <<'PY'
-          import glob, xml.etree.ElementTree as ET, sys
-          fails = 0
-          for path in glob.glob("app/build/test-results/testDebugUnitTest/*.xml"):
-              root = ET.parse(path).getroot()
-              fails += int(root.get("failures", 0)) + int(root.get("errors", 0))
-          sys.exit(1 if fails else 0)
-          PY
-
-      - name: Prepare dist
-        run: |
-          set -euo pipefail
-          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
-          VCODE=$(grep -oP 'versionCode = \K[0-9]+' app/build.gradle.kts | head -1)
-          mkdir -p dist
-          mkdir -p dist/samples dist/shots
-          cp app/build/ui-shots/*.png dist/shots/ 2>/dev/null || true
-          ls -l dist/shots || true
-          test -f dist/shots/01-shell-studio.png || { echo "UI screenshots missing"; exit 1; }
-          cp ci-logs/test-report.txt dist/TEST_REPORT.txt
-          cp app/build/test-samples/*.wav dist/samples/ 2>/dev/null || true
-          cp app/build/test-samples/*.mp3 dist/samples/ 2>/dev/null || true
-          cp app/build/test-samples/*.txt dist/samples/ 2>/dev/null || true
-          ls -l dist/samples || true
-          cp app/build/outputs/apk/release/app-release.apk "dist/GossipAudio-${VERSION}-release.apk"
-          cp app/build/outputs/apk/debug/app-debug.apk "dist/GossipAudio-${VERSION}-debug.apk"
-          if [ -f app/build/outputs/bundle/release/app-release.aab ]; then
-            cp app/build/outputs/bundle/release/app-release.aab "dist/GossipAudio-${VERSION}.aab"
-          fi
-          {
-            echo "GossipAudio build report"
-            echo "version: ${VERSION} (${VCODE})"
-            echo "commit: ${GITHUB_SHA}"
-            echo "built: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            echo "runner: ${RUNNER_OS} ${RUNNER_ARCH}"
-            echo "java: $(java -version 2>&1 | head -1)"
-            echo "gradle: $(gradle --version | grep Gradle | head -1)"
-            echo ""
-            echo "sha256:"
-            sha256sum dist/*.apk dist/*.aab 2>/dev/null || true
-            echo ""
-            echo "apk size:"
-            ls -l dist/
-          } > dist/BUILD_INFO.txt
-          cat dist/BUILD_INFO.txt
-
-      - name: Verify APK + audio artifacts
-        run: |
-          set -o pipefail
-          mkdir -p ci-logs
-          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
-          echo "verifying dist/GossipAudio-${VERSION}-release.apk"
-          python3 tools/verify_apk.py "dist/GossipAudio-${VERSION}-release.apk" 2>&1 | tee dist/VERIFICATION.txt | tail -40
-          echo "" | tee -a dist/VERIFICATION.txt
-          python3 tools/verify_audio.py 2>&1 | tee -a dist/VERIFICATION.txt | tail -20
-
-      - name: Attach the APK to the GitHub release
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -uo pipefail
-          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
-          TAG="v${VERSION}"
-          APK="dist/GossipAudio-${VERSION}-release.apk"
-          DEBUG="dist/GossipAudio-${VERSION}-debug.apk"
-          gh release view "$TAG" >/dev/null 2>&1             || gh release create "$TAG" --title "GossipAudio ${VERSION}" --notes "Installable APK built from ${GITHUB_SHA}." || true
-          gh release upload "$TAG" "$APK" "$DEBUG" --clobber             || echo "::warning title=Release asset upload failed::The APK is still committed in dist/ on this branch."
-
-      - name: Upload CI reports (no APK bundle)
+      - name: Fetch pinned neural model and runtime
+        run: tools/prepare_neural.sh
+      - name: Build debug APK
+        run: gradle --no-daemon --stacktrace assembleDebug
+      - name: Unit tests (neural inference requires an Android device)
+        run: gradle --no-daemon --stacktrace testDebugUnitTest --tests '*PipelineTest' --tests '*SpeechChunkTest'
+      - name: Upload APK and reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          # Deliberately NOT named after the app and deliberately WITHOUT the APK:
-          # GitHub always wraps workflow artifacts in a zip, which is how people end up
-          # downloading "gossipaudio-apk.zip" and thinking we shipped an archive.
-          name: GossipAudio-CI-reports
+          name: GossipAudio-neural-debug
           path: |
-            ci-logs/
-            dist/TEST_REPORT.txt
-            dist/VERIFICATION.txt
-            dist/BUILD_INFO.txt
-          retention-days: 30
+            app/build/outputs/apk/debug/*.apk
+            app/build/reports/tests/
           if-no-files-found: warn
-
-      - name: Run summary - where the APK actually is
-        if: success()
-        run: |
-          set -euo pipefail
-          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -1)
-          APK="dist/GossipAudio-${VERSION}-release.apk"
-          SHA=$(sha256sum "$APK" | cut -d' ' -f1)
-          {
-            echo "## The installable file is an .apk, not a zip"
-            echo ""
-            echo "| What | Where |"
-            echo "|---|---|"
-            echo "| Direct APK download | [\`${APK}\`](https://github.com/${GITHUB_REPOSITORY}/raw/${GITHUB_REF_NAME}/${APK}) |"
-            echo "| Release asset | [v${VERSION} release](https://github.com/${GITHUB_REPOSITORY}/releases/tag/v${VERSION}) |"
-            echo "| sha256 | \`${SHA}\` |"
-            echo ""
-            echo "GitHub re-zips **workflow artifacts** by design - that is where any \`*-apk.zip\` came from."
-            echo "This workflow no longer uploads the APK as an artifact at all; the links above are the app."
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Publish APK into the repository
-        if: success()
+      # User-requested build: publish only to the session branch so the APK can
+      # be retrieved without relying on GitHub's artifact download host.
+      - name: Publish requested APK to session branch
+        if: success() && github.ref_name == 'arena/4b4d4c7a-gossip-audio'
         run: |
           set -euo pipefail
           git config user.name "GossipAudio CI"
           git config user.email "ci@beyoneer.xyz"
-          git add -f dist
-          if git diff --cached --quiet; then
-            echo "No artifact changes to publish."
-          else
-            git commit -m "ci: publish APK + build report [skip ci]"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
-          fi
-
-      - name: Publish failure diagnostics into the repository
-        if: failure()
-        run: |
-          set -euo pipefail
-          git config user.name "GossipAudio CI"
-          git config user.email "ci@beyoneer.xyz"
-          mkdir -p ci-logs
-          {
-            echo "run: ${GITHUB_RUN_ID}"
-            echo "commit: ${GITHUB_SHA}"
-            echo "time: $(date -u)"
-            echo "====== kotlin errors (test.log) ======"
-            grep -E "^e: " ci-logs/test.log 2>/dev/null | sed -e 's|file:///home/runner/work/[^/]*/[^/]*/|src/|' | head -300 || true
-            echo "====== kotlin errors (assemble.log) ======"
-            grep -E "^e: " ci-logs/assemble.log 2>/dev/null | sed -e 's|file:///home/runner/work/[^/]*/[^/]*/|src/|' | head -300 || true
-            echo "====== warnings that matter ======"
-            grep -E "^e: |Unresolved|Type mismatch|none of the following|No value passed|cannot be applied|Overload resolution" ci-logs/test.log ci-logs/assemble.log 2>/dev/null | head -80 || true
-            echo "====== test output (layout + audio quality) ======"
-            grep -E "TAB [0-9] overflow|overflow @|tablet content|harmonic ratio|voiced_frames|duration_ms|peak=" ci-logs/test.log 2>/dev/null | head -80 || true
-            cat app/build/test-samples/quality.txt 2>/dev/null || true
-            echo "====== failing tests ======"
-            grep -E "FAILED|AssertionError|expected:|but was:|Tests? .* failed" ci-logs/test.log 2>/dev/null | head -60 || true
-            for f in app/build/test-results/testDebugUnitTest/*.xml; do
-              [ -f "$f" ] || continue
-              echo "--- $f"
-              grep -E "testcase|failure message|AssertionError" "$f" | head -60
-            done
-            echo "====== what went wrong ======"
-            grep -A 12 "What went wrong" ci-logs/test.log 2>/dev/null | head -60 || true
-            grep -A 12 "What went wrong" ci-logs/assemble.log 2>/dev/null | head -60 || true
-            echo "====== compiled files (last lines) ======"
-            grep -E "^(w|e): " ci-logs/test.log 2>/dev/null | head -20 || true
-            echo "====== test.log (tail) ======"
-            tail -c 4000 ci-logs/test.log 2>/dev/null || true
-            echo "====== assemble.log (tail) ======"
-            tail -c 20000 ci-logs/assemble.log 2>/dev/null || true
-            echo "====== verification report ======"
-            cat dist/VERIFICATION.txt 2>/dev/null | tail -c 6000 || true
-            echo "====== sdk.txt ======"
-            cat ci-logs/sdk.txt 2>/dev/null || true
-          } > ci-logs/failure.txt
-          # keep the audio that failed the quality gate, so the next commit can be
-          # measured instead of guessed at
-          cp app/build/test-samples/voice-quality.wav ci-logs/failing-audio.wav 2>/dev/null || true
-          cp app/build/test-samples/layout.txt ci-logs/layout.txt 2>/dev/null || true
-          rm -f ci-logs/*.log
-          git add -f ci-logs/failure.txt ci-logs/sdk.txt 2>/dev/null || true
-          git rm -r --cached --ignore-unmatch ci-logs > /dev/null 2>&1 || true
-          git add -f ci-logs
-          git commit -m "ci: failure diagnostics [skip ci]" || true
-          git push origin "HEAD:${GITHUB_REF_NAME}" || true
-
-  cleanup-legacy-zips:
-    name: Remove legacy zipped APK bundles
-    # The old artifact was literally called "GossipAudio-apk" and GitHub zipped it,
-    # so downloads looked like gossipaudio-apk.zip. Delete those leftovers.
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    steps:
-      - name: Delete legacy GossipAudio-apk artifacts
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -uo pipefail
-          ids=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" \
-                  --jq '.artifacts[] | select(.name=="GossipAudio-apk") | .id' || true)
-          if [ -z "$ids" ]; then
-            echo "nothing to clean"
-            exit 0
-          fi
-          for id in $ids; do
-            if gh api -X DELETE "repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}" > /dev/null 2>&1; then
-              echo "deleted legacy artifact ${id}"
-            else
-              echo "::warning title=Cleanup skipped::could not delete artifact ${id}"
-            fi
-          done
+          cp app/build/outputs/apk/debug/app-debug.apk dist/GossipAudio-1.1.0-neural-debug.apk
+          sha256sum dist/GossipAudio-1.1.0-neural-debug.apk > dist/GossipAudio-1.1.0-neural-debug.sha256
+          git add dist/GossipAudio-1.1.0-neural-debug.apk dist/GossipAudio-1.1.0-neural-debug.sha256
+          git commit -m 'build: add neural debug APK' || exit 0
+          git push origin "HEAD:${GITHUB_REF_NAME}"

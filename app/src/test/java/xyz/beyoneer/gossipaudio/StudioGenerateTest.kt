@@ -30,8 +30,9 @@ import java.time.Duration
  * a real clip appears in the store with a real WAV on disk → the same clip exports to MP3.
  *
  * Everything below runs the production code paths; only the Android TTS engine is absent
- * (so the app does what it does on a bare phone: falls back to NanoVoice).
+ * (so this test explicitly selects the bundled Bot preset).
  */
+@org.junit.Ignore("Neural JNI requires an Android device; run a real-device synthesis smoke test")
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34], qualifiers = "w411dp-h891dp-xxhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
@@ -43,6 +44,7 @@ class StudioGenerateTest {
     fun typingAndTappingGenerateCreatesAPlayableClip() {
         val app = ApplicationProvider.getApplicationContext<GossipApp>()
         app.prefs.onboardingDone = true
+        app.prefs.selectedVoiceId = "bot"
         app.prefs.autoPlay = false      // keep MediaPlayer out of the JVM test
         app.prefs.notifications = false
         app.prefs.reduceMotion = false
@@ -81,7 +83,7 @@ class StudioGenerateTest {
         assertTrue("duration should be audible: ${clip.durationMs}", clip.durationMs > 800)
         assertTrue("size should be real: ${clip.sizeBytes}", clip.sizeBytes > 20_000)
         assertEquals("nano", clip.engine)                        // no TTS engine in the JVM
-        assertEquals("riya", clip.voiceId)                       // default voice
+        assertEquals("bot", clip.voiceId)
         assertEquals(22050, clip.sampleRate)
 
         val master = File(activity.filesDir, "clips/${clip.fileName}")

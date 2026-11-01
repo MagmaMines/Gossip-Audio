@@ -104,8 +104,7 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
         val synth = SpeechSynth(activity)
         val stt = Stt(activity)
         val checks = listOf(
-            "System neural TTS" to (if (synth.hasSystemEngine()) "available" else "missing \u2014 NanoVoice will handle it"),
-            "NanoVoice DSP" to "built-in, always available",
+            "Neural model" to (if (xyz.beyoneer.gossipaudio.speech.NeuralEngine.available(activity)) "assets present (English)" else "missing"),
             "Speech recognizer" to (if (stt.isAvailable()) "available" else "not installed"),
             "Microphone permission" to if (hasPermission(android.Manifest.permission.RECORD_AUDIO)) "granted" else "not granted (optional)",
             "Notifications" to if (hasPermission("android.permission.POST_NOTIFICATIONS") || android.os.Build.VERSION.SDK_INT < 33) "granted" else "not granted (optional)",
@@ -133,7 +132,7 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
         testCard.addView(Ui.text(activity, "Pipeline self-test", 14f, palette.text, bold = true))
         status = Ui.text(
             activity,
-            "Runs NanoVoice \u2192 WAV \u2192 MP3 \u2192 ID3 \u2192 M4A \u2192 cover atoms on this exact device.",
+            "Runs legacy test tone \u2192 WAV \u2192 MP3 \u2192 ID3 \u2192 M4A \u2192 cover atoms on this exact device.",
             11.5f, palette.textDim, font = "sans-serif"
         )
         status.setPadding(0, Ui.dp(activity, 6f), 0, Ui.dp(activity, 10f))
@@ -235,7 +234,7 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
                 )
                 results.add(
                     Triple(
-                        "NanoVoice synthesis",
+                        "Legacy DSP test tone (not neural TTS)",
                         pcm.samples.isNotEmpty() && pcm.durationMs > 400,
                         "${pcm.samples.size} samples \u00B7 ${TextKit.formatDuration(pcm.durationMs)}"
                     )

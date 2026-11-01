@@ -51,7 +51,7 @@ class LoadingOverlay(private val activity: MainActivity) {
         column.addView(label, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 18f) })
-        hint = Ui.text(activity, "All synthesis happens on your device", 11.5f, 0x99FFFFFF.toInt(), gravity = Gravity.CENTER)
+        hint = Ui.text(activity, "Voice services may use a network", 11.5f, 0x99FFFFFF.toInt(), gravity = Gravity.CENTER)
         column.addView(hint, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 8f) })
@@ -87,7 +87,8 @@ class LoadingOverlay(private val activity: MainActivity) {
         ))
     }
 
-    fun show(title: String, hintText: String = "All synthesis happens on your device") {
+    fun show(title: String, hintText: String = "Voice services may use a network") {
+        root.animate().cancel()
         cancelled = false
         label.text = title
         hint.text = hintText
@@ -108,6 +109,7 @@ class LoadingOverlay(private val activity: MainActivity) {
     }
 
     fun hide() {
+        root.animate().cancel()
         butterfly.stop()
         root.animate().alpha(0f).setDuration(180).withEndAction {
             root.visibility = View.GONE

@@ -11,17 +11,27 @@ android {
         applicationId = "xyz.beyoneer.gossipaudio"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.1.0"
         resourceConfigurations += listOf("en", "hi")
+        ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
     }
 
+    // Never ship with the repository's historical demo key. Supply a private
+    // keystore via environment variables for a properly signed release.
+    val releaseStore = System.getenv("GA_STORE_FILE")
+    val releaseStorePassword = System.getenv("GA_STORE_PASSWORD")
+    val releaseAlias = System.getenv("GA_KEY_ALIAS")
+    val releaseKeyPassword = System.getenv("GA_KEY_PASSWORD")
+    val hasReleaseKey = listOf(releaseStore, releaseStorePassword, releaseAlias, releaseKeyPassword).all { !it.isNullOrBlank() }
     signingConfigs {
-        create("release") {
-            storeFile = rootProject.file("keystore/gossipaudio-release.jks")
-            storePassword = System.getenv("GA_STORE_PASSWORD") ?: "GossipAudio#2025"
-            keyAlias = System.getenv("GA_KEY_ALIAS") ?: "gossipaudio"
-            keyPassword = System.getenv("GA_KEY_PASSWORD") ?: "GossipAudio#2025"
+        if (hasReleaseKey) {
+            create("releasePrivate") {
+                storeFile = file(releaseStore!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseAlias
+                keyPassword = releaseKeyPassword
+            }
         }
     }
 
@@ -34,7 +44,7 @@ android {
         release {
             isMinifyEnabled = false
             isShrinkResources = false
-            signingConfig = signingConfigs.getByName("release")
+            if (hasReleaseKey) signingConfig = signingConfigs.getByName("releasePrivate")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -69,6 +79,7 @@ android {
 }
 
 dependencies {
+    implementation(files("libs/sherpa-onnx.aar"))
     testImplementation("junit:junit:4.13.2")
     // Robolectric boots the real activity + views on the JVM so CI can prove the UI renders.
     testImplementation("org.robolectric:robolectric:4.14.1")

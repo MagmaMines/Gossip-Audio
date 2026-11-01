@@ -75,11 +75,6 @@ object ExportFlow {
         val chips = ArrayList<Pair<AudioFormat, Chip>>()
         AudioFormat.values().forEach { f ->
             val chip = Chip(activity, palette, f.label, f == format)
-            chip.setOnClickListener {
-                format = f
-                chips.forEach { (fmt, c) -> c.setSelectedState(fmt == f) }
-                activity.prefs.defaultFormat = f.name
-            }
             chips.add(f to chip)
             formatRow.addView(chip, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         }
@@ -128,6 +123,17 @@ object ExportFlow {
             ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 54f)
         ).apply { topMargin = Ui.dp(activity, 14f) })
 
+        chips.forEach { (f, chip) ->
+            chip.setOnClickListener {
+                if (!busy) {
+                    format = f
+                    chips.forEach { (fmt, c) -> c.setSelectedState(fmt == f) }
+                    activity.prefs.defaultFormat = f.name
+                    download.setText("Download ${f.label}")
+                }
+            }
+        }
+
         val handle = Overlays.sheet(activity, "Download \u00B7 ${clip.title}", content)
         val handler = Handler(Looper.getMainLooper())
 
@@ -156,6 +162,9 @@ object ExportFlow {
             busy = true
             download.setLoading(true)
             download.setText("Encoding\u2026")
+            val selectedFormat = format
+            val selectedBitrate = bitrate
+            val selectedCover = coverFile
             Thread {
                 val master = store.fileFor(clip)
                 val pcm = WavReader.read(master)
@@ -163,6 +172,7 @@ object ExportFlow {
                     handler.post {
                         busy = false
                         download.setLoading(false)
+                        download.setText("Download ${format.label}")
                         activity.toast("Master audio is missing or unreadable.")
                     }
                     return@Thread
@@ -173,9 +183,9 @@ object ExportFlow {
                     activity,
                     pcm,
                     Exporter.Options(
-                        format = format,
-                        bitrateKbps = bitrate,
-                        coverFile = coverFile,
+                        format = selectedFormat,
+                        bitrateKbps = selectedBitrate,
+                        coverFile = selectedCover,
                         title = clip.title,
                         voiceLabel = voice.name,
                         styleLabel = style.label
@@ -184,6 +194,7 @@ object ExportFlow {
                 handler.post {
                     busy = false
                     download.setLoading(false)
+                    download.setText("Download ${format.label}")
                     if (output == null) {
                         Haptics.warn(activity.window.decorView)
                         activity.toast("Export failed \u2014 try another format.")

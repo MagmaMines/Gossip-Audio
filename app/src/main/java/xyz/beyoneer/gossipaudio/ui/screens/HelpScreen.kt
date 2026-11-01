@@ -21,7 +21,7 @@ class HelpScreen(activity: MainActivity) : Screen(activity) {
 
     private val faq = listOf(
         "Is any of my text sent to a server?" to
-            "No. Synthesis, encoding and tagging all happen on the phone. The app does not even declare an internet permission for audio.",
+            "Speech generation uses the bundled neural model. Your system recognition service may use the network under its own privacy policy.",
         "How do I download a clip?" to
             "Open the player, tap Download, pick WAV, MP3 or M4A, choose a quality, then Download. The file lands in Downloads/GossipAudio and the share sheet opens.",
         "Where do downloads go?" to
@@ -33,19 +33,19 @@ class HelpScreen(activity: MainActivity) : Screen(activity) {
         "Can I add my own cover?" to
             "Yes. In the export sheet tap Pick image. It is embedded as an ID3 APIC frame in MP3 and a covr atom in M4A.",
         "Why do some voices sound robotic?" to
-            "Because one of them is a robot on purpose. If every voice sounds robotic, install a neural TTS engine and re-generate \u2014 the app uses the best engine on your device.",
+            "The included neural model is optimized for size; voice quality and pronunciation can vary.",
         "What is NanoVoice?" to
-            "The built-in formant synthesiser. It needs no download, no network and no Google services, and it guarantees the app always produces audio.",
+            "The old formant synthesizer is not used for speech generation. The new build uses a bundled English Piper VITS model.",
         "How many voices and styles?" to
-            "Ten voices (4 female, 5 male, 1 non-human) and eight emotion presets like Gossip, Dramatic, Whisper and Roast.",
+            "Ten speakers from one English neural model, and eight speed styles. Other languages are not included.",
         "Can I change speed?" to
             "Drag the Speed slider in Studio (0.5x\u20132.0x) or use the speed chips in the player. Playback speed is separate and can be changed live.",
         "What does Pitch do?" to
-            "Nudges the synthesised voice up or down by up to \u00B112 semitones, applied during synthesis so the download keeps the change.",
+            "Independent pitch control is not available with this neural model.",
         "What is the audio-image export?" to
             "M4A with embedded artwork. It behaves like a mini audio file with a picture attached, which is what social apps expect when you share.",
         "How does speech-to-text work?" to
-            "Tap the mic in Studio. The system recogniser turns your voice into text and drops it into the composer; nothing is uploaded by us.",
+            "Tap the mic in Studio. The system recogniser turns speech into text. Its provider may use a network even when offline recognition is preferred.",
         "Do I need the microphone permission?" to
             "Only for dictation. The app works perfectly without it; the mic button explains what it needs and asks once.",
         "Why no notification?" to
@@ -61,13 +61,13 @@ class HelpScreen(activity: MainActivity) : Screen(activity) {
         "Where is the app data stored?" to
             "Private app storage: clips, covers and a small JSON index. Clear it any time from Android settings.",
         "Does it work offline?" to
-            "Yes, including MP3 export. Only the system TTS voices and the system recogniser may need a one-time download from Google.",
+            "Neural speech generation and encoding run on-device. Dictation depends on the system recognizer and its network behavior.",
         "Why is the app so yellow?" to
             "It is the brand. Yellow buttons, thin darker-yellow outlines, black text on light surfaces and white text on black. Very legible, very loud.",
         "How do I verify it actually works?" to
             "Open Settings \u2192 Diagnostics \u2192 Run self-test. It synthesises audio, writes WAV, encodes MP3, writes ID3, muxes M4A and reports each step.",
         "Can I use these audio files commercially?" to
-            "The audio you generate is yours. The MP3 encoder is LGPL-2.1; see the Licenses entry in About."
+            "Review your voice provider’s terms and applicable laws. The MP3 encoder is LGPL-2.1; see the Licenses entry in About."
     )
 
     override fun onCreateView(): View {

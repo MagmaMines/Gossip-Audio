@@ -19,13 +19,11 @@ object VoicePreview {
 
     private val busy = HashSet<String>()
 
-    private fun sampleFor(voice: VoiceProfile): String = when (voice.id) {
-        "bot" -> "Beep. I am Beyoneer Bot. I am definitely not a human. Beep."
-        else -> "Hi, I'm ${voice.name}. Here is how I would say it: okay so nobody asked, but this tea is boiling."
-    }
+    private fun sampleFor(voice: VoiceProfile): String =
+        "Hello! This is ${voice.name}. Your words, their wings."
 
     fun preview(activity: MainActivity, voice: VoiceProfile, onState: (State) -> Unit) {
-        val key = "preview-${voice.id}-${activity.prefs.selectedStyleId}"
+        val key = "preview-neural-v1-${voice.id}-${activity.prefs.selectedStyleId}-${activity.prefs.pitch}-${activity.prefs.speed}"
         val cacheDir = File(activity.cacheDir, "previews").apply { mkdirs() }
         val file = File(cacheDir, "$key.wav")
         if (file.exists() && file.length() > 2048) {
