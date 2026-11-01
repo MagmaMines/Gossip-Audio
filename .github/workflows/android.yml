@@ -1,6 +1,11 @@
 name: Android CI
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - arena/4b4d4c7a-gossip-audio
+    paths-ignore:
+      - 'dist/**'
 permissions:
   contents: write
 jobs:
