@@ -40,9 +40,9 @@
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
   "entries": 66,
-  "uncompressed_bytes": 8858144,
-  "dex_bytes": 8447152,
-  "apk_sha256": "a8de5c13b1a0f9e2775d23860fb02b33ad1cc6192cd297cd04c9f237c70aa0e3"
+  "uncompressed_bytes": 8858180,
+  "dex_bytes": 8447188,
+  "apk_sha256": "6b2bc820159f4599eb07e97a8330229aebd88a0e7e7be6e5f9fde84cacceff88"
 }
 
 --- notes
@@ -51,7 +51,7 @@
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
  * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 8184-byte signed block, 6 chunks
- * dex files: classes.dex (8447152 bytes uncompressed)
+ * dex files: classes.dex (8447188 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out

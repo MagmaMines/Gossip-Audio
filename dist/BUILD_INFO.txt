@@ -1,7 +1,7 @@
 GossipAudio build report
 version: 2.0.0 (8)
-commit: 223eb8f5623cdf08186351f821ce81ad794b6482
-built: 2026-11-01T05:49:23Z
+commit: 1b93e08e42bf048649c4e9579bb0f7e0f3a95c0b
+built: 2026-11-01T05:54:31Z
 runner: Linux X64
 java: openjdk version "17.0.21" 2026-10-20
 gradle: Gradle 8.11.1
@@ -19,41 +19,41 @@ bdedb59d03937e2e13a8fa2d12a3b60747ff763a3bc6b902d1f30106a721027d  dist/GossipAud
 9fe45e04f63e513f0b20a902c60fa7a9817744481c189d2c84fe8627384963f9  dist/GossipAudio-1.0.5-release.apk
 177dfdd757c9d8d34aefd070d9de4aa8870ef682b45d386820bc74684e2061f2  dist/GossipAudio-1.0.6-debug.apk
 3e21f3fdf3ab48f7ace08eed8bb1c8dea6b341719121d494d6932005fd687c70  dist/GossipAudio-1.0.6-release.apk
-6b6107f9a2534f900c6b5f63915a82bf8adaf9f95c095e0e4663a558136cf0c4  dist/GossipAudio-2.0.0-debug.apk
-a8de5c13b1a0f9e2775d23860fb02b33ad1cc6192cd297cd04c9f237c70aa0e3  dist/GossipAudio-2.0.0-release.apk
+da48c763a9ca15aa126b57eb88ac05c6cbac424a95d3cb9f23223b49d2646e5d  dist/GossipAudio-2.0.0-debug.apk
+6b2bc820159f4599eb07e97a8330229aebd88a0e7e7be6e5f9fde84cacceff88  dist/GossipAudio-2.0.0-release.apk
 23c1edf52111d557601c2e835aa642a14b6cafbb7743be616b359e1e9f4fe9bf  dist/GossipAudio-1.0.1.aab
 d69c00c94d6503af1a694696da5715335d3f3bd0f87aa27fcc8f47188f12efa1  dist/GossipAudio-1.0.2.aab
 a17001b5531856c246786275f9be6d95ecf589dbd7272eefad115efb207740d8  dist/GossipAudio-1.0.3.aab
 70a489b5fee58e7b78a0dc0e4aafc3f076b9468ac4dfd75c523672a85ceda625  dist/GossipAudio-1.0.4.aab
 815ee8990e05f1d54864ab33e47a8929a1e1e8a6dfbb752a8535540789035e28  dist/GossipAudio-1.0.5.aab
 3a0de97b40dcb876b1918113528d15890bbd2d7abf6bd8656d3f10408c1acd11  dist/GossipAudio-1.0.6.aab
-0a6830a5ed11efe7229f3b26e6e9eb8504cb189b00f541ec72d1893a0152d11b  dist/GossipAudio-2.0.0.aab
+f00c7d2670b70db9a1a0752f62d67fa810ff86d402cc83a2474aef1ab3c7c25e  dist/GossipAudio-2.0.0.aab
 
 apk size:
 total 37960
--rw-r--r-- 1 runner runner    2275 Nov  1 05:49 BUILD_INFO.txt
--rw-r--r-- 1 runner runner 1706296 Nov  1 05:46 GossipAudio-1.0.1-debug.apk
--rw-r--r-- 1 runner runner 1335013 Nov  1 05:46 GossipAudio-1.0.1-release.apk
--rw-r--r-- 1 runner runner 1334110 Nov  1 05:46 GossipAudio-1.0.1.aab
--rw-r--r-- 1 runner runner 1722708 Nov  1 05:46 GossipAudio-1.0.2-debug.apk
--rw-r--r-- 1 runner runner 1347561 Nov  1 05:46 GossipAudio-1.0.2-release.apk
--rw-r--r-- 1 runner runner 1346654 Nov  1 05:46 GossipAudio-1.0.2.aab
--rw-r--r-- 1 runner runner 1742667 Nov  1 05:46 GossipAudio-1.0.3-debug.apk
--rw-r--r-- 1 runner runner 1360369 Nov  1 05:46 GossipAudio-1.0.3-release.apk
--rw-r--r-- 1 runner runner 1359552 Nov  1 05:46 GossipAudio-1.0.3.aab
--rw-r--r-- 1 runner runner 1742971 Nov  1 05:46 GossipAudio-1.0.4-debug.apk
--rw-r--r-- 1 runner runner 1360725 Nov  1 05:46 GossipAudio-1.0.4-release.apk
--rw-r--r-- 1 runner runner 1359915 Nov  1 05:46 GossipAudio-1.0.4.aab
--rw-r--r-- 1 runner runner 1750403 Nov  1 05:46 GossipAudio-1.0.5-debug.apk
--rw-r--r-- 1 runner runner 1365833 Nov  1 05:46 GossipAudio-1.0.5-release.apk
--rw-r--r-- 1 runner runner 1365014 Nov  1 05:46 GossipAudio-1.0.5.aab
--rw-r--r-- 1 runner runner 1750643 Nov  1 05:46 GossipAudio-1.0.6-debug.apk
--rw-r--r-- 1 runner runner 1366153 Nov  1 05:46 GossipAudio-1.0.6-release.apk
--rw-r--r-- 1 runner runner 1365342 Nov  1 05:46 GossipAudio-1.0.6.aab
--rw-r--r-- 1 runner runner 4736959 Nov  1 05:49 GossipAudio-2.0.0-debug.apk
--rw-r--r-- 1 runner runner 3697163 Nov  1 05:49 GossipAudio-2.0.0-release.apk
--rw-r--r-- 1 runner runner 3691970 Nov  1 05:49 GossipAudio-2.0.0.aab
--rw-r--r-- 1 runner runner    1777 Nov  1 05:49 TEST_REPORT.txt
--rw-r--r-- 1 runner runner    3982 Nov  1 05:46 VERIFICATION.txt
-drwxr-xr-x 2 runner runner    4096 Nov  1 05:46 samples
-drwxr-xr-x 2 runner runner    4096 Nov  1 05:46 shots
+-rw-r--r-- 1 runner runner    2275 Nov  1 05:54 BUILD_INFO.txt
+-rw-r--r-- 1 runner runner 1706296 Nov  1 05:51 GossipAudio-1.0.1-debug.apk
+-rw-r--r-- 1 runner runner 1335013 Nov  1 05:51 GossipAudio-1.0.1-release.apk
+-rw-r--r-- 1 runner runner 1334110 Nov  1 05:51 GossipAudio-1.0.1.aab
+-rw-r--r-- 1 runner runner 1722708 Nov  1 05:51 GossipAudio-1.0.2-debug.apk
+-rw-r--r-- 1 runner runner 1347561 Nov  1 05:51 GossipAudio-1.0.2-release.apk
+-rw-r--r-- 1 runner runner 1346654 Nov  1 05:51 GossipAudio-1.0.2.aab
+-rw-r--r-- 1 runner runner 1742667 Nov  1 05:51 GossipAudio-1.0.3-debug.apk
+-rw-r--r-- 1 runner runner 1360369 Nov  1 05:51 GossipAudio-1.0.3-release.apk
+-rw-r--r-- 1 runner runner 1359552 Nov  1 05:51 GossipAudio-1.0.3.aab
+-rw-r--r-- 1 runner runner 1742971 Nov  1 05:51 GossipAudio-1.0.4-debug.apk
+-rw-r--r-- 1 runner runner 1360725 Nov  1 05:51 GossipAudio-1.0.4-release.apk
+-rw-r--r-- 1 runner runner 1359915 Nov  1 05:51 GossipAudio-1.0.4.aab
+-rw-r--r-- 1 runner runner 1750403 Nov  1 05:51 GossipAudio-1.0.5-debug.apk
+-rw-r--r-- 1 runner runner 1365833 Nov  1 05:51 GossipAudio-1.0.5-release.apk
+-rw-r--r-- 1 runner runner 1365014 Nov  1 05:51 GossipAudio-1.0.5.aab
+-rw-r--r-- 1 runner runner 1750643 Nov  1 05:51 GossipAudio-1.0.6-debug.apk
+-rw-r--r-- 1 runner runner 1366153 Nov  1 05:51 GossipAudio-1.0.6-release.apk
+-rw-r--r-- 1 runner runner 1365342 Nov  1 05:51 GossipAudio-1.0.6.aab
+-rw-r--r-- 1 runner runner 4736943 Nov  1 05:54 GossipAudio-2.0.0-debug.apk
+-rw-r--r-- 1 runner runner 3697303 Nov  1 05:54 GossipAudio-2.0.0-release.apk
+-rw-r--r-- 1 runner runner 3692111 Nov  1 05:54 GossipAudio-2.0.0.aab
+-rw-r--r-- 1 runner runner    1773 Nov  1 05:54 TEST_REPORT.txt
+-rw-r--r-- 1 runner runner    4029 Nov  1 05:51 VERIFICATION.txt
+drwxr-xr-x 2 runner runner    4096 Nov  1 05:51 samples
+drwxr-xr-x 2 runner runner    4096 Nov  1 05:51 shots
