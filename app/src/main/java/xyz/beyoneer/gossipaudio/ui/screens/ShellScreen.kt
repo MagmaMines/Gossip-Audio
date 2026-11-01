@@ -122,8 +122,11 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             isClickable = false
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
+        // Fixed height, not MATCH_PARENT: a MATCH_PARENT child of a wrap_content
+        // FrameLayout measures against the whole screen, which made the brand bar the
+        // full height of the display and pushed every tab off the bottom.
         wrap.addView(wash, FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 104f)
         ))
 
         val bar = LinearLayout(activity).apply {
