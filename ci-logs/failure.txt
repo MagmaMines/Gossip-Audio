@@ -1,86 +1,49 @@
-run: 41268521251
-commit: dff5a88f89be14fe43366e1ea86de8054736e42e
-time: Sun Nov  1 03:19:37 UTC 2026
+run: 41269521751
+commit: 752f0bf00a2ca084c1f1f7692522e47c75ca1922
+time: Sun Nov  1 03:33:44 UTC 2026
 ====== kotlin errors (test.log) ======
+e: src/app/src/test/java/xyz/beyoneer/gossipaudio/UiSmokeTest.kt:88:22 Unresolved reference 'countYellowPixels'.
 ====== kotlin errors (assemble.log) ======
 ====== warnings that matter ======
+ci-logs/test.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/UiSmokeTest.kt:88:22 Unresolved reference 'countYellowPixels'.
 ====== test output (layout + audio quality) ======
-harmonic_ratio_median=1.000
-voiced_frames=118
-duration_ms=4186
-peak=31313
-bands_percent=0-300=5.6 300-800=64.0 800-2000=21.4 2000-4000=2.7 4000-8000=6.2
-estimate=v4 cascade formant synthesiser
 ====== failing tests ======
-UiSmokeTest > appBootsIntoShellAndRendersEveryTab FAILED
-    java.lang.AssertionError at UiSmokeTest.kt:89
-> Task :app:testDebugUnitTest FAILED
-BUILD FAILED in 49s
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.AccessibilityTest.xml
-  <testcase name="backPopsTheScreenStackBeforeLeavingTheApp" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="9.898"/>
-  <testcase name="hapticsSwitchActuallyGatesVibration" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.622"/>
-  <testcase name="everyTappableControlHasAName" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="1.126"/>
-  <testcase name="switchesAndSlidersAdvertiseTheirAccessibilityRole" classname="xyz.beyoneer.gossipaudio.AccessibilityTest" time="0.457"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.PipelineTest.xml
-  <testcase name="silenceAndEmptyInputAreHandledGracefully" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.12"/>
-  <testcase name="renderedAudioIsTonalSpeechNotNoise" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.581"/>
-  <testcase name="mp3EncoderProducesRealFramesAndTags" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.206"/>
-  <testcase name="stylesChangeRateAndPitchNumerically" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.02"/>
-  <testcase name="mixLab" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.654"/>
-  <testcase name="everyVoiceSynthesisesAudibleSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.301"/>
-  <testcase name="audioEffectsAreStable" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.022"/>
-  <testcase name="wavRoundTripPreservesSamples" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.017"/>
-  <testcase name="textKitEstimatesMatchRenderedAudio" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.093"/>
-  <testcase name="hindiAndHinglishBothProduceSpeech" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.02"/>
-  <testcase name="catalogHasTenVoicesAndEightStyles" classname="xyz.beyoneer.gossipaudio.PipelineTest" time="0.0"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.ResponsiveLayoutTest.xml
-  <testcase name="tinyPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="4.609"/>
-  <testcase name="pixelPhoneFitsEveryTab" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.801"/>
-  <testcase name="tabletFitsEveryTabAndCapsContent" classname="xyz.beyoneer.gossipaudio.ResponsiveLayoutTest" time="0.79"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.StudioGenerateTest.xml
-  <testcase name="typingAndTappingGenerateCreatesAPlayableClip" classname="xyz.beyoneer.gossipaudio.StudioGenerateTest" time="1.316"/>
---- app/build/test-results/testDebugUnitTest/TEST-xyz.beyoneer.gossipaudio.UiSmokeTest.xml
-  <testcase name="appBootsIntoShellAndRendersEveryTab" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="1.789">
-    <failure message="java.lang.AssertionError: brand yellow should appear in the rendered UI (74 px)" type="java.lang.AssertionError">java.lang.AssertionError: brand yellow should appear in the rendered UI (74 px)
-  </testcase>
-  <testcase name="darkThemeStillUsesBrandYellow" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.482"/>
-  <testcase name="aboutHelpAndDiagnosticsScreensRender" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="1.27"/>
-  <testcase name="playerScreenOpensForARealClip" classname="xyz.beyoneer.gossipaudio.UiSmokeTest" time="0.637"/>
+> Task :app:compileDebugUnitTestKotlin FAILED
+BUILD FAILED in 13s
 ====== what went wrong ======
 * What went wrong:
-Execution failed for task ':app:testDebugUnitTest'.
-> There were failing tests. See the report at: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/build/reports/tests/testDebugUnitTest/index.html
+Execution failed for task ':app:compileDebugUnitTestKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
 
 * Try:
+> Run with --info or --debug option to get more log output.
 > Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
 
 * Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:compileDebugUnitTestKotlin'.
 	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
-	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
 ====== compiled files (last lines) ======
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:83:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:91:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
-w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:100:42 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
+e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/UiSmokeTest.kt:88:22 Unresolved reference 'countYellowPixels'.
 ====== test.log (tail) ======
-eWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
-	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
-	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
-	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
-	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
-	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
-	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
-	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
-	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
-	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
-	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+rationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilation error. See log for more details
+	at org.jetbrains.kotlin.gradle.tasks.TasksUtilsKt.throwExceptionIfCompilationFailed(tasksUtils.kt:21)
+	at org.jetbrains.kotlin.compilerRunner.GradleKotlinCompilerWork.run(GradleKotlinCompilerWork.kt:119)
+	at org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction.execute(GradleCompilerRunnerWithWorkers.kt:76)
+	at org.gradle.workers.internal.DefaultWorkerServer.execute(DefaultWorkerServer.java:63)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:66)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1$1.create(NoIsolationWorkerFactory.java:62)
+	at org.gradle.internal.classloader.ClassLoaderUtils.executeInClassloader(ClassLoaderUtils.java:100)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.lambda$execute$0(NoIsolationWorkerFactory.java:62)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:44)
+	at org.gradle.workers.internal.AbstractWorker$1.call(AbstractWorker.java:41)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
@@ -88,22 +51,23 @@ eWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:3
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
-	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
-	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
-	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
-	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
-	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at org.gradle.workers.internal.AbstractWorker.executeWrappedInBuildOperation(AbstractWorker.java:41)
+	at org.gradle.workers.internal.NoIsolationWorkerFactory$1.execute(NoIsolationWorkerFactory.java:59)
+	at org.gradle.workers.internal.DefaultWorkerExecutor.lambda$submitWork$0(DefaultWorkerExecutor.java:174)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runExecution(DefaultConditionalExecutionQueue.java:194)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.access$700(DefaultConditionalExecutionQueue.java:127)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner$1.run(DefaultConditionalExecutionQueue.java:169)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:132)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
+	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
+	... 2 more
 
 
-BUILD FAILED in 49s
-28 actionable tasks: 7 executed, 1 from cache, 20 up-to-date
+BUILD FAILED in 13s
+26 actionable tasks: 5 executed, 1 from cache, 20 up-to-date
 ====== assemble.log (tail) ======
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build 
@@ -138,16 +102,16 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:generateDebugAssets UP-TO-DATE
 > Task :app:mergeDebugAssets
 > Task :app:compressDebugAssets FROM-CACHE
+> Task :app:processDebugManifestForPackage
 > Task :app:desugarDebugFileDependencies FROM-CACHE
 > Task :app:mergeDebugJniLibFolders
-> Task :app:checkDebugDuplicateClasses
 > Task :app:mergeDebugNativeLibs NO-SOURCE
-> Task :app:processDebugManifestForPackage
-> Task :app:mergeExtDexDebug FROM-CACHE
-> Task :app:mergeLibDexDebug FROM-CACHE
 > Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:checkDebugDuplicateClasses
 > Task :app:processDebugResources
 > Task :app:validateSigningDebug
+> Task :app:mergeExtDexDebug FROM-CACHE
+> Task :app:mergeLibDexDebug FROM-CACHE
 > Task :app:writeDebugAppMetadata
 > Task :app:writeDebugSigningConfigVersions
 > Task :app:preReleaseBuild UP-TO-DATE
@@ -171,30 +135,30 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:processReleaseManifest
 > Task :app:javaPreCompileRelease FROM-CACHE
 > Task :app:desugarReleaseFileDependencies FROM-CACHE
-> Task :app:mergeReleaseStartupProfile
-> Task :app:mergeExtDexRelease FROM-CACHE
 > Task :app:processReleaseManifestForPackage
+> Task :app:mergeReleaseStartupProfile
+> Task :app:mergeReleaseResources
+> Task :app:mergeExtDexRelease FROM-CACHE
 > Task :app:mergeReleaseArtProfile
 > Task :app:mergeReleaseShaders
 > Task :app:compileReleaseShaders NO-SOURCE
 > Task :app:generateReleaseAssets UP-TO-DATE
 > Task :app:mergeReleaseAssets
 > Task :app:compressReleaseAssets FROM-CACHE
-> Task :app:mergeReleaseResources
 > Task :app:extractReleaseVersionControlInfo
-> Task :app:collectReleaseDependencies
 > Task :app:processReleaseResources
+> Task :app:collectReleaseDependencies
 > Task :app:sdkReleaseDependencyData
+> Task :app:optimizeReleaseResources
 > Task :app:validateSigningRelease
 > Task :app:writeReleaseAppMetadata
 > Task :app:writeReleaseSigningConfigVersions
 > Task :app:processApplicationManifestReleaseForBundle
-> Task :app:optimizeReleaseResources
 > Task :app:configureReleaseDependencies
 > Task :app:parseReleaseIntegrityConfig FROM-CACHE
 > Task :app:bundleReleaseResources
+
 > Task :app:compileDebugKotlin
-> Task :app:compileReleaseKotlin
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:93:47 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:95:33 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/playback/PlaybackService.kt:65:17 'fun stopForeground(p0: Boolean): Unit' is deprecated. Deprecated in Java.
@@ -211,7 +175,7 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/ButterflyLoader.kt:43:53 'field scaledDensity: Float' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/widgets/Controls.kt:380:58 'static fun obtain(p0: Int, p1: Float, p2: Float, p3: Float): AccessibilityNodeInfo.RangeInfo!' is deprecated. Deprecated in Java.
 
-> Task :app:compileDebugKotlin
+> Task :app:compileReleaseKotlin
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:93:47 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/notify/Notifier.kt:95:33 'constructor(p0: Int, p1: CharSequence!, p2: PendingIntent?): Notification.Action.Builder' is deprecated. Deprecated in Java.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/playback/PlaybackService.kt:65:17 'fun stopForeground(p0: Boolean): Unit' is deprecated. Deprecated in Java.
@@ -253,9 +217,9 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 > Task :app:produceReleaseBundleIdeListingFile
 > Task :app:createReleaseBundleListingFileRedirect
 > Task :app:bundleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793503054909.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793503956196.json
 
-BUILD SUCCESSFUL in 1m 16s
+BUILD SUCCESSFUL in 56s
 86 actionable tasks: 69 executed, 17 from cache
 ====== verification report ======
 === APK verification: dist/GossipAudio-1.0.3-release.apk
@@ -299,9 +263,9 @@ BUILD SUCCESSFUL in 1m 16s
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
   "entries": 33,
-  "uncompressed_bytes": 3262462,
-  "dex_bytes": 2877040,
-  "apk_sha256": "eee8440de0398c36850584e92bb0279851e2bed280e4095c5bec489fbac9ad2c"
+  "uncompressed_bytes": 3264014,
+  "dex_bytes": 2878592,
+  "apk_sha256": "a4c5708ff351d98962e967ca776976293a3254ee73eb5580957f44c4e4b87f36"
 }
 
 --- notes
@@ -310,7 +274,7 @@ BUILD SUCCESSFUL in 1m 16s
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
  * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
- * dex files: classes.dex (2877040 bytes uncompressed)
+ * dex files: classes.dex (2878592 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
@@ -325,18 +289,18 @@ BUILD SUCCESSFUL in 1m 16s
          {'tag': {'version': '2.3.0', 'bytes': 1297, 'frames': [('TIT2', 18), ('TPE1', 29), ('TALB', 13), ('COMM', 108), ('TYER', 6), ('TSSE', 29)]}, 'stream': {'version': 2, 'bitrate_kbps': 128, 'rate': 22050, 'channel_mode': 3, 'frames': 172, 'duration_ms': 4493, 'audio_bytes': 71889}, 'size': 73186}
 [OK  ] WAV dist/samples/pipeline-sample.wav  194910 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4419}
-[OK  ] WAV dist/samples/voice-arjun.wav  186058 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4218}
-[OK  ] WAV dist/samples/voice-bot.wav  182668 bytes
+[OK  ] WAV dist/samples/voice-arjun.wav  186024 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4217}
+[OK  ] WAV dist/samples/voice-bot.wav  182648 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4141}
-[OK  ] WAV dist/samples/voice-hindi.wav  116974 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2651}
-[OK  ] WAV dist/samples/voice-hinglish.wav  93564 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2121}
-[OK  ] WAV dist/samples/voice-maya.wav  179162 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4062}
-[OK  ] WAV dist/samples/voice-quality.wav  179496 bytes
-         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4069}
+[OK  ] WAV dist/samples/voice-hindi.wav  116824 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2648}
+[OK  ] WAV dist/samples/voice-hinglish.wav  93676 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 2123}
+[OK  ] WAV dist/samples/voice-maya.wav  179156 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4061}
+[OK  ] WAV dist/samples/voice-quality.wav  179536 bytes
+         {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4070}
 [OK  ] WAV dist/samples/voice-riya.wav  186120 bytes
          {'format': 1, 'channels': 1, 'rate': 22050, 'bits': 16, 'block_align': 2, 'duration_ms': 4219}
 
