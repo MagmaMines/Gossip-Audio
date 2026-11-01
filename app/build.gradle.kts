@@ -13,6 +13,7 @@ android {
         targetSdk = 35
         versionCode = 4
         versionName = "1.1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resourceConfigurations += listOf("en", "hi")
         ndk { abiFilters += listOf("arm64-v8a", "x86_64") }
     }
@@ -80,6 +81,8 @@ android {
 
 dependencies {
     implementation(files("libs/sherpa-onnx.aar"))
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
     testImplementation("junit:junit:4.13.2")
     // Robolectric boots the real activity + views on the JVM so CI can prove the UI renders.
     testImplementation("org.robolectric:robolectric:4.14.1")
