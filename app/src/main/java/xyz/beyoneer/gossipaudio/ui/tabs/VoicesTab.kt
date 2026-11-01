@@ -10,6 +10,7 @@ import android.widget.ScrollView
 import xyz.beyoneer.gossipaudio.core.VoiceCatalog
 import xyz.beyoneer.gossipaudio.core.VoiceGender
 import xyz.beyoneer.gossipaudio.core.VoiceProfile
+import xyz.beyoneer.gossipaudio.speech.VoiceDownloads
 import xyz.beyoneer.gossipaudio.ui.Tab
 import xyz.beyoneer.gossipaudio.ui.VoicePreview
 import xyz.beyoneer.gossipaudio.ui.screens.ShellScreen
@@ -48,11 +49,11 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
-        column.addView(Ui.text(activity, "Your voice", 25f, palette.text, bold = true))
+        column.addView(Ui.text(activity, "Your voices", 25f, palette.text, bold = true))
         column.addView(
             Ui.text(
                 activity,
-                "One full-precision English neural voice, bundled in the app. Tap Preview to hear it.",
+                "Download extra voices once, then generate offline. Lessac is for non-commercial evaluation only.",
                 12.5f, palette.textDim, font = "sans-serif-medium"
             ),
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
@@ -80,6 +81,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
 
     private fun voiceCard(voice: VoiceProfile): View {
         val selected = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId).id == voice.id
+        val installed = VoiceDownloads.installed(activity, voice.id)
         val card = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
             background = if (selected) {
@@ -145,7 +147,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         val preview = BrandButton(activity, palette, "Preview", BrandButton.Variant.GHOST, Icons.Kind.PLAY, compact = true)
         val use = BrandButton(
             activity, palette,
-            if (selected) "Selected" else "Use this voice",
+            if (!installed) "Download" else if (selected) "Selected" else "Use this voice",
             if (selected) BrandButton.Variant.INK else BrandButton.Variant.PRIMARY,
             if (selected) Icons.Kind.CHECK else Icons.Kind.SPARKLE,
             compact = true
@@ -160,6 +162,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         // The whole card selects the voice — nobody should have to aim at a button.
         card.isClickable = true
         card.setOnClickListener {
+            if (!installed) { activity.toast("Download ${voice.name} first."); return@setOnClickListener }
             activity.app.prefs.selectedVoiceId = voice.id
             render()
             activity.toast("${voice.name} is now your gossip voice.")
@@ -168,6 +171,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         Ui.pressable(card, 0.985f)
 
         preview.setOnClick {
+            if (!installed) { activity.toast("Download ${voice.name} first."); return@setOnClick }
             if (previewing == voice.id) {
                 activity.toast("Already preparing that sample\u2026")
                 return@setOnClick
@@ -190,6 +194,26 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
             }
         }
         use.setOnClick {
+            if (!installed) {
+                android.app.AlertDialog.Builder(activity)
+                    .setTitle("Download ${voice.name}?")
+                    .setMessage("Downloads approximately 65–70 MB over the internet. Text-to-speech stays on your device. Data charges may apply.")
+                    .setNegativeButton("Cancel", null)
+                    .setPositiveButton("Download") { _, _ ->
+                        use.setLoading(true)
+                        Thread {
+                            val failure = runCatching { VoiceDownloads.download(activity.applicationContext, voice.id) }.exceptionOrNull()
+                            activity.runOnUiThread {
+                                if (!activity.isFinishing && !activity.isDestroyed) {
+                                    use.setLoading(false)
+                                    if (failure == null) { render(); activity.toast("${voice.name} is ready offline.") }
+                                    else activity.toast("Download failed: ${failure.message ?: "Please retry."}")
+                                }
+                            }
+                        }.start()
+                    }.show()
+                return@setOnClick
+            }
             activity.app.prefs.selectedVoiceId = voice.id
             render()
             activity.toast("${voice.name} is now your gossip voice.")

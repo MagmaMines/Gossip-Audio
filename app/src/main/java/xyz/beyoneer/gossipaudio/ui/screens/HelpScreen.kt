@@ -33,7 +33,7 @@ class HelpScreen(activity: MainActivity) : Screen(activity) {
         "Can I add my own cover?" to
             "Yes. In the export sheet tap Pick image. It is embedded as an ID3 APIC frame in MP3 and a covr atom in M4A.",
         "Why do some voices sound robotic?" to
-            "The app uses the full-precision Lessac neural model. Voice quality and pronunciation may still vary with text and playback devices.",
+            "The app uses full-precision neural models. Download Cori or Padmavathi from Voices; Lessac is for non-commercial evaluation only. Pronunciation may vary.",
         "What is NanoVoice?" to
             "The old formant synthesizer is not used for speech generation. The new build uses a bundled English Piper VITS model.",
         "How many voices and styles?" to

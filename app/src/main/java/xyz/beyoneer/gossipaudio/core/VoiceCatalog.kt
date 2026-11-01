@@ -41,7 +41,23 @@ object VoiceCatalog {
             locale = "en-US", flag = "🇺🇸", region = "English (US)",
             pitch = 1f, rate = 1f, timbre = 1f,
             vibe = "Full-precision neural voice",
-            bio = "A single English neural voice, bundled with the app. Preview it before creating your audio.",
+            bio = "Bundled for evaluation only: its training recordings have non-commercial restrictions. Do not use commercially without permission.",
+            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
+        ),
+        VoiceProfile(
+            id = "cori", name = "Cori", gender = VoiceGender.FEMALE,
+            locale = "en-GB", flag = "🇬🇧", region = "English (UK)",
+            pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "British English · neural",
+            bio = "Full-precision Piper voice trained from scratch on LibriVox recordings. Download once, then synthesize offline.",
+            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
+        ),
+        VoiceProfile(
+            id = "padmavathi", name = "Padmavathi", gender = VoiceGender.FEMALE,
+            locale = "te-IN", flag = "🇮🇳", region = "Telugu (India)",
+            pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Telugu · neural",
+            bio = "Piper voice trained on AI4Bharat IndicVoices-R (CC BY 4.0). Download once, then synthesize Telugu offline. Attribution required.",
             engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
         )
     )

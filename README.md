@@ -6,13 +6,18 @@ An Android voice studio by **Beyoneer XYZ**.
 
 <img src="GossipAudio.png" alt="GossipAudio logo" width="160">
 
-## One neural voice
+## Neural voices
 
-This version has one English (US) voice: full-precision **Piper Lessac medium**, a pretrained VITS neural model originating from [Hugging Face](https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_US/lessac/medium). The model and sherpa-onnx runtime are bundled into the APK and run on the CPU. **Speech generation does not call the Android system TTS engine or any cloud service.** The separate dictation feature does use your Android speech recognizer and may use the network.
+GossipAudio runs neural Piper/VITS voices locally with sherpa-onnx; it does **not** use Android system TTS for speech generation. The bundled US English Lessac voice is **restricted to non-commercial/research use** based on its training recordings; the previous build failed to flag this restriction. Optional British English Cori and Telugu Padmavathi voices can be downloaded from the Voices tab, after which synthesis is offline. The Telugu model card cites CC BY 4.0 data but does not specify model-weight licensing or training initialization, so confirm those rights before commercial deployment. See [voice provenance and licensing](docs/VOICES.md), including separate eSpeak obligations.
 
-Unlike the previous int8 multi-speaker model, this model is full-precision and single-speaker. Float samples are scaled before 16-bit PCM conversion if necessary, to avoid hard clipping; short fades limit clicks at chunk boundaries. Results still depend on the model, text, and listening hardware: objective checks can't prove a voice is natural or completely free of artifacts. WAV preserves the master; MP3 and AAC are lossy. Playback effects are off by default to avoid coloring or boosting the voice; you can enable them in Settings.
+Dictation uses a separate Android recognition service and may use the network. The APK targets ARM64 Android 7+ and is a debug build, not a commercial release. Voice quality varies with language and device; no subjective quality guarantee is implied.
 
-The voice is English-only. Hindi, Japanese, voice cloning, GPU inference and other voices are not included. This version targets 64-bit ARM Android devices (Android 7+). It is a debug build, not a commercial release.
+## Download and listen
+
+- [GossipAudio 1.3.0 neural debug APK](dist/GossipAudio-1.3.0-neural-debug.apk) (ARM64, Android 7+)
+- [Neural voice sample (WAV)](dist/GossipAudio-1.3.0-neural-sample.wav), generated through the app's speech pipeline on an Android 10 emulator
+
+The build and selected JVM tests passed, and the emulator test checked synthesis, WAV round-trip, MP3 encoding and absence of hard-clipped samples. This is not a listening-quality certification or a substitute for testing physical devices.
 
 ## Studio features
 

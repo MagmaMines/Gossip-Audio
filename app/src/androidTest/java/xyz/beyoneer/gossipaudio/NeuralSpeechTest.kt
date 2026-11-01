@@ -28,7 +28,7 @@ class NeuralSpeechTest {
         val outcome = AtomicReference<SpeechSynth.Outcome>()
         val failure = AtomicReference<String>()
         SpeechSynth(context).synthesize("Hello! Welcome to Gossip Audio. Your words, their wings.",
-            VoiceCatalog.all.single(), StyleCatalog.byId("natural"), 1f, 1f,
+            VoiceCatalog.byId("riya"), StyleCatalog.byId("natural"), 1f, 1f,
             object : SpeechSynth.Callback {
                 override fun onProgress(fraction: Float, label: String) = Unit
                 override fun onSuccess(result: SpeechSynth.Outcome) { outcome.set(result); latch.countDown() }

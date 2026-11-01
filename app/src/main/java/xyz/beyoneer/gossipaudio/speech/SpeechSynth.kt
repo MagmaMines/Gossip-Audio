@@ -24,8 +24,8 @@ class SpeechSynth(private val context: Context) {
         if (clean.isEmpty()) { callback.onError("Type some text first."); return }
         // The packaged model is English. Refuse unsupported scripts instead of
         // returning plausible-looking but unintelligible speech.
-        if (clean.codePoints().anyMatch { Character.isLetter(it) && Character.UnicodeScript.of(it) != Character.UnicodeScript.LATIN }) {
-            callback.onError("This build supports English text only. Hindi and Japanese models are not bundled.")
+        if (clean.codePoints().anyMatch { Character.isLetter(it) && Character.UnicodeScript.of(it) != if (voice.id == "padmavathi") Character.UnicodeScript.TELUGU else Character.UnicodeScript.LATIN }) {
+            callback.onError(if (voice.id == "padmavathi") "Enter Telugu text for Padmavathi." else "Enter English text for this voice.")
             return
         }
         val speaker = 0
@@ -35,7 +35,7 @@ class SpeechSynth(private val context: Context) {
         Thread {
             try {
                 val chunks = chunkText(clean, 220)
-                val pcm = NeuralEngine.render(appContext, chunks, speaker, rate * style.rateFactor) { index, total ->
+                val pcm = NeuralEngine.render(appContext, chunks, speaker, rate * style.rateFactor, voice.id) { index, total ->
                     main.post { callback.onProgress(0.15f + 0.75f * index / total, "Neural voice is speaking…") }
                 }
                 sampler.stop()

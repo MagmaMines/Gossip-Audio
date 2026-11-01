@@ -35,8 +35,8 @@ class OnboardingScreen(activity: MainActivity) : Screen(activity) {
             palette.yellow
         ),
         Page(
-            "One voice.\nOne neural model.",
-            "Preview Lessac, our bundled full-precision English neural voice. No phone text-to-speech engine required.",
+            "More voices.\nNeural models.",
+            "Preview the bundled voice or download British English and Telugu. Speech generation runs on-device, without phone TTS.",
             Icons.Kind.PERSON,
             palette.yellowBright
         ),
@@ -106,7 +106,12 @@ class OnboardingScreen(activity: MainActivity) : Screen(activity) {
         nextButton.setOnClick { advance() }
         column.addView(nextButton)
 
-        root.addView(column, FrameLayout.LayoutParams(
+        // Scroll on short screens or with enlarged fonts instead of clipping controls.
+        val scroll = android.widget.ScrollView(activity).apply { isFillViewport = true }
+        scroll.addView(column, ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ))
+        root.addView(scroll, FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ))
         render(false)

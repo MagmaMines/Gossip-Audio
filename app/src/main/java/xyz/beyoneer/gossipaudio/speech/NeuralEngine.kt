@@ -19,8 +19,11 @@ object NeuralEngine {
     } catch (_: Exception) { false }
 
     @Synchronized
-    fun render(context: Context, chunks: List<String>, speaker: Int, speed: Float, progress: (Int, Int) -> Unit): Pcm {
-        check(available(context)) { "Neural model missing from this build." }
+    fun render(context: Context, chunks: List<String>, speaker: Int, speed: Float, voiceId: String = "riya", progress: (Int, Int) -> Unit): Pcm {
+        val bundled = voiceId == "riya"
+        check(if (bundled) available(context) else VoiceDownloads.installed(context, voiceId)) {
+            "Download this voice from the Voices tab first."
+        }
         val data = File(context.filesDir, "neural-espeak-v1")
         if (!File(data, ".complete").exists()) {
             copyAssetTree(context, "$ASSET/espeak-ng-data", data)
@@ -29,8 +32,8 @@ object NeuralEngine {
         val config = OfflineTtsConfig(
             model = OfflineTtsModelConfig(
                 vits = OfflineTtsVitsModelConfig(
-                    model = "$ASSET/model.onnx",
-                    tokens = "$ASSET/tokens.txt",
+                    model = if (bundled) "$ASSET/model.onnx" else File(VoiceDownloads.directory(context, voiceId), "model.onnx").absolutePath,
+                    tokens = if (bundled) "$ASSET/tokens.txt" else File(VoiceDownloads.directory(context, voiceId), "tokens.txt").absolutePath,
                     dataDir = data.absolutePath
                 ),
                 numThreads = minOf(4, Runtime.getRuntime().availableProcessors()).coerceAtLeast(1),
@@ -38,7 +41,7 @@ object NeuralEngine {
             ),
             maxNumSentences = 1
         )
-        val engine = OfflineTts(context.assets, config)
+        val engine = OfflineTts(if (bundled) context.assets else null, config)
         try {
             val count = engine.numSpeakers()
             check(speaker in 0 until count) { "This model does not contain speaker $speaker (found $count)." }

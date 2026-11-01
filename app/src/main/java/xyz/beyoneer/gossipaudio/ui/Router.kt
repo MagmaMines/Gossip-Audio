@@ -40,16 +40,24 @@ class Router(private val activity: MainActivity) {
     private val stack = ArrayList<Screen>()
 
     fun start(screen: Screen) {
+        stack.forEach { it.onHidden(); it.onDestroyed() }
         stack.clear()
         container.removeAllViews()
         stack.add(screen)
         val view = screen.root
+        view.animate().cancel()
         view.alpha = 1f
+        view.scaleX = 1f
+        view.scaleY = 1f
+        view.translationX = 0f
+        view.translationY = 0f
         container.addView(
             view,
             FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         )
         screen.onShown()
+        container.requestLayout()
+        container.requestApplyInsets()
     }
 
     fun push(screen: Screen, animate: Boolean = true) {

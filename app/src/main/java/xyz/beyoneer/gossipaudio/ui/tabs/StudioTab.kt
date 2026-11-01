@@ -154,7 +154,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         estimate.setPadding(0, Ui.dp(activity, 7f), 0, 0)
         column.addView(estimate)
 
-        column.addView(sectionHeader("Voice", "one neural voice"), LinearLayout.LayoutParams(
+        column.addView(sectionHeader("Voice", "choose a neural voice"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 20f) })
         val voiceRow = FadeRow(activity, palette)
