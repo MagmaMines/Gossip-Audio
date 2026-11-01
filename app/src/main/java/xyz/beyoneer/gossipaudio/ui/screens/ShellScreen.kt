@@ -44,7 +44,6 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
     private val tabs = ArrayList<Tab>()
     private val host = FrameLayout(activity)
     private var current = -1
-    private lateinit var navIndicator: View
     private val navIcons = ArrayList<IconView>()
     private val navLabels = ArrayList<TextView>()
     private val navCells = ArrayList<View>()
@@ -109,29 +108,67 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
     }
 
     private fun buildTopBar(): View {
+        val wrap = FrameLayout(activity)
+        // A soft yellow wash behind the brand bar. Before this the logo floated on a
+        // flat cream page and the app read as "default Android with yellow buttons".
+        val wash = View(activity).apply {
+            background = android.graphics.drawable.GradientDrawable(
+                android.graphics.drawable.GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(
+                    Ui.withAlpha(palette.yellow, if (palette.dark) 0.14f else 0.34f),
+                    android.graphics.Color.TRANSPARENT
+                )
+            )
+            isClickable = false
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }
+        wrap.addView(wash, FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+        ))
+
         val bar = LinearLayout(activity).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
-            setPadding(Ui.dp(activity, 18f), Ui.dp(activity, 14f), Ui.dp(activity, 14f), Ui.dp(activity, 8f))
+            setPadding(Ui.dp(activity, 16f), Ui.dp(activity, 12f), Ui.dp(activity, 12f), Ui.dp(activity, 10f))
         }
-        val logo = ImageView(activity).apply { setImageResource(R.drawable.gossipaudio_glyph) }
-        bar.addView(logo, LinearLayout.LayoutParams(Ui.dp(activity, 34f), Ui.dp(activity, 34f)))
+
+        // logo in an ink badge: the glyph is yellow, so it needs the dark plate
+        val badge = FrameLayout(activity).apply {
+            background = Ui.gradient(
+                intArrayOf(0xFF24241E.toInt(), 0xFF0B0B0C.toInt()),
+                Ui.dpf(activity, 14f),
+                strokeColor = Ui.withAlpha(palette.yellow, 0.55f), strokeWidth = Ui.dp(activity, 1.2f)
+            )
+            elevation = Ui.dpf(activity, 4f)
+        }
+        badge.addView(
+            ImageView(activity).apply { setImageResource(R.drawable.gossipaudio_glyph) },
+            FrameLayout.LayoutParams(Ui.dp(activity, 24f), Ui.dp(activity, 24f), Gravity.CENTER)
+        )
+        bar.addView(badge, LinearLayout.LayoutParams(Ui.dp(activity, 40f), Ui.dp(activity, 40f)))
+
         val names = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(Ui.dp(activity, 9f), 0, 0, 0)
+            setPadding(Ui.dp(activity, 10f), 0, Ui.dp(activity, 4f), 0)
         }
         val narrow = activity.resources.displayMetrics.widthPixels /
             activity.resources.displayMetrics.density < 360f
-        val title = Ui.text(activity, Brand.NAME, if (narrow) 15.5f else 17f, palette.text, bold = true)
+        val title = Ui.text(activity, Brand.NAME, if (narrow) 16f else 18f, palette.text, bold = true)
         title.maxLines = 1
         title.ellipsize = android.text.TextUtils.TruncateAt.END
+        title.letterSpacing = -0.02f
         names.addView(title)
-        if (!narrow) {
-            val byline = Ui.text(activity, Brand.BYLINE, 10f, palette.textDim, bold = true, font = "sans-serif-medium")
-            byline.maxLines = 1
-            byline.ellipsize = android.text.TextUtils.TruncateAt.END
-            names.addView(byline)
-        }
+        val byline = Ui.text(
+            activity,
+            (if (narrow) "BY ${Brand.AUTHOR}" else Brand.BYLINE).uppercase(),
+            8.5f, palette.textDim, bold = true, font = "sans-serif-medium"
+        )
+        byline.maxLines = 1
+        byline.letterSpacing = 0.14f
+        byline.ellipsize = android.text.TextUtils.TruncateAt.END
+        names.addView(byline, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = Ui.dp(activity, 2f) })
         bar.addView(names, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
 
         val theme = iconButton(
@@ -146,20 +183,24 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         bar.addView(bell)
         val info = iconButton(Icons.Kind.INFO, "About GossipAudio") { openAbout() }
         bar.addView(info)
-        return bar
+        wrap.addView(bar, FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ))
+        return wrap
     }
 
     private fun iconButton(kind: Icons.Kind, label: String, action: () -> Unit): View {
         val box = FrameLayout(activity).apply {
-            background = Ui.rounded(palette.card, Ui.dpf(activity, 100f), palette.outline, Ui.dp(activity, 1f))
+            background = Ui.rounded(palette.card, Ui.dpf(activity, 100f))
+            elevation = Ui.dpf(activity, 2f)
             isClickable = true
             contentDescription = label
         }
-        box.addView(IconView(activity, kind, palette.text, 19f), FrameLayout.LayoutParams(
-            Ui.dp(activity, 20f), Ui.dp(activity, 20f), Gravity.CENTER
+        box.addView(IconView(activity, kind, palette.text, 18f), FrameLayout.LayoutParams(
+            Ui.dp(activity, 19f), Ui.dp(activity, 19f), Gravity.CENTER
         ))
-        box.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 44f), Ui.dp(activity, 44f)).apply {
-            marginStart = Ui.dp(activity, 8f)
+        box.layoutParams = LinearLayout.LayoutParams(Ui.dp(activity, 38f), Ui.dp(activity, 38f)).apply {
+            marginStart = Ui.dp(activity, 6f)
         }
         Ui.pressable(box, 0.9f, action)
         return box
@@ -170,12 +211,12 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         val bar = LinearLayout(activity).apply {
             orientation = LinearLayout.HORIZONTAL
             background = Ui.gradient(
-                intArrayOf(palette.card, Ui.blend(palette.card, palette.yellowSoft, if (palette.dark) 0.25f else 0.15f)),
-                Ui.dpf(activity, 26f),
-                strokeColor = palette.outline, strokeWidth = Ui.dp(activity, 1f)
+                intArrayOf(Ui.blend(INK_DOCK, 0xFFFFFFFF.toInt(), 0.10f), INK_DOCK),
+                Ui.dpf(activity, 32f),
+                strokeColor = Ui.withAlpha(palette.yellow, 0.30f), strokeWidth = Ui.dp(activity, 1f)
             )
-            elevation = Ui.dpf(activity, 6f)
-            setPadding(Ui.dp(activity, 8f), Ui.dp(activity, 8f), Ui.dp(activity, 8f), Ui.dp(activity, 10f))
+            elevation = Ui.dpf(activity, 16f)
+            setPadding(Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f))
         }
         val items = listOf(
             Triple("Studio", Icons.Kind.SPARKLE, 0),
@@ -183,18 +224,18 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             Triple("Library", Icons.Kind.LIST, 2),
             Triple("Settings", Icons.Kind.GEAR, 3)
         )
-        navIndicator = View(activity)
         items.forEach { (label, icon, index) ->
             val cell = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL
                 gravity = Gravity.CENTER_HORIZONTAL
                 isClickable = true
-                setPadding(0, Ui.dp(activity, 4f), 0, Ui.dp(activity, 2f))
+                setPadding(0, Ui.dp(activity, 8f), 0, Ui.dp(activity, 7f))
             }
-            val iconView = IconView(activity, icon, palette.textDim, 22f)
-            val labelView = Ui.text(activity, label, 10f, palette.textDim, bold = true, font = "sans-serif-medium", gravity = Gravity.CENTER)
-            labelView.setPadding(0, Ui.dp(activity, 3f), 0, 0)
-            cell.addView(iconView, LinearLayout.LayoutParams(Ui.dp(activity, 22f), Ui.dp(activity, 22f)))
+            val iconView = IconView(activity, icon, NAV_IDLE, 21f)
+            val labelView = Ui.text(activity, label, 9.5f, NAV_IDLE, bold = true, font = "sans-serif-medium", gravity = Gravity.CENTER)
+            labelView.letterSpacing = 0.04f
+            labelView.setPadding(0, Ui.dp(activity, 4f), 0, 0)
+            cell.addView(iconView, LinearLayout.LayoutParams(Ui.dp(activity, 21f), Ui.dp(activity, 21f)))
             cell.addView(labelView)
             cell.contentDescription = "$label tab"
             cell.setOnClickListener { selectTab(index) }
@@ -202,12 +243,13 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             navIcons.add(iconView)
             navLabels.add(labelView)
             navCells.add(cell)
-            bar.addView(cell, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            bar.addView(cell, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
+                if (index > 0) marginStart = Ui.dp(activity, 4f)
+            })
         }
         wrap.addView(bar, FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { setMargins(Ui.dp(activity, 14f), 0, Ui.dp(activity, 14f), Ui.dp(activity, 14f)) })
-        wrap.setPadding(0, 0, 0, 0)
+        ).apply { setMargins(Ui.dp(activity, 14f), 0, Ui.dp(activity, 14f), Ui.dp(activity, 12f)) })
         return wrap
     }
 
@@ -215,13 +257,13 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         navCells.forEachIndexed { index, cell ->
             val selected = index == current
             cell.isSelected = selected
-            navIcons[index].setTintColor(if (selected) palette.onYellow else palette.textDim)
-            navLabels[index].setTextColor(if (selected) palette.text else palette.textDim)
+            navIcons[index].setTintColor(if (selected) palette.onYellow else NAV_IDLE)
+            navLabels[index].setTextColor(if (selected) palette.onYellow else NAV_IDLE)
             cell.background = if (selected) {
                 Ui.gradient(
                     intArrayOf(palette.yellowBright, palette.yellow),
-                    Ui.dpf(activity, 18f),
-                    strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(activity, 1.2f)
+                    Ui.dpf(activity, 26f),
+                    strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(activity, 1f)
                 )
             } else {
                 null
@@ -230,6 +272,14 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
                 Ui.popIn(cell)
             }
         }
+    }
+
+    private companion object {
+        /** The dock is always ink; the yellow pill is what moves. */
+        const val INK_DOCK = 0xFF0B0B0C.toInt()
+
+        /** Idle colour on that dark dock: warm grey, readable in both themes. */
+        const val NAV_IDLE = 0xFFB4B4AC.toInt()
     }
 
     fun selectTab(index: Int, animate: Boolean = true) {

@@ -78,7 +78,12 @@ class LibraryTab(private val shell: ShellScreen) : Tab {
         Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
-        column.addView(Ui.text(activity, "Your library", 25f, palette.text, bold = true))
+        column.addView(
+            Ui.pageHeader(activity, palette, "The vault", "Your library"),
+            LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+                topMargin = Ui.dp(activity, 3f)
+            }
+        )
         summary = Ui.text(activity, "", 12f, palette.textDim, font = "sans-serif-medium")
         column.addView(summary, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT

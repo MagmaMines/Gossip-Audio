@@ -112,53 +112,16 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
-        // greeting
-        val greetingRow = Ui.row(activity)
-        val greetingBox = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
-        greetingBox.addView(Ui.text(activity, "Spill the tea \u2615", 25f, palette.text, bold = true))
-        greetingBox.addView(
-            Ui.text(activity, "Type it. Hear it. Download it. Repeat.", 12.5f, palette.textDim, font = "sans-serif-medium"),
-            LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
-                topMargin = Ui.dp(activity, 3f)
-            }
-        )
-        greetingRow.addView(greetingBox, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-        val counterBadge = TextView(activity).apply {
-            text = "${activity.app.prefs.totalGenerations} made"
-            setTextColor(palette.onYellow)
-            setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 11f)
-            typeface = android.graphics.Typeface.create("sans-serif-black", android.graphics.Typeface.BOLD)
-            setPadding(Ui.dp(activity, 11f), Ui.dp(activity, 6f), Ui.dp(activity, 11f), Ui.dp(activity, 6f))
-            background = Ui.gradient(
-                intArrayOf(palette.yellowBright, palette.yellow), Ui.dpf(activity, 100f),
-                strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(activity, 1.5f)
-            )
-        }
-        greetingRow.addView(counterBadge)
-        column.addView(greetingRow, LinearLayout.LayoutParams(
+        // One dark "hero" card holds the greeting, the tagline and the composer. The
+        // page used to be white-on-white: a logo strip, a white card, another white
+        // card, another white card. Ink here, cream around it, yellow for the action.
+        column.addView(heroCard(), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 4f) })
 
-        column.addView(taglineCard(), LinearLayout.LayoutParams(
+        column.addView(quickActions(), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 16f) })
-
-        column.addView(composerCard(), LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 14f) })
-
-        // The one thing every session needs: put it above the fold instead of
-        // making people scroll past three option rows to find it.
-        generateButton = BrandButton(activity, palette, "Generate voice", BrandButton.Variant.PRIMARY, Icons.Kind.WAVE)
-        generateButton.layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 56f)
-        ).apply { topMargin = Ui.dp(activity, 14f) }
-        generateButton.setOnClick { generate() }
-        column.addView(generateButton)
-
-        estimate = Ui.text(activity, "", 11.5f, palette.textDim, gravity = Gravity.CENTER)
-        estimate.setPadding(0, Ui.dp(activity, 7f), 0, 0)
-        column.addView(estimate)
+        ).apply { topMargin = Ui.dp(activity, 12f) })
 
         column.addView(sectionHeader("Voice", "tap to select"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
@@ -219,80 +182,109 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         return scroll
     }
 
-    private fun taglineCard(): View {
+    private fun heroCard(): View {
+        val onInk = 0xFFF7F6F1.toInt()
+        val dimInk = 0xB8F7F6F1.toInt()
         val card = LinearLayout(activity).apply {
-            orientation = LinearLayout.HORIZONTAL
+            orientation = LinearLayout.VERTICAL
             background = Ui.gradient(
-                intArrayOf(Ui.blend(palette.card, palette.yellowSoft, if (palette.dark) 0.35f else 0.25f), palette.card),
-                Ui.dpf(activity, 22f),
-                strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(activity, 1.2f)
+                intArrayOf(0xFF202024.toInt(), 0xFF0E0E10.toInt()),
+                Ui.dpf(activity, 30f),
+                strokeColor = Ui.withAlpha(palette.yellow, 0.40f), strokeWidth = Ui.dp(activity, 1.2f)
             )
-            setPadding(Ui.dp(activity, 14f), Ui.dp(activity, 13f), Ui.dp(activity, 10f), Ui.dp(activity, 13f))
+            elevation = Ui.dpf(activity, 8f)
+            setPadding(Ui.dp(activity, 18f), Ui.dp(activity, 16f), Ui.dp(activity, 18f), Ui.dp(activity, 16f))
         }
-        val bar = View(activity).apply {
-            background = Ui.rounded(palette.yellow, Ui.dpf(activity, 20f))
-        }
-        card.addView(bar, LinearLayout.LayoutParams(Ui.dp(activity, 4f), ViewGroup.LayoutParams.MATCH_PARENT))
-        val text = Ui.text(activity, Brand.TAGLINE, 11.5f, palette.text, font = "sans-serif-condensed")
-        text.setLineSpacing(Ui.dpf(activity, 3f), 1f)
-        text.setPadding(Ui.dp(activity, 10f), 0, Ui.dp(activity, 8f), 0)
-        card.addView(text, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-        val share = FrameLayout(activity)
-        share.addView(IconView(activity, Icons.Kind.SHARE, palette.yellowDeep, 18f), FrameLayout.LayoutParams(
-            Ui.dp(activity, 18f), Ui.dp(activity, 18f), Gravity.CENTER
-        ))
-        card.addView(share, LinearLayout.LayoutParams(Ui.dp(activity, 34f), Ui.dp(activity, 34f)))
-        share.contentDescription = "Share the GossipAudio tagline"
-        Ui.pressable(share, 0.9f) {
-            val intent = Intent(Intent.ACTION_SEND).apply {
-                type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, "\"${Brand.TAGLINE}\"\n\n\u2014 ${Brand.NAME} by ${Brand.AUTHOR}")
-            }
-            activity.startActivity(Intent.createChooser(intent, "Share the tagline"))
-        }
-        return card
-    }
 
-    private fun composerCard(): View {
-        val card = Ui.card(activity, palette, 26f)
         val top = Ui.row(activity)
-        top.addView(Ui.text(activity, "YOUR GOSSIP", 10.5f, palette.yellowDeep, bold = true), LinearLayout.LayoutParams(
-            0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f
-        ))
-        counter = Ui.text(activity, "0 / 2000", 10.5f, palette.textDim, bold = true, font = "sans-serif-medium")
-        top.addView(counter)
+        top.gravity = Gravity.CENTER_VERTICAL
+        val eyebrow = Ui.text(activity, "GOSSIPAUDIO STUDIO", 9f, palette.yellow, bold = true, font = "sans-serif-black")
+        eyebrow.letterSpacing = 0.20f
+        top.addView(eyebrow, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+        val counterBadge = TextView(activity).apply {
+            text = "${activity.app.prefs.totalGenerations} made"
+            setTextColor(palette.onYellow)
+            setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 10f)
+            typeface = android.graphics.Typeface.create("sans-serif-black", android.graphics.Typeface.BOLD)
+            letterSpacing = 0.04f
+            setPadding(Ui.dp(activity, 10f), Ui.dp(activity, 5f), Ui.dp(activity, 10f), Ui.dp(activity, 5f))
+            background = Ui.gradient(
+                intArrayOf(palette.yellowBright, palette.yellow), Ui.dpf(activity, 100f),
+                strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(activity, 1f)
+            )
+        }
+        top.addView(counterBadge)
         card.addView(top)
 
+        card.addView(
+            Ui.text(activity, "Spill the tea \u2615", 27f, onInk, bold = true, font = "sans-serif-black"),
+            LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .apply { topMargin = Ui.dp(activity, 10f) }
+        )
+        val tagline = Ui.text(activity, Brand.TAGLINE, 11f, dimInk, font = "sans-serif-condensed")
+        tagline.setLineSpacing(Ui.dpf(activity, 3f), 1f)
+        card.addView(tagline, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = Ui.dp(activity, 6f) })
+
+        // the text well: a translucent page inside the ink card
+        val well = LinearLayout(activity).apply {
+            orientation = LinearLayout.VERTICAL
+            background = Ui.rounded(0x16FFFFFF, Ui.dpf(activity, 18f), 0x26FFFFFF, Ui.dp(activity, 1f))
+            setPadding(Ui.dp(activity, 13f), Ui.dp(activity, 10f), Ui.dp(activity, 13f), Ui.dp(activity, 7f))
+        }
         input = EditText(activity).apply {
             hint = "Type the tea\u2026 e.g. \"She said she was five minutes away forty minutes ago.\""
-            setHintTextColor(Ui.withAlpha(palette.textDim, 0.8f))
-            setTextColor(palette.text)
-            setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16f)
+            setHintTextColor(0x8AF7F6F1.toInt())
+            setTextColor(onInk)
+            setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15.5f * Ui.textScale)
             typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.NORMAL)
             background = null
             gravity = Gravity.TOP or Gravity.START
-            minLines = 4
-            maxLines = 10
-            setPadding(0, Ui.dp(activity, 10f), 0, Ui.dp(activity, 8f))
+            minLines = 3
+            maxLines = 9
+            setPadding(0, 0, 0, Ui.dp(activity, 4f))
             contentDescription = "Your gossip text"
             filters = arrayOf(InputFilter.LengthFilter(2000))
             inputType = android.text.InputType.TYPE_CLASS_TEXT or
                 android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or
                 android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         }
+        counter = Ui.text(activity, "0 / 2000", 9.5f, dimInk, bold = true, font = "sans-serif-medium", gravity = Gravity.END)
         input.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
             override fun afterTextChanged(s: Editable?) {
                 val length = s?.length ?: 0
                 counter.text = "$length / 2000"
-                counter.setTextColor(if (length > 1800) palette.danger else palette.textDim)
+                counter.setTextColor(if (length > 1800) 0xFFFF8A80.toInt() else dimInk)
                 updateEstimate()
             }
         })
-        card.addView(input)
+        well.addView(input)
+        well.addView(counter)
+        card.addView(well, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = Ui.dp(activity, 14f) })
 
+        generateButton = BrandButton(activity, palette, "Generate voice", BrandButton.Variant.PRIMARY, Icons.Kind.WAVE)
+        generateButton.setOnClick { generate() }
+        card.addView(generateButton, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 56f)
+        ).apply { topMargin = Ui.dp(activity, 14f) })
+
+        estimate = Ui.text(activity, "", 10.5f, dimInk, gravity = Gravity.CENTER)
+        estimate.setPadding(0, Ui.dp(activity, 9f), 0, 0)
+        card.addView(estimate)
+        return card
+    }
+
+    /** Dice / dictate / paste / clear + the current voice, on the cream page. */
+    private fun quickActions(): View {
+        val card = Ui.card(activity, palette, 22f)
+        card.setPadding(Ui.dp(activity, 12f), Ui.dp(activity, 10f), Ui.dp(activity, 12f), Ui.dp(activity, 10f))
         val actions = Ui.row(activity)
+        actions.gravity = Gravity.CENTER_VERTICAL
         val dice = miniAction(Icons.Kind.DICE, "Random gossip") {
             val seed = TextKit.randomGossip()
             input.setText(seed)
@@ -346,24 +338,23 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         val voiceChip = LinearLayout(activity).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
-            setPadding(Ui.dp(activity, 8f), Ui.dp(activity, 5f), Ui.dp(activity, 10f), Ui.dp(activity, 5f))
+            setPadding(Ui.dp(activity, 6f), Ui.dp(activity, 4f), Ui.dp(activity, 10f), Ui.dp(activity, 4f))
             background = Ui.rounded(palette.bg, Ui.dpf(activity, 100f), palette.outline, Ui.dp(activity, 1f))
         }
         val voice = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId)
-        voiceChip.addView(AvatarView(activity, palette, voice.name, voice.accent, 26f))
-        val chipName = Ui.text(activity, voice.name, 12f, palette.text, bold = true, font = "sans-serif-medium")
+        voiceChip.addView(AvatarView(activity, palette, voice.name, voice.accent, 24f))
+        val chipName = Ui.text(activity, voice.name, 11.5f, palette.text, bold = true, font = "sans-serif-medium")
         chipName.setPadding(Ui.dp(activity, 7f), 0, 0, 0)
         composerVoiceName = chipName
         voiceChip.addView(chipName)
+        voiceChip.contentDescription = "Open the Voices tab"
         Ui.pressable(voiceChip, 0.94f) { shell.selectTab(1) }
         if (!narrow) {
             actions.addView(voiceChip, LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
             ))
         }
-        card.addView(actions, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 6f) })
+        card.addView(actions)
         if (narrow) {
             val voiceRow = LinearLayout(activity).apply {
                 orientation = LinearLayout.HORIZONTAL
@@ -398,7 +389,15 @@ class StudioTab(private val shell: ShellScreen) : Tab {
 
     private fun sectionHeader(title: String, subtitle: String): View {
         val row = Ui.row(activity)
-        row.addView(Ui.text(activity, title, 15f, palette.text, bold = true))
+        row.gravity = Gravity.CENTER_VERTICAL
+        val tick = View(activity).apply {
+            background = Ui.rounded(palette.yellow, Ui.dpf(activity, 4f))
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }
+        row.addView(tick, LinearLayout.LayoutParams(Ui.dp(activity, 4f), Ui.dp(activity, 15f)))
+        val titleView = Ui.text(activity, title, 15f, palette.text, bold = true)
+        titleView.setPadding(Ui.dp(activity, 8f), 0, 0, 0)
+        row.addView(titleView)
         val sub = Ui.text(activity, subtitle, 10.5f, palette.textDim, font = "sans-serif-medium")
         sub.setPadding(Ui.dp(activity, 8f), Ui.dp(activity, 2f), 0, 0)
         row.addView(sub)

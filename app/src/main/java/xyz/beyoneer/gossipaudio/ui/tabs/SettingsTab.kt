@@ -58,10 +58,12 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
         Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
-        column.addView(Ui.text(activity, "Settings", 25f, palette.text, bold = true))
         column.addView(
-            Ui.text(activity, "Tune the app, not your friends.", 12.5f, palette.textDim, font = "sans-serif-medium"),
-            LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+            Ui.pageHeader(
+                activity, palette, "Control room", "Settings",
+                "Tune the app, not your friends."
+            ),
+            LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
                 topMargin = Ui.dp(activity, 3f)
             }
         )

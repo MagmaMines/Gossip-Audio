@@ -48,12 +48,10 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
-        column.addView(Ui.text(activity, "10 voices", 25f, palette.text, bold = true))
         column.addView(
-            Ui.text(
-                activity,
-                "${VoiceCatalog.femaleCount} girls \u00B7 ${VoiceCatalog.maleCount} boys \u00B7 ${VoiceCatalog.botCount} not human \u2014 all free.",
-                12.5f, palette.textDim, font = "sans-serif-medium"
+            Ui.pageHeader(
+                activity, palette, "The cast", "10 voices",
+                "${VoiceCatalog.femaleCount} girls \u00B7 ${VoiceCatalog.maleCount} boys \u00B7 ${VoiceCatalog.botCount} not human \u2014 all free."
             ),
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
                 topMargin = Ui.dp(activity, 3f)

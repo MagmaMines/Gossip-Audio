@@ -69,6 +69,36 @@ object Ui {
         includeFontPadding = false
     }
 
+    /**
+     * The page title every tab shares: a small uppercase eyebrow, a tight display
+     * title and an optional one-liner. Before this each tab opened with a 25 sp
+     * TextView sitting on the page with nothing above it.
+     */
+    fun pageHeader(
+        context: Context,
+        palette: Palette,
+        eyebrow: String,
+        title: String,
+        subtitle: String? = null
+    ): LinearLayout {
+        val box = column(context)
+        val tag = text(context, eyebrow.uppercase(), 9f, palette.yellowDeep, bold = true, font = "sans-serif-black")
+        tag.letterSpacing = 0.18f
+        box.addView(tag)
+        val head = text(context, title, 29f, palette.text, bold = true, font = "sans-serif-black")
+        head.letterSpacing = -0.03f
+        box.addView(head, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = dp(context, 3f) })
+        if (subtitle != null) {
+            val sub = text(context, subtitle, 12.5f, palette.textDim, font = "sans-serif-medium")
+            box.addView(sub, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = dp(context, 4f) })
+        }
+        return box
+    }
+
     fun column(context: Context): LinearLayout = LinearLayout(context).apply {
         orientation = LinearLayout.VERTICAL
         layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
