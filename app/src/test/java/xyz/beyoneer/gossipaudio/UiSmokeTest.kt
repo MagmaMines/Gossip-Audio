@@ -232,6 +232,24 @@ class UiSmokeTest {
         }
     }
 
+    private fun countYellowPixels(bitmap: Bitmap): Int {
+        var count = 0
+        var x = 0
+        while (x < bitmap.width) {
+            var y = 0
+            while (y < bitmap.height) {
+                val c = bitmap.getPixel(x, y)
+                val r = (c shr 16) and 0xFF
+                val g = (c shr 8) and 0xFF
+                val b = c and 0xFF
+                if (r > 190 && g > 150 && b < 130) count++
+                y += 7
+            }
+            x += 7
+        }
+        return count
+    }
+
     /** Where the brand yellow actually landed, in bitmap coordinates. */
     private fun yellowBounds(bitmap: Bitmap): String {
         var minX = Int.MAX_VALUE
