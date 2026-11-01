@@ -129,14 +129,10 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
                     }
                 },
                 bitrateRow(),
-                toggleRow(
-                    Icons.Kind.FX, "Voice clarity",
-                    "Cuts the boom. No bass boost, no clipping.",
-                    activity.prefs.effectsEnabled
-                ) {
-                    activity.prefs.effectsEnabled = it
-                    PlaybackHub.setEffects(it)
-                },
+                actionRow(
+                    Icons.Kind.FX, "Playback engine",
+                    "Media3 ExoPlayer \u00B7 Sonic time-stretch \u00B7 no EQ, no bass boost"
+                ) { showPlaybackEngineInfo() },
                 toggleRow(
                     Icons.Kind.PLAY, "Auto-play after generating",
                     "Straight to the player when your voice is ready",
@@ -385,6 +381,20 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
         activity.toast(
             if (activity.prefs.wordMap.isBlank()) "Custom words cleared."
             else "Saved. Those words now speak your way."
+        )
+    }
+
+    private fun showPlaybackEngineInfo() {
+        Overlays.info(
+            activity,
+            "How playback works now",
+            listOf(
+                "Engine" to "AndroidX Media3 ExoPlayer 1.5 (Apache-2.0)",
+                "Speed 0.5x-2x" to "Sonic time-stretch: tempo changes, pitch does not",
+                "Audio focus" to "pauses for calls, ducks under notifications",
+                "Effects" to "none on purpose - no BassBoost, no reverb, no EQ",
+                "Why" to "the old BassBoost(+8 dB) is what sounded distorted"
+            )
         )
     }
 

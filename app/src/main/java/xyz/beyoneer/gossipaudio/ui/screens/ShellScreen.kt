@@ -47,6 +47,9 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
     private val navIcons = ArrayList<IconView>()
     private val navLabels = ArrayList<TextView>()
     private val navCells = ArrayList<View>()
+    private var dock: FrameLayout? = null
+    private var navRow: LinearLayout? = null
+    private var pill: View? = null
     private lateinit var mini: MiniPlayerView
     private lateinit var miniHost: FrameLayout
 
@@ -102,6 +105,7 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ))
         selectTab(0, animate = false)
+        root.post { positionPill(animate = false) }
         // a share intent or a launcher shortcut may be waiting for this screen
         root.post { activity.dispatchPending() }
         return root
@@ -211,16 +215,34 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
 
     private fun buildNavBar(): View {
         val wrap = FrameLayout(activity)
-        val bar = LinearLayout(activity).apply {
-            orientation = LinearLayout.HORIZONTAL
+        dock = FrameLayout(activity)
+        dock.background = Ui.gradient(
+            intArrayOf(Ui.blend(INK_DOCK, 0xFFFFFFFF.toInt(), 0.10f), INK_DOCK),
+            Ui.dpf(activity, 32f),
+            strokeColor = Ui.withAlpha(palette.yellow, 0.30f), strokeWidth = Ui.dp(activity, 1f)
+        )
+        dock.elevation = Ui.dpf(activity, 14f)
+        dock.setPadding(Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f))
+
+        // One yellow pill that *slides* between tabs. The old version stamped a
+        // background onto each cell and bounced it with popIn(), which is why the
+        // selection felt cheap: four separate highlights popping in and out.
+        pill = View(activity).apply {
             background = Ui.gradient(
-                intArrayOf(Ui.blend(INK_DOCK, 0xFFFFFFFF.toInt(), 0.10f), INK_DOCK),
-                Ui.dpf(activity, 32f),
-                strokeColor = Ui.withAlpha(palette.yellow, 0.30f), strokeWidth = Ui.dp(activity, 1f)
+                intArrayOf(palette.yellowBright, palette.yellow),
+                Ui.dpf(activity, 26f),
+                strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(activity, 1f)
             )
-            elevation = Ui.dpf(activity, 16f)
-            setPadding(Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f))
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
+        dock.addView(pill, FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT))
+
+        val bar = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL }
+        dock.addView(bar, FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ))
+        navRow = bar
+
         val items = listOf(
             Triple("Studio", Icons.Kind.SPARKLE, 0),
             Triple("Voices", Icons.Kind.PERSON, 1),
@@ -232,7 +254,7 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
                 orientation = LinearLayout.VERTICAL
                 gravity = Gravity.CENTER_HORIZONTAL
                 isClickable = true
-                setPadding(0, Ui.dp(activity, 8f), 0, Ui.dp(activity, 7f))
+                setPadding(0, Ui.dp(activity, 9f), 0, Ui.dp(activity, 9f))
             }
             val iconView = IconView(activity, icon, NAV_IDLE, 21f)
             val labelView = Ui.text(activity, label, 9.5f, NAV_IDLE, bold = true, font = "sans-serif-medium", gravity = Gravity.CENTER)
@@ -242,18 +264,46 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             cell.addView(labelView)
             cell.contentDescription = "$label tab"
             cell.setOnClickListener { selectTab(index) }
-            Ui.pressable(cell, 0.92f)
+            Ui.pressable(cell, 0.96f)
             navIcons.add(iconView)
             navLabels.add(labelView)
             navCells.add(cell)
-            bar.addView(cell, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
-                if (index > 0) marginStart = Ui.dp(activity, 4f)
-            })
+            bar.addView(cell, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
         }
-        wrap.addView(bar, FrameLayout.LayoutParams(
+
+        bar.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> positionPill(animate = false) }
+
+        wrap.addView(dock, FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { setMargins(Ui.dp(activity, 14f), 0, Ui.dp(activity, 14f), Ui.dp(activity, 12f)) })
         return wrap
+    }
+
+    /** Slides the yellow pill under the active tab. */
+    private fun positionPill(animate: Boolean) {
+        val row = navRow ?: return
+        val marker = pill ?: return
+        val cellWidth = row.width.toFloat() / navCells.size.coerceAtLeast(1)
+        if (cellWidth <= 0f) return
+        val inset = Ui.dp(activity, 3f).toFloat()
+        val lp = marker.layoutParams as FrameLayout.LayoutParams
+        val targetWidth = (cellWidth - inset * 2f).toInt()
+        val targetX = cellWidth * current + inset
+        lp.width = targetWidth
+        lp.height = FrameLayout.LayoutParams.MATCH_PARENT
+        lp.leftMargin = Ui.dp(activity, 6f)
+        lp.topMargin = Ui.dp(activity, 6f)
+        lp.bottomMargin = Ui.dp(activity, 6f)
+        marker.layoutParams = lp
+        if (animate && Motion.enabled && row.width > 0) {
+            marker.animate()
+                .translationX(targetX)
+                .setDuration(320)
+                .setInterpolator(PathInterpolator(0.2f, 0.9f, 0.1f, 1f))
+                .start()
+        } else {
+            marker.translationX = targetX
+        }
     }
 
     private fun updateNav() {
@@ -262,19 +312,17 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             cell.isSelected = selected
             navIcons[index].setTintColor(if (selected) palette.onYellow else NAV_IDLE)
             navLabels[index].setTextColor(if (selected) palette.onYellow else NAV_IDLE)
-            cell.background = if (selected) {
-                Ui.gradient(
-                    intArrayOf(palette.yellowBright, palette.yellow),
-                    Ui.dpf(activity, 26f),
-                    strokeColor = palette.yellowDeep, strokeWidth = Ui.dp(activity, 1f)
-                )
+            // A 6 % lift on the active icon, animated: enough to feel deliberate, small
+            // enough not to look like a toy.
+            val target = if (selected) 1.06f else 1f
+            if (Motion.enabled) {
+                navIcons[index].animate().scaleX(target).scaleY(target).setDuration(220).start()
             } else {
-                null
-            }
-            if (selected && !activity.prefs.reduceMotion) {
-                Ui.popIn(cell)
+                navIcons[index].scaleX = target
+                navIcons[index].scaleY = target
             }
         }
+        positionPill(animate = true)
     }
 
     private companion object {

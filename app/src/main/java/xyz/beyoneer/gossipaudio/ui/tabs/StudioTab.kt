@@ -123,6 +123,10 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 12f) })
 
+        column.addView(naturalVoiceBanner(), LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = Ui.dp(activity, 12f) })
+
         column.addView(sectionHeader("Voice", "tap to select"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 20f) })
@@ -281,6 +285,57 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         card.addView(tagline, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 10f) })
+        return card
+    }
+
+    /**
+     * Shown only when this phone has no speech engine at all. Without this card the app
+     * silently falls back to NanoVoice — a formant synthesiser — and the user is left
+     * wondering why it sounds like a 1985 answering machine. Being told beats guessing.
+     */
+    private fun naturalVoiceBanner(): View {
+        val card = LinearLayout(activity).apply {
+            orientation = LinearLayout.VERTICAL
+            background = Ui.rounded(
+                Ui.withAlpha(palette.yellow, 0.18f), Ui.dpf(activity, 20f),
+                palette.yellowDeep, Ui.dp(activity, 1.2f)
+            )
+            setPadding(Ui.dp(activity, 14f), Ui.dp(activity, 12f), Ui.dp(activity, 14f), Ui.dp(activity, 12f))
+        }
+        card.addView(Ui.text(activity, "No natural voice on this phone", 13f, palette.text, bold = true))
+        card.addView(
+            Ui.text(
+                activity,
+                "Android has no speech engine installed, so GossipAudio must use its own " +
+                    "synthesiser \u2014 clear, offline, but robotic. Installing a voice takes one tap " +
+                    "and is free.",
+                11f, palette.textDim
+            ).apply { setLineSpacing(Ui.dpf(activity, 2.5f), 1f) },
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { topMargin = Ui.dp(activity, 4f) }
+        )
+        val install = BrandButton(
+            activity, palette, "Install a free voice",
+            BrandButton.Variant.INK, Icons.Kind.DOWNLOAD, compact = true
+        )
+        install.setOnClick {
+            runCatching {
+                activity.startActivity(
+                    android.content.Intent(android.speech.tts.TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA)
+                )
+            }.onFailure {
+                activity.toast("Open Google app \u2192 Settings \u2192 Text-to-speech \u2192 Install voice data")
+            }
+        }
+        card.addView(install, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = Ui.dp(activity, 10f) })
+
+        val hasEngine = runCatching {
+            xyz.beyoneer.gossipaudio.speech.SpeechSynth(activity).hasSystemEngine()
+        }.getOrDefault(true)
+        if (hasEngine) card.visibility = View.GONE
         return card
     }
 

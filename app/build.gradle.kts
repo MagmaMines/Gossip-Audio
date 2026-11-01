@@ -11,8 +11,8 @@ android {
         applicationId = "xyz.beyoneer.gossipaudio"
         minSdk = 24
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.0.6"
+        versionCode = 8
+        versionName = "2.0.0"
         resourceConfigurations += listOf("en", "hi")
     }
 
@@ -69,6 +69,12 @@ android {
 }
 
 dependencies {
+    // Media3 / ExoPlayer (Apache-2.0): the playback engine. It replaces MediaPlayer and
+    // the android.media.audiofx effects, which were the source of the booming, clipped
+    // sound. ExoPlayer gives us Sonic time-stretching (speed without chipmunk pitch),
+    // proper audio focus and gapless queueing.
+    implementation("androidx.media3:media3-exoplayer:1.5.1")
+    implementation("androidx.media3:media3-common:1.5.1")
     testImplementation("junit:junit:4.13.2")
     // Robolectric boots the real activity + views on the JVM so CI can prove the UI renders.
     testImplementation("org.robolectric:robolectric:4.14.1")

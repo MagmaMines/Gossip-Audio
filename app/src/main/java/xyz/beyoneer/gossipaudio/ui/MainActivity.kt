@@ -5,8 +5,11 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import xyz.beyoneer.gossipaudio.GossipApp
 import xyz.beyoneer.gossipaudio.R
@@ -48,6 +51,7 @@ class MainActivity : Activity() {
         Motion.reduce = prefs.reduceMotion
         router = Router(this)
         setContentView(router.container)
+        applyWindowFit()
         // Also covers process-death restore: without this the container would stay empty.
         if (router.current() == null) {
             router.start(SplashScreen(this))
@@ -117,15 +121,63 @@ class MainActivity : Activity() {
     }
 
     private fun applySystemBars() {
-        window.statusBarColor = palette.bg
-        window.navigationBarColor = palette.bg
-        var flags = window.decorView.systemUiVisibility
-        flags = if (!palette.dark) {
-            flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // API 35 forces edge-to-edge, so the bar colours are ignored there; the icon
+            // colour is still ours to set, and it has to follow the theme.
+            window.insetsController?.let { controller ->
+                val mask = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS or
+                    WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS
+                if (palette.dark) {
+                    controller.setSystemBarsAppearance(0, mask)
+                } else {
+                    controller.setSystemBarsAppearance(mask, mask)
+                }
+            }
+            @Suppress("DEPRECATION")
+            run {
+                window.statusBarColor = palette.bg
+                window.navigationBarColor = palette.bg
+            }
         } else {
-            flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+            @Suppress("DEPRECATION")
+            run {
+                window.statusBarColor = palette.bg
+                window.navigationBarColor = palette.bg
+                var flags = window.decorView.systemUiVisibility
+                flags = if (!palette.dark) {
+                    flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                } else {
+                    flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv() and
+                        View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR.inv()
+                }
+                window.decorView.systemUiVisibility = flags
+            }
         }
-        window.decorView.systemUiVisibility = flags
+    }
+
+    /**
+     * Android 15 draws the app under the system bars whether it likes it or not. Pad the
+     * root container by exactly the bar heights so the header is not under the clock and
+     * the navigation dock is not under the gesture handle.
+     */
+    private fun applyWindowFit() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return
+        val container = router.container
+        window.setDecorFitsSystemWindows(false)
+        container.setOnApplyWindowInsetsListener { view, insets ->
+            val bars = insets.getInsets(
+                WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()
+            )
+            val ime = insets.getInsets(WindowInsets.Type.ime())
+            val pad = WindowFit.padding(
+                statusTop = bars.top,
+                navBottom = bars.bottom,
+                imeBottom = ime.bottom
+            )
+            view.setPadding(0, pad.top, 0, pad.bottom)
+            insets
+        }
+        container.requestApplyInsets()
     }
 
     fun openOnboarding() {
