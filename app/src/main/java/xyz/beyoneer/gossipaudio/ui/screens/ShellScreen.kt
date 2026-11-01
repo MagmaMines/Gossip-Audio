@@ -237,11 +237,16 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             )
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
-        dockView.addView(pill, FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT))
+        // TOP gravity with a fixed height. A MATCH_PARENT-height pill inside a
+        // wrap_content FrameLayout measures against the whole remaining screen, which is
+        // how it once painted a yellow stripe over the entire app.
+        dockView.addView(pill, FrameLayout.LayoutParams(
+            Ui.dp(activity, 60f), Ui.dp(activity, 52f), Gravity.TOP or Gravity.START
+        ))
 
         val bar = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL }
         dockView.addView(bar, FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP
         ))
         navRow = bar
 
@@ -289,14 +294,15 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         if (cellWidth <= 0f) return
         val inset = Ui.dp(activity, 3f).toFloat()
         val lp = marker.layoutParams as FrameLayout.LayoutParams
-        val targetWidth = (cellWidth - inset * 2f).toInt()
+        val targetWidth = (cellWidth - inset * 2f).toInt().coerceAtLeast(1)
+        val targetHeight = (row.height - inset * 2f).toInt().coerceAtLeast(1)
+        if (lp.width != targetWidth || lp.height != targetHeight) {
+            lp.width = targetWidth
+            lp.height = targetHeight
+            lp.topMargin = inset.toInt()
+            marker.layoutParams = lp
+        }
         val targetX = cellWidth * current + inset
-        lp.width = targetWidth
-        lp.height = FrameLayout.LayoutParams.MATCH_PARENT
-        lp.leftMargin = Ui.dp(activity, 6f)
-        lp.topMargin = Ui.dp(activity, 6f)
-        lp.bottomMargin = Ui.dp(activity, 6f)
-        marker.layoutParams = lp
         if (animate && Motion.enabled && row.width > 0) {
             marker.animate()
                 .translationX(targetX)
