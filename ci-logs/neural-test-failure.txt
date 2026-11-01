@@ -41,11 +41,11 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:mergeDebugShaders UP-TO-DATE
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAndroidTestResources
 > Task :app:mergeDebugAssets UP-TO-DATE
 > Task :app:compressDebugAssets UP-TO-DATE
 > Task :app:desugarDebugFileDependencies UP-TO-DATE
 > Task :app:dexBuilderDebug UP-TO-DATE
+> Task :app:mergeDebugAndroidTestResources
 > Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
 > Task :app:processDebugJavaRes UP-TO-DATE
 > Task :app:mergeDebugJavaResource UP-TO-DATE
@@ -65,27 +65,23 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:mergeDebugAndroidTestAssets
 > Task :app:compressDebugAndroidTestAssets FROM-CACHE
 > Task :app:desugarDebugAndroidTestFileDependencies FROM-CACHE
-> Task :app:processDebugAndroidTestResources
+> Task :app:mergeDebugAndroidTestJniLibFolders
 > Task :app:checkDebugAndroidTestDuplicateClasses
+> Task :app:processDebugAndroidTestResources
+> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect UP-TO-DATE
-
 > Task :app:compileDebugAndroidTestKotlin
-e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
-    1. Kotlin compile daemon is ready
-
-> Task :app:mergeLibDexDebugAndroidTest FROM-CACHE
-> Task :app:mergeDebugAndroidTestJniLibFolders
-> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
-> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
-> Task :app:validateSigningDebugAndroidTest
-> Task :app:writeDebugAndroidTestSigningConfigVersions
 > Task :app:mergeExtDexDebugAndroidTest
 > Task :app:compileDebugAndroidTestJavaWithJavac
 > Task :app:dexBuilderDebugAndroidTest
 > Task :app:mergeDebugAndroidTestGlobalSynthetics FROM-CACHE
 > Task :app:processDebugAndroidTestJavaRes
+> Task :app:mergeLibDexDebugAndroidTest FROM-CACHE
+> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
 > Task :app:mergeProjectDexDebugAndroidTest
+> Task :app:validateSigningDebugAndroidTest
+> Task :app:writeDebugAndroidTestSigningConfigVersions
 > Task :app:mergeDebugAndroidTestJavaResource
 > Task :app:packageDebugAndroidTest
 > Task :app:createDebugAndroidTestApkListingFileRedirect
@@ -95,18 +91,18 @@ e: The daemon has terminated unexpectedly on startup attempt #1 with error code:
 Starting 1 tests on emulator-5554 - 10
 
 Finished 1 tests on emulator-5554 - 10
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__reactivecircus_android-emulator-runner-1793521274149.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__reactivecircus_android-emulator-runner-1793521563793.json
 
-BUILD SUCCESSFUL in 1m 13s
+BUILD SUCCESSFUL in 1m 15s
 67 actionable tasks: 24 executed, 6 from cache, 37 up-to-date
 --------- beginning of main
 --------- beginning of system
 <?xml version='1.0' encoding='UTF-8' ?>
-<testsuite name="xyz.beyoneer.gossipaudio.NeuralSpeechTest" tests="1" failures="0" errors="0" skipped="0" time="8.568" timestamp="2026-11-01T08:22:20" hostname="localhost">
+<testsuite name="xyz.beyoneer.gossipaudio.NeuralSpeechTest" tests="1" failures="0" errors="0" skipped="0" time="8.495" timestamp="2026-11-01T08:27:11" hostname="localhost">
   <properties>
     <property name="device" value="emulator-5554 - 10" />
     <property name="flavor" value="" />
     <property name="project" value=":app" />
   </properties>
-  <testcase name="fullPrecisionNeuralVoiceProducesUnclippedAudioAndExports" classname="xyz.beyoneer.gossipaudio.NeuralSpeechTest" time="3.822" />
+  <testcase name="fullPrecisionNeuralVoiceProducesUnclippedAudioAndExports" classname="xyz.beyoneer.gossipaudio.NeuralSpeechTest" time="3.669" />
 </testsuite>
