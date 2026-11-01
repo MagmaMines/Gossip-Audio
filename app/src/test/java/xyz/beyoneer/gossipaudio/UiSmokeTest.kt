@@ -44,6 +44,9 @@ class UiSmokeTest {
     @Test
     fun appBootsIntoShellAndRendersEveryTab() {
         val app = ApplicationProvider.getApplicationContext<GossipApp>()
+        // entrance fades are real animation; a screenshot taken mid-flight is not a bug
+        // report, it is a race. Render the settled state instead.
+        app.prefs.reduceMotion = true
         app.prefs.onboardingDone = true
 
         val controller = Robolectric.buildActivity(MainActivity::class.java).setup()
@@ -199,35 +202,34 @@ class UiSmokeTest {
     }
 
     private fun drawToBitmap(view: View): Bitmap {
-        val width = maxOf(view.width, 1080)
-        val height = maxOf(view.height, 2000)
+        val metrics = view.resources.displayMetrics
+        val width = maxOf(view.width, metrics.widthPixels)
+        val height = maxOf(view.height, metrics.heightPixels)
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = android.graphics.Canvas(bitmap)
         // Robolectric hands back a reused native canvas: without an explicit fill the
         // previous screen's pixels show through the gaps ("Choose a voice" appearing
         // behind the voice list). Paint the app background first.
         canvas.drawColor(0xFFFBF7EC.toInt())
+        // Measure before drawing. view.layout() alone does not re-measure the children,
+        // so drawing at a size the tree was never measured for produces half-empty
+        // screenshots (and made the yellow-pixel assertion meaningless).
+        forceLayoutTree(view)
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY)
+        )
         view.layout(0, 0, width, height)
         view.draw(canvas)
         return bitmap
     }
 
-    private fun countYellowPixels(bitmap: Bitmap): Int {
-        var count = 0
-        var x = 0
-        while (x < bitmap.width) {
-            var y = 0
-            while (y < bitmap.height) {
-                val c = bitmap.getPixel(x, y)
-                val r = (c shr 16) and 0xFF
-                val g = (c shr 8) and 0xFF
-                val b = c and 0xFF
-                if (r > 190 && g > 150 && b < 130) count++
-                y += 7
-            }
-            x += 7
+    /** measure() returns cached results unless every view is marked dirty first. */
+    private fun forceLayoutTree(view: View) {
+        view.forceLayout()
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) forceLayoutTree(view.getChildAt(i))
         }
-        return count
     }
 
     /** Where the brand yellow actually landed, in bitmap coordinates. */

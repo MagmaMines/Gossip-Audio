@@ -228,6 +228,13 @@ object Ui {
             .setStartDelay(delay)
             .setDuration(420)
             .setInterpolator(DecelerateInterpolator(1.4f))
+            .withEndAction {
+                // Never leave a view transparent: if the animator is cancelled (system
+                // "remove animations", a detach mid-flight) alpha would stay at 0 and
+                // the screen would look empty.
+                view.alpha = 1f
+                view.translationY = 0f
+            }
             .start()
     }
 
@@ -245,6 +252,11 @@ object Ui {
             .setStartDelay(delay)
             .setDuration(360)
             .setInterpolator(OvershootInterpolator(1.6f))
+            .withEndAction {
+                view.alpha = 1f
+                view.scaleX = 1f
+                view.scaleY = 1f
+            }
             .start()
     }
 
