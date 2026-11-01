@@ -157,7 +157,7 @@ object NanoVoice {
      * The 1.0.1 numbers were tuned against a peak-normalised noise render and were
      * 25 dB too hot: that is "pure hiss".
      */
-    private const val FRIC_GAIN = 0.12
+    private const val FRIC_GAIN = 0.09
 
     /** Low-shelf cut that removes the 100-400 Hz mud band ("too much bass"). */
     private const val LOW_SHELF_DB = -6.0

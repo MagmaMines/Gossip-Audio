@@ -193,7 +193,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                 strokeColor = Ui.withAlpha(palette.yellow, 0.40f), strokeWidth = Ui.dp(activity, 1.2f)
             )
             elevation = Ui.dpf(activity, 8f)
-            setPadding(Ui.dp(activity, 18f), Ui.dp(activity, 16f), Ui.dp(activity, 18f), Ui.dp(activity, 16f))
+            setPadding(Ui.dp(activity, 16f), Ui.dp(activity, 14f), Ui.dp(activity, 16f), Ui.dp(activity, 14f))
         }
 
         val top = Ui.row(activity)
@@ -217,15 +217,10 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         card.addView(top)
 
         card.addView(
-            Ui.text(activity, "Spill the tea \u2615", 27f, onInk, bold = true, font = "sans-serif-black"),
+            Ui.text(activity, "Spill the tea \u2615", 25f, onInk, bold = true, font = "sans-serif-black"),
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                .apply { topMargin = Ui.dp(activity, 10f) }
+                .apply { topMargin = Ui.dp(activity, 8f) }
         )
-        val tagline = Ui.text(activity, Brand.TAGLINE, 11f, dimInk, font = "sans-serif-condensed")
-        tagline.setLineSpacing(Ui.dpf(activity, 3f), 1f)
-        card.addView(tagline, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 6f) })
 
         // the text well: a translucent page inside the ink card
         val well = LinearLayout(activity).apply {
@@ -241,8 +236,8 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.NORMAL)
             background = null
             gravity = Gravity.TOP or Gravity.START
-            minLines = 3
-            maxLines = 9
+            minLines = 2
+            maxLines = 8
             setPadding(0, 0, 0, Ui.dp(activity, 4f))
             contentDescription = "Your gossip text"
             filters = arrayOf(InputFilter.LengthFilter(2000))
@@ -265,17 +260,27 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         well.addView(counter)
         card.addView(well, LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply { topMargin = Ui.dp(activity, 14f) })
+        ).apply { topMargin = Ui.dp(activity, 12f) })
 
         generateButton = BrandButton(activity, palette, "Generate voice", BrandButton.Variant.PRIMARY, Icons.Kind.WAVE)
         generateButton.setOnClick { generate() }
         card.addView(generateButton, LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 56f)
-        ).apply { topMargin = Ui.dp(activity, 14f) })
+            ViewGroup.LayoutParams.MATCH_PARENT, Ui.dp(activity, 54f)
+        ).apply { topMargin = Ui.dp(activity, 12f) })
 
         estimate = Ui.text(activity, "", 10.5f, dimInk, gravity = Gravity.CENTER)
-        estimate.setPadding(0, Ui.dp(activity, 9f), 0, 0)
+        estimate.setPadding(0, Ui.dp(activity, 8f), 0, 0)
         card.addView(estimate)
+
+        // The tagline lives at the bottom of the card: the action comes first, the
+        // joke still ships verbatim.
+        val tagline = Ui.text(activity, Brand.TAGLINE, 10.5f, 0x80F7F6F1.toInt(), font = "sans-serif-condensed")
+        tagline.setLineSpacing(Ui.dpf(activity, 2.5f), 1f)
+        tagline.maxLines = 2
+        tagline.ellipsize = android.text.TextUtils.TruncateAt.END
+        card.addView(tagline, LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply { topMargin = Ui.dp(activity, 10f) })
         return card
     }
 
