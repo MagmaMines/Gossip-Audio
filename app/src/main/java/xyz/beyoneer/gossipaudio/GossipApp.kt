@@ -26,6 +26,7 @@ class GossipApp : Application() {
         super.onCreate()
         instance = this
         prefs = Prefs(this)
+        prefs.migrateAudioDefaults()
         store = ClipStore(this)
         Notifier.createChannels(this)
         PlaybackHub.init(this)

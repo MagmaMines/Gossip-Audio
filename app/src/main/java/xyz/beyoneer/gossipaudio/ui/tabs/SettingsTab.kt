@@ -17,6 +17,7 @@ import xyz.beyoneer.gossipaudio.ui.Brand
 import xyz.beyoneer.gossipaudio.ui.MainActivity
 import xyz.beyoneer.gossipaudio.ui.Overlays
 import xyz.beyoneer.gossipaudio.ui.Tab
+import xyz.beyoneer.gossipaudio.ui.VoiceCompare
 import xyz.beyoneer.gossipaudio.ui.screens.ShellScreen
 import xyz.beyoneer.gossipaudio.ui.theme.Haptics
 import xyz.beyoneer.gossipaudio.ui.theme.Motion
@@ -149,6 +150,10 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
         column.addView(
             card(
                 statsRow(),
+                actionRow(
+                    Icons.Kind.PLAY, "Compare the engines (A/B)",
+                    "Hear the device voice and NanoVoice back to back"
+                ) { VoiceCompare.open(activity) },
                 wordMapRow(),
                 actionRow(
                     Icons.Kind.WAVE, "Voice engine & languages",

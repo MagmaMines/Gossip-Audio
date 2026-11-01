@@ -306,9 +306,9 @@ object PlaybackHub {
                 for (band in 0 until numberOfBands.toInt()) {
                     val centreHz = getCenterFreq(band.toShort()) / 1000.0
                     val level = when {
-                        centreHz < 400.0 -> -1200
+                        centreHz < 250.0 -> -600
                         centreHz < 2000.0 -> 0
-                        else -> 250
+                        else -> 150
                     }.coerceIn(low, high)
                     try {
                         setBandLevel(band.toShort(), level.toShort())

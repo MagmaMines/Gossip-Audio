@@ -24,7 +24,7 @@ class Prefs(context: Context) {
         set(value) = sp.edit().putString("selected_voice", value).apply()
 
     var selectedStyleId: String
-        get() = sp.getString("selected_style", "gossip") ?: "gossip"
+        get() = sp.getString("selected_style", "natural") ?: "natural"
         set(value) = sp.edit().putString("selected_style", value).apply()
 
     var pitch: Float
@@ -71,8 +71,23 @@ class Prefs(context: Context) {
         get() = sp.getBoolean("offline_stt", false)
         set(value) = sp.edit().putBoolean("offline_stt", value).apply()
 
+    /**
+     * One-shot repair for installs that stored the 1.0.4 defaults: a "Gossip" style
+     * (+5 % pitch, +8 % rate) on top of a +12 % voice multiplier, and an equaliser
+     * that cut 12 dB out of the body of a perfectly good neural voice.
+     */
+    fun migrateAudioDefaults() {
+        if (sp.getInt("audio_defaults_version", 1) < 2) {
+            sp.edit()
+                .putString("selected_style", "natural")
+                .putBoolean("effects_enabled", false)
+                .putInt("audio_defaults_version", 2)
+                .apply()
+        }
+    }
+
     var effectsEnabled: Boolean
-        get() = sp.getBoolean("effects_enabled", true)
+        get() = sp.getBoolean("effects_enabled", false)
         set(value) = sp.edit().putBoolean("effects_enabled", value).apply()
 
     /** Bump every text size ~15 % — the cheapest accessibility win there is. */

@@ -67,10 +67,26 @@ class SpeechSynth(private val context: Context) {
         val telemetry = xyz.beyoneer.gossipaudio.util.Telemetry(context)
         val sampler = xyz.beyoneer.gossipaudio.util.Telemetry.Sampler(telemetry).also { it.start() }
         val startedAt = System.currentTimeMillis()
-        val finalPitch = (pitch * style.pitchFactor * voice.pitch).coerceIn(0.3f, 2.6f)
-        val finalRate = (rate * style.rateFactor * voice.rate).coerceIn(0.4f, 2.2f)
-
         val systemUsable = voice.engine == VoiceEngine.SYSTEM_TTS && hasSystemEngine()
+
+        // Two different worlds, two different mixes.
+        //
+        // NanoVoice is a synthesiser: it *needs* voice.pitch to become a woman or a man,
+        // so the multipliers stack and the range is wide.
+        //
+        // A device voice is already a finished human recording at the right pitch and
+        // tempo. Stacking 1.05 (style) x 1.12 (voice) x 1.0 (user) on top of it is how
+        // 1.0.4 ended up sounding like a cartoon: +3 semitones on a bright female voice.
+        // Here the style only nudges, and the clamps are what a human throat can do.
+        val finalPitch: Float
+        val finalRate: Float
+        if (systemUsable) {
+            finalPitch = (pitch * style.pitchFactor).coerceIn(0.92f, 1.08f)
+            finalRate = (rate * style.rateFactor).coerceIn(0.88f, 1.18f)
+        } else {
+            finalPitch = (pitch * style.pitchFactor * voice.pitch).coerceIn(0.3f, 2.6f)
+            finalRate = (rate * style.rateFactor * voice.rate).coerceIn(0.4f, 2.2f)
+        }
         if (systemUsable) {
             systemPath(clean, voice, finalPitch, finalRate, callback) { pcm, note ->
                 val usable = pcm != null && looksLikeSpeech(pcm, clean)

@@ -282,6 +282,41 @@ class PlayerScreen(activity: MainActivity, private val clipId: String) : Screen(
             "Size" to TextKit.formatBytes(clip.sizeBytes),
             "Created" to SimpleDateFormat("dd MMM yyyy \u00B7 HH:mm", Locale.getDefault()).format(Date(clip.createdAt))
         )
+        // When NanoVoice had to step in, say so instead of quietly handing over a
+        // synthesiser. The user has a right to know why this one sounds robotic.
+        if (clip.engine != "system") {
+            val warn = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                background = Ui.rounded(Ui.withAlpha(palette.yellow, 0.16f), Ui.dpf(activity, 16f), palette.yellowDeep, Ui.dp(activity, 1f))
+                setPadding(Ui.dp(activity, 12f), Ui.dp(activity, 10f), Ui.dp(activity, 12f), Ui.dp(activity, 10f))
+            }
+            warn.addView(Ui.text(activity, "This one was spoken by NanoVoice", 12f, palette.text, bold = true))
+            warn.addView(
+                Ui.text(
+                    activity,
+                    "Your phone had no natural voice for this language, so the built-in synthesiser spoke instead. " +
+                        "It is robotic by design \u2014 and it always works offline.",
+                    10.5f, palette.textDim
+                ).apply { setLineSpacing(Ui.dpf(activity, 2.5f), 1f) },
+                LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply { topMargin = Ui.dp(activity, 4f) }
+            )
+            val install = Ui.text(activity, "Get a free natural voice \u2192", 11.5f, palette.yellowDeep, bold = true)
+            install.setPadding(0, Ui.dp(activity, 8f), 0, 0)
+            install.contentDescription = "Open the text-to-speech settings"
+            Ui.pressable(install) {
+                runCatching {
+                    activity.startActivity(android.content.Intent(android.speech.tts.TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA))
+                }.onFailure {
+                    activity.toast("Settings \u2192 System \u2192 Languages \u2192 Text-to-speech")
+                }
+            }
+            warn.addView(install)
+            card.addView(warn, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            ).apply { bottomMargin = Ui.dp(activity, 10f) })
+        }
         rows.forEachIndexed { index, row ->
             val line = LinearLayout(activity).apply {
                 orientation = LinearLayout.HORIZONTAL
