@@ -20,6 +20,7 @@ import xyz.beyoneer.gossipaudio.ui.tabs.LibraryTab
 import xyz.beyoneer.gossipaudio.ui.tabs.SettingsTab
 import xyz.beyoneer.gossipaudio.ui.tabs.StudioTab
 import xyz.beyoneer.gossipaudio.ui.tabs.VoicesTab
+import xyz.beyoneer.gossipaudio.ui.theme.Motion
 import xyz.beyoneer.gossipaudio.ui.theme.Palette
 import xyz.beyoneer.gossipaudio.ui.theme.ThemeController
 import xyz.beyoneer.gossipaudio.ui.theme.Ui
@@ -215,14 +216,15 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
 
     private fun buildNavBar(): View {
         val wrap = FrameLayout(activity)
-        dock = FrameLayout(activity)
-        dock.background = Ui.gradient(
+        val dockView = FrameLayout(activity)
+        dock = dockView
+        dockView.background = Ui.gradient(
             intArrayOf(Ui.blend(INK_DOCK, 0xFFFFFFFF.toInt(), 0.10f), INK_DOCK),
             Ui.dpf(activity, 32f),
             strokeColor = Ui.withAlpha(palette.yellow, 0.30f), strokeWidth = Ui.dp(activity, 1f)
         )
-        dock.elevation = Ui.dpf(activity, 14f)
-        dock.setPadding(Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f))
+        dockView.elevation = Ui.dpf(activity, 14f)
+        dockView.setPadding(Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f))
 
         // One yellow pill that *slides* between tabs. The old version stamped a
         // background onto each cell and bounced it with popIn(), which is why the
@@ -235,10 +237,10 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             )
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
-        dock.addView(pill, FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT))
+        dockView.addView(pill, FrameLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT))
 
         val bar = LinearLayout(activity).apply { orientation = LinearLayout.HORIZONTAL }
-        dock.addView(bar, FrameLayout.LayoutParams(
+        dockView.addView(bar, FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ))
         navRow = bar
@@ -273,7 +275,7 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
 
         bar.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> positionPill(animate = false) }
 
-        wrap.addView(dock, FrameLayout.LayoutParams(
+        wrap.addView(dockView, FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { setMargins(Ui.dp(activity, 14f), 0, Ui.dp(activity, 14f), Ui.dp(activity, 12f)) })
         return wrap
