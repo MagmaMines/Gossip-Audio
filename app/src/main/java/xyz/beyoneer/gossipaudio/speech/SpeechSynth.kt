@@ -67,12 +67,15 @@ class SpeechSynth(private val context: Context) {
         val telemetry = xyz.beyoneer.gossipaudio.util.Telemetry(context)
         val sampler = xyz.beyoneer.gossipaudio.util.Telemetry.Sampler(telemetry).also { it.start() }
         val startedAt = System.currentTimeMillis()
-        // Attempt the device engine whenever the voice asks for it. Gating on
-        // queryIntentServices() was fragile (package-visibility rules, odd vendor
-        // manifests), and the cost of being wrong is a fast failure that already falls
-        // through to NanoVoice — while the cost of a false negative is speaking every
-        // sentence with a formant synthesiser on a phone that had a neural voice.
-        val systemUsable = voice.engine == VoiceEngine.SYSTEM_TTS
+        // Two different situations, two different answers:
+        //
+        //  - the phone has NO engine at all  -> NanoVoice is the only way to make a
+        //    sound, so use it (the Studio banner tells the user why, and offers the free
+        //    one-tap voice installer);
+        //  - the phone HAS an engine but this render failed -> do not swap silently;
+        //    report the error and let the user choose NanoVoice explicitly.
+        val enginePresent = hasSystemEngine()
+        val systemUsable = voice.engine == VoiceEngine.SYSTEM_TTS && enginePresent
 
         // Two different worlds, two different mixes.
         //
