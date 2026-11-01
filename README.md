@@ -84,7 +84,15 @@ Measured on the samples in [`dist/samples/`](dist/samples) — the same files th
 | Energy above 4 kHz | 54.9 % | 20.8 % | **6.2 %** |
 | Sounds like | a modem having a bad day | clicks and hiss | a robot with a cold, but a *voice* |
 
-**1.0.5 — the bass complaint, fixed at both ends.** Playback used to attach `BassBoost` at strength 320/1000,
+**1.0.5 — why it sounded squeaky (fixed).** The device-voice path was stacking three multipliers on a
+finished human recording: style 1.05 × voice 1.12 = **1.176 pitch** and 1.10 rate, then the equaliser cut
+12 dB out of the body below 400 Hz. That is a chipmunk, and it was our arithmetic, not Google's. The device
+voice is now only *nudged* (pitch 0.92–1.08, rate 0.88–1.18, and `voice.pitch` is not applied to it at all),
+the default style is Natural, and "Voice clarity" is off by default. Settings → Voice lab →
+**Compare the engines (A/B)** renders one sentence with both engines and plays them back to back, so you
+never have to take my word for it.
+
+**1.0.4 — the bass complaint, fixed at both ends.** Playback used to attach `BassBoost` at strength 320/1000,
 which on most devices is +8…+12 dB below 200 Hz, applied to an already peak-normalised signal: that is the
 distortion. It is gone. Instead the device equaliser *cuts* everything under 400 Hz by 12 dB and adds a token
 2.5 dB at the top, the engine's voiced path now has a 2-pole 130 Hz high-pass plus a −6 dB shelf at 320 Hz,
