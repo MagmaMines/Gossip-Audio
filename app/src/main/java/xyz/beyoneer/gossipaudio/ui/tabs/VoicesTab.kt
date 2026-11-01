@@ -48,11 +48,11 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         Ui.capWidth(column)
         scroll.addView(column, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
-        column.addView(Ui.text(activity, "10 voices", 25f, palette.text, bold = true))
+        column.addView(Ui.text(activity, "Your voice", 25f, palette.text, bold = true))
         column.addView(
             Ui.text(
                 activity,
-                "Ten offline neural speakers from one English model. Preview each voice to find your favourite.",
+                "One full-precision English neural voice, bundled in the app. Tap Preview to hear it.",
                 12.5f, palette.textDim, font = "sans-serif-medium"
             ),
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
@@ -79,7 +79,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
     }
 
     private fun voiceCard(voice: VoiceProfile): View {
-        val selected = activity.app.prefs.selectedVoiceId == voice.id
+        val selected = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId).id == voice.id
         val card = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
             background = if (selected) {

@@ -29,24 +29,14 @@ class PipelineTest {
     private val line = "Btw we're not gossiping inreal, but your face is funny tho."
 
     @Test
-    fun catalogHasTenVoicesAndEightStyles() {
-        assertEquals(10, VoiceCatalog.all.size)
-        assertEquals(4, VoiceCatalog.femaleCount)
-        assertEquals(5, VoiceCatalog.maleCount)
-        assertEquals(1, VoiceCatalog.botCount)
+    fun catalogHasOneNeuralVoiceAndEightStyles() {
+        assertEquals(1, VoiceCatalog.all.size)
+        assertEquals(xyz.beyoneer.gossipaudio.core.VoiceEngine.NEURAL, VoiceCatalog.all[0].engine)
         assertEquals(8, StyleCatalog.all.size)
-        assertTrue(VoiceCatalog.all.any { it.gender == VoiceGender.NONHUMAN })
-        // SpeechSynth derives F0 from gender x pitch: these ranges keep the four
-        // female voices above the five male ones even after the multiplier.
-        assertTrue(
-            "female voices need a higher pitch factor than male ones",
-            VoiceCatalog.all.filter { it.gender == VoiceGender.FEMALE }.all { it.pitch > 1.05f } &&
-                VoiceCatalog.all.filter { it.gender == VoiceGender.MALE }.all { it.pitch < 0.96f }
-        )
     }
 
     @Test
-    fun everyVoiceSynthesisesAudibleSpeech() {
+    fun legacyDspTestFixtureProducesAudio() {
         val report = StringBuilder()
         VoiceCatalog.all.forEach { voice ->
             val pcm = NanoVoice.speak(

@@ -35,8 +35,8 @@ class OnboardingScreen(activity: MainActivity) : Screen(activity) {
             palette.yellow
         ),
         Page(
-            "10 voices.\nOne small neural model.",
-            "Preview ten speakers from our bundled English neural model. No phone text-to-speech engine required.",
+            "One voice.\nOne neural model.",
+            "Preview Lessac, our bundled full-precision English neural voice. No phone text-to-speech engine required.",
             Icons.Kind.PERSON,
             palette.yellowBright
         ),

@@ -24,7 +24,7 @@ import xyz.beyoneer.gossipaudio.ui.widgets.Icons
 class AboutScreen(activity: MainActivity) : Screen(activity) {
 
     private val features = listOf(
-        "\uD83C\uDF99 10 neural English speakers",
+        "\uD83C\uDF99 1 neural English voice",
         "\uD83D\uDC69 Bundled English model",
         "\uD83C\uDDEE\uD83C\uDDF3 Offline neural synthesis",
         "\uD83C\uDDFA\uD83C\uDDF8 Runs on CPU",
@@ -99,7 +99,7 @@ class AboutScreen(activity: MainActivity) : Screen(activity) {
 
         val about = Ui.text(
             activity,
-            "${Brand.NAME} is a tiny, offline-first voice studio. You type the gossip, it offers ten voice presets, then hands you a WAV, MP3 or M4A you can keep forever. Dictation services may use a network depending on your device; no account is required by GossipAudio, and the only subscription is your friend group's patience.",
+            "${Brand.NAME} is a tiny, offline-first voice studio. You type the gossip, it speaks with one neural voice, then hands you a WAV, MP3 or M4A you can keep forever. Dictation services may use a network depending on your device; no account is required by GossipAudio, and the only subscription is your friend group's patience.",
             12.5f, palette.textDim, font = "sans-serif"
         )
         about.setLineSpacing(Ui.dpf(activity, 4f), 1f)

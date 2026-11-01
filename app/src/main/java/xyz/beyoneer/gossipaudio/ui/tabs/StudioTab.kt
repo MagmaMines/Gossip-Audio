@@ -154,7 +154,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         estimate.setPadding(0, Ui.dp(activity, 7f), 0, 0)
         column.addView(estimate)
 
-        column.addView(sectionHeader("Voice", "tap to select"), LinearLayout.LayoutParams(
+        column.addView(sectionHeader("Voice", "one neural voice"), LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ).apply { topMargin = Ui.dp(activity, 20f) })
         val voiceRow = FadeRow(activity, palette)
@@ -528,7 +528,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
     private fun refreshVoiceStrip() {
         if (!::voiceStrip.isInitialized) return
         voiceStrip.removeAllViews()
-        val selected = activity.app.prefs.selectedVoiceId
+        val selected = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId).id
         VoiceCatalog.all.forEach { voice ->
             val card = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL

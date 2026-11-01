@@ -72,7 +72,7 @@ class Prefs(context: Context) {
         set(value) = sp.edit().putBoolean("offline_stt", value).apply()
 
     var effectsEnabled: Boolean
-        get() = sp.getBoolean("effects_enabled", true)
+        get() = sp.getBoolean("effects_enabled", false)
         set(value) = sp.edit().putBoolean("effects_enabled", value).apply()
 
     var sleepTimerMinutes: Int

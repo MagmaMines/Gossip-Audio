@@ -2,22 +2,20 @@
 
 **Your words, their wings.** 🦋
 
-A yellow, white and black Android voice studio by **Beyoneer XYZ**.
+An Android voice studio by **Beyoneer XYZ**.
 
 <img src="GossipAudio.png" alt="GossipAudio logo" width="160">
 
-## Neural speech
+## One neural voice
 
-This version replaces Android system text-to-speech with an **embedded quantized Piper VITS English model**, running on the CPU through sherpa-onnx. Ten entries select ten speakers from the same model. No system TTS engine, account, or network is needed for speech generation. Model inference is on-device, not cloud AI. Android speech-to-text dictation remains a separate system recognition service and may use a network.
+This version has one English (US) voice: full-precision **Piper Lessac medium**, a pretrained VITS neural model originating from [Hugging Face](https://huggingface.co/rhasspy/piper-voices/tree/main/en/en_US/lessac/medium). The model and sherpa-onnx runtime are bundled into the APK and run on the CPU. **Speech generation does not call the Android system TTS engine or any cloud service.** The separate dictation feature does use your Android speech recognizer and may use the network.
 
-The included model is English-only. Hindi, Japanese, voice cloning, separate US/Indian/Japanese voice models, guaranteed gender identities, independent pitch control and GPU acceleration are **not** included. Style presets adjust speed; they do not guarantee emotions. The model, accents and voice quality need real-device listening tests. English text is accepted; other scripts are rejected instead of being silently handed to a different engine.
+Unlike the previous int8 multi-speaker model, this model is full-precision and single-speaker. Float samples are scaled before 16-bit PCM conversion if necessary, to avoid hard clipping; short fades limit clicks at chunk boundaries. Results still depend on the model, text, and listening hardware: objective checks can't prove a voice is natural or completely free of artifacts. WAV preserves the master; MP3 and AAC are lossy. Playback effects are off by default to avoid coloring or boosting the voice; you can enable them in Settings.
 
-## What is in the studio?
+The voice is English-only. Hindi, Japanese, voice cloning, GPU inference and other voices are not included. This version targets 64-bit ARM Android devices (Android 7+). It is a debug build, not a commercial release.
 
-Type or dictate, preview and select voices, adjust speaking speed, generate, play/pause/replay/seek, and save clips. The existing interface also offers WAV, MP3 and M4A export, optional artwork on MP3/M4A, share, favourites, library search, rename/delete, background playback, notification controls, sleep timer, reminders, themes, reduced motion, haptics and diagnostics. Hardware support and permissions vary. M4A artwork is metadata, not video. Encoding and playback need real-device validation.
+## Studio features
 
-## Build and status
+Type or dictate, preview the voice, adjust speed, generate, play/pause/replay/seek, and keep clips in the library. The interface also offers WAV, MP3 and M4A export, optional MP3/M4A artwork, sharing, favourites, search, rename/delete, background playback, media notification, sleep timer, reminders, themes, reduced motion, haptics and diagnostics. Device support and permissions vary; M4A artwork is metadata, not a video.
 
-See [docs/BUILD.md](docs/BUILD.md). The 1.0.x APKs in `dist/` are historical and still use the old speech path. A new debug APK, if successfully built, is named `GossipAudio-1.1.0-neural-debug.apk`. Debug builds are for testing, not commercial distribution. Consult [release readiness](docs/RELEASE-READINESS.md) and review model, dataset, eSpeak and runtime licenses before shipping; no claim of production certification or zero bugs is made.
-
-The sample logo is `GossipAudio.png`. Third-party notices are in [licenses/NOTICE.md](licenses/NOTICE.md). Other older files under `docs/`, `dist/` and `ci-logs/` may describe historical builds.
+See [build instructions](docs/BUILD.md), [voice details](docs/VOICES.md), [privacy](docs/PRIVACY.md) and [release readiness](docs/RELEASE-READINESS.md). Third-party notices: [licenses/NOTICE.md](licenses/NOTICE.md). Older APKs and historical documentation may describe different engines. Review upstream model and dataset licensing before commercial use.

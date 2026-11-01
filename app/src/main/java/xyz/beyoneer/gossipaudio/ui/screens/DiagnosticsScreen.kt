@@ -14,7 +14,7 @@ import xyz.beyoneer.gossipaudio.audio.AacEncoder
 import xyz.beyoneer.gossipaudio.core.Id3
 import xyz.beyoneer.gossipaudio.core.Mp3Encoder
 import xyz.beyoneer.gossipaudio.core.Mp4Tagger
-import xyz.beyoneer.gossipaudio.core.NanoVoice
+import xyz.beyoneer.gossipaudio.speech.NeuralEngine
 import xyz.beyoneer.gossipaudio.core.TextKit
 import xyz.beyoneer.gossipaudio.core.Wav
 import xyz.beyoneer.gossipaudio.speech.SpeechSynth
@@ -101,7 +101,6 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
 
         val checksCard = Ui.card(activity, palette, 24f)
         checksCard.addView(Ui.text(activity, "Engines & permissions", 14f, palette.text, bold = true))
-        val synth = SpeechSynth(activity)
         val stt = Stt(activity)
         val checks = listOf(
             "Neural model" to (if (xyz.beyoneer.gossipaudio.speech.NeuralEngine.available(activity)) "assets present (English)" else "missing"),
@@ -132,7 +131,7 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
         testCard.addView(Ui.text(activity, "Pipeline self-test", 14f, palette.text, bold = true))
         status = Ui.text(
             activity,
-            "Runs legacy test tone \u2192 WAV \u2192 MP3 \u2192 ID3 \u2192 M4A \u2192 cover atoms on this exact device.",
+            "Runs neural speech \u2192 WAV \u2192 MP3 \u2192 ID3 \u2192 M4A \u2192 cover atoms on this exact device.",
             11.5f, palette.textDim, font = "sans-serif"
         )
         status.setPadding(0, Ui.dp(activity, 6f), 0, Ui.dp(activity, 10f))
@@ -228,13 +227,11 @@ class DiagnosticsScreen(activity: MainActivity) : Screen(activity) {
             val results = ArrayList<Triple<String, Boolean, String>>()
             val started = System.currentTimeMillis()
             try {
-                val pcm = NanoVoice.speak(
-                    "Testing one, two, three. Gossip audio is completely ready.",
-                    NanoVoice.Options(baseF0 = 128.0, rate = 1.05, sampleRate = 22050)
-                )
+                val pcm = NeuralEngine.render(activity.applicationContext,
+                    listOf("Testing one, two, three. Gossip audio is ready."), 0, 1f) { _, _ -> }
                 results.add(
                     Triple(
-                        "Legacy DSP test tone (not neural TTS)",
+                        "Neural speech synthesis",
                         pcm.samples.isNotEmpty() && pcm.durationMs > 400,
                         "${pcm.samples.size} samples \u00B7 ${TextKit.formatDuration(pcm.durationMs)}"
                     )

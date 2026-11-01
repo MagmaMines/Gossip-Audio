@@ -1,14 +1,5 @@
-# Release readiness (no fairy dust included)
+# Release readiness
 
-The current source has not been built or tested in the present environment. The checked-in `dist` APKs and reports are historical and do not verify 1.1.0. The app is not yet certified production- or commercial-ready.
+This project is not yet certified production- or commercial-ready. An Android emulator can check that the neural model loads and generates non-silent audio, and that WAV/MP3 data is created, but those checks cannot measure naturalness, pronunciation or freedom from every artifact. Listen to the generated sample and test on real phones, speakers and headphones before release.
 
-Before distributing:
-
-1. Run the build and JVM tests in [BUILD.md](BUILD.md); archive output, commit hash and checksums.
-2. On real Android 7, 9, 12, 13 and 15 devices, test typing, dictation permissions, every preset with installed/missing locale data, error and retry, playback, interruptions, background media controls and notifications.
-3. Export WAV/MP3/M4A with and without artwork; play each in independent players and check duration, content, tags and Downloads/share access. Test unavailable AAC encoders and low storage.
-4. Test dark/light/system theme, small screens, rotation, TalkBack, large font sizes, reduced motion, notification denial and reminders after reboot.
-5. Audit speech provider privacy, data retention, backup and deletion. Test offline behavior separately for each provider and language.
-6. Audit third-party LGPL obligations in `licenses/`, voice-provider terms and commercial usage rights; obtain legal review. Secure a private signing key and test upgrade paths. Complete Android/Play policy, crash, accessibility, performance and security reviews.
-
-No test can promise zero failures. The best plan is to make failure visible, test on real devices, and keep an eye on releases. Butterflies are excellent at animation, less excellent at QA.
+Before distribution: test language handling, long text, storage and permissions; verify WAV, MP3 and M4A output in independent players; test playback interruptions, notifications, reminders, accessibility, themes and upgrade paths; audit privacy and model/runtime/eSpeak license terms; sign with a private production key; and complete Play policy, security and performance reviews.

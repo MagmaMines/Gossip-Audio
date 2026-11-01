@@ -48,7 +48,7 @@ object PlaybackHub {
     private var sleepStopAt: Long = 0L
     private var speed = 1f
     private var prepared = false
-    private var effectsEnabled = true
+    private var effectsEnabled = false
 
     var state = State()
         private set

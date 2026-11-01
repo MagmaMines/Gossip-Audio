@@ -23,7 +23,7 @@ object VoicePreview {
         "Hello! This is ${voice.name}. Your words, their wings."
 
     fun preview(activity: MainActivity, voice: VoiceProfile, onState: (State) -> Unit) {
-        val key = "preview-neural-v1-${voice.id}-${activity.prefs.selectedStyleId}-${activity.prefs.pitch}-${activity.prefs.speed}"
+        val key = "preview-lessac-fp32-v2-${voice.id}-${activity.prefs.selectedStyleId}-${activity.prefs.pitch}-${activity.prefs.speed}"
         val cacheDir = File(activity.cacheDir, "previews").apply { mkdirs() }
         val file = File(cacheDir, "$key.wav")
         if (file.exists() && file.length() > 2048) {

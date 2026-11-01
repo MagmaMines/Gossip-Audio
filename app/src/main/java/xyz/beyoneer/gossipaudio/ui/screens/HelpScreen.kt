@@ -33,11 +33,11 @@ class HelpScreen(activity: MainActivity) : Screen(activity) {
         "Can I add my own cover?" to
             "Yes. In the export sheet tap Pick image. It is embedded as an ID3 APIC frame in MP3 and a covr atom in M4A.",
         "Why do some voices sound robotic?" to
-            "The included neural model is optimized for size; voice quality and pronunciation can vary.",
+            "The app uses the full-precision Lessac neural model. Voice quality and pronunciation may still vary with text and playback devices.",
         "What is NanoVoice?" to
             "The old formant synthesizer is not used for speech generation. The new build uses a bundled English Piper VITS model.",
         "How many voices and styles?" to
-            "Ten speakers from one English neural model, and eight speed styles. Other languages are not included.",
+            "One pretrained English neural voice, and eight speed styles. Other languages are not included.",
         "Can I change speed?" to
             "Drag the Speed slider in Studio (0.5x\u20132.0x) or use the speed chips in the player. Playback speed is separate and can be changed live.",
         "What does Pitch do?" to

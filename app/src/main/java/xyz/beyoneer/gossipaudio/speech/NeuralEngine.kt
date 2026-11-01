@@ -55,10 +55,25 @@ object NeuralEngine {
                 total += audio.samples.size
             }
             check(total > 0) { "The neural model returned no audio." }
-            val output = ShortArray(total)
-            var pos = 0
+            // Scale down only when necessary, before PCM conversion. Clamping
+            // individual float samples first would permanently flatten peaks.
+            var peak = 0f
             for (piece in pieces) for (sample in piece) {
-                output[pos++] = (sample.coerceIn(-1f, 1f) * 32767f).toInt().toShort()
+                check(sample.isFinite()) { "The neural model produced an invalid sample." }
+                peak = maxOf(peak, kotlin.math.abs(sample))
+            }
+            check(peak > 0.00001f) { "The neural model produced silence." }
+            val scale = if (peak > 0.98f) 0.98f / peak else 1f
+            val gap = sampleRate / 10 // 100 ms between long-text chunks
+            val output = ShortArray(total + gap * (pieces.size - 1))
+            var pos = 0
+            for ((pieceIndex, piece) in pieces.withIndex()) {
+                val fade = minOf(sampleRate / 200, piece.size / 2) // 5 ms to avoid join clicks
+                for (i in piece.indices) {
+                    val edge = if (fade == 0) 1f else minOf(1f, i.toFloat() / fade, (piece.size - 1 - i).toFloat() / fade)
+                    output[pos++] = (piece[i] * scale * edge * 32767f).toInt().coerceIn(-32767, 32767).toShort()
+                }
+                if (pieceIndex < pieces.lastIndex) pos += gap
             }
             return Pcm(sampleRate, 1, output)
         } finally {

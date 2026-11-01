@@ -3,6 +3,7 @@ package xyz.beyoneer.gossipaudio.core
 enum class VoiceGender { FEMALE, MALE, NONHUMAN }
 
 enum class VoiceEngine {
+    NEURAL,
     /** Android system TTS engine installed on the phone (Google TTS, Samsung, etc.). */
     SYSTEM_TTS,
 
@@ -11,8 +12,7 @@ enum class VoiceEngine {
 }
 
 /**
- * A selectable GossipAudio voice. Ten of them: four girls, five boys, one that
- * is politely described as "not human".
+ * The app's single bundled neural voice profile.
  */
 data class VoiceProfile(
     val id: String,
@@ -34,176 +34,17 @@ data class VoiceProfile(
 
 object VoiceCatalog {
 
-    // brand palette reused by cards so each voice owns a colour accent
-    private const val YELLOW = 0xFFF5C518.toInt()
-    private const val AMBER = 0xFFFFB300.toInt()
-    private const val LEMON = 0xFFFFE066.toInt()
-    private const val GOLD = 0xFFE0A800.toInt()
-    private const val SAFFRON = 0xFFFF9F1C.toInt()
-    private const val BUTTER = 0xFFFFD54F.toInt()
-    private const val HONEY = 0xFFD9A400.toInt()
-    private const val SUN = 0xFFFFC82E.toInt()
-    private const val SAND = 0xFFC9A227.toInt()
-    private const val NEON = 0xFFB9FF3C.toInt()
-
+    // One full-precision pretrained Piper voice; riya preserves older clip IDs.
     val all: List<VoiceProfile> = listOf(
         VoiceProfile(
-            id = "riya",
-            name = "Riya",
-            gender = VoiceGender.FEMALE,
-            locale = "en-IN",
-            flag = "\uD83C\uDDEE\uD83C\uDDF3",
-            region = "India",
-            pitch = 1.12f,
-            rate = 1.02f,
-            timbre = 0.62f,
-            vibe = "Hostel gossip, 2 a.m.",
-            bio = "Warm Indian-English delivery with a gossipy lift at the end of every sentence. Tells you the truth, then tells everyone else too.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = YELLOW
-        ),
-        VoiceProfile(
-            id = "ananya",
-            name = "Ananya",
-            gender = VoiceGender.FEMALE,
-            locale = "hi-IN",
-            flag = "\uD83C\uDDEE\uD83C\uDDF3",
-            region = "India",
-            pitch = 1.20f,
-            rate = 0.98f,
-            timbre = 0.70f,
-            vibe = "Playful, chai in hand",
-            bio = "Hindi-leaning cadence with bright vowels. Great for dramatic readings of your group chat.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = SAFFRON
-        ),
-        VoiceProfile(
-            id = "maya",
-            name = "Maya",
-            gender = VoiceGender.FEMALE,
-            locale = "en-US",
-            flag = "\uD83C\uDDFA\uD83C\uDDF8",
-            region = "USA",
-            pitch = 1.16f,
-            rate = 1.06f,
-            timbre = 0.58f,
-            vibe = "Bubbly podcast host",
-            bio = "Bright Californian energy. Says 'literally' without being asked. Perfect for pop-culture breakdowns.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = LEMON
-        ),
-        VoiceProfile(
-            id = "sakura",
-            name = "Sakura",
-            gender = VoiceGender.FEMALE,
-            locale = "ja-JP",
-            flag = "\uD83C\uDDEF\uD83C\uDDF5",
-            region = "Japan",
-            pitch = 1.24f,
-            rate = 1.00f,
-            timbre = 0.74f,
-            vibe = "Cute anime neighbour",
-            bio = "Japanese locale preset with a higher pitch. Requires compatible Japanese voice data on your device.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = BUTTER
-        ),
-        VoiceProfile(
-            id = "arjun",
-            name = "Arjun",
-            gender = VoiceGender.MALE,
-            locale = "en-IN",
-            flag = "\uD83C\uDDEE\uD83C\uDDF3",
-            region = "India",
-            pitch = 0.86f,
-            rate = 1.02f,
-            timbre = 0.44f,
-            vibe = "Prime-time news anchor",
-            bio = "Crisp Indian-English newsreader. Will report your gossip with breaking-news gravity and zero mercy.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = AMBER
-        ),
-        VoiceProfile(
-            id = "rohan",
-            name = "Rohan",
-            gender = VoiceGender.MALE,
-            locale = "hi-IN",
-            flag = "\uD83C\uDDEE\uD83C\uDDF3",
-            region = "India",
-            pitch = 0.82f,
-            rate = 0.96f,
-            timbre = 0.40f,
-            vibe = "Movie-trailer drama",
-            bio = "Deep Hindi-English storyteller. Every sentence sounds like the twist before the interval.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = GOLD
-        ),
-        VoiceProfile(
-            id = "jordan",
-            name = "Jordan",
-            gender = VoiceGender.MALE,
-            locale = "en-US",
-            flag = "\uD83C\uDDFA\uD83C\uDDF8",
-            region = "USA",
-            pitch = 0.74f,
-            rate = 0.95f,
-            timbre = 0.34f,
-            vibe = "Late-night radio",
-            bio = "Low, slow American baritone. Designed for whispering scandal directly into your headphones.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = HONEY
-        ),
-        VoiceProfile(
-            id = "oliver",
-            name = "Oliver",
-            gender = VoiceGender.MALE,
-            locale = "en-GB",
-            flag = "\uD83C\uDDEC\uD83C\uDDE7",
-            region = "UK",
-            pitch = 0.90f,
-            rate = 1.00f,
-            timbre = 0.50f,
-            vibe = "Posh documentary",
-            bio = "British English locale preset. Actual accent depends on the installed voice engine.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = SUN
-        ),
-        VoiceProfile(
-            id = "kenji",
-            name = "Kenji",
-            gender = VoiceGender.MALE,
-            locale = "ja-JP",
-            flag = "\uD83C\uDDEF\uD83C\uDDF5",
-            region = "Japan",
-            pitch = 0.95f,
-            rate = 0.98f,
-            timbre = 0.46f,
-            vibe = "Calm sensei",
-            bio = "Measured Japanese delivery. Says the most unhinged thing you have ever typed in the calmest possible tone.",
-            engine = VoiceEngine.SYSTEM_TTS,
-            accent = SAND
-        ),
-        VoiceProfile(
-            id = "bot",
-            name = "Beyoneer Bot",
-            gender = VoiceGender.NONHUMAN,
-            locale = "en-US",
-            flag = "\uD83E\uDD16",
-            region = "The Internet",
-            pitch = 1.00f,
-            rate = 1.04f,
-            timbre = 0.92f,
-            vibe = "Definitely not a human",
-            bio = "Runs on GossipAudio's own NanoVoice engine, so it works on literally any phone, forever. Zero samples were harmed.",
-            engine = VoiceEngine.NANO_VOICE,
-            accent = NEON
+            id = "riya", name = "Lessac", gender = VoiceGender.FEMALE,
+            locale = "en-US", flag = "🇺🇸", region = "English (US)",
+            pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Full-precision neural voice",
+            bio = "A single English neural voice, bundled with the app. Preview it before creating your audio.",
+            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
         )
-    ).mapIndexed { index, voice ->
-        // Keep stable IDs so existing clips remain accessible, but describe the
-        // bundled VCTK speakers honestly rather than claiming unshipped locales.
-        voice.copy(name = "Voice ${index + 1}", locale = "en-GB", flag = "🇬🇧",
-            region = "English", vibe = "Offline neural speaker ${index + 1}",
-            bio = "Speaker ${index + 1} from the bundled English VITS model. Preview to hear this voice.")
-    }
+    )
 
     fun byId(id: String?): VoiceProfile = all.firstOrNull { it.id == id } ?: all[0]
 
