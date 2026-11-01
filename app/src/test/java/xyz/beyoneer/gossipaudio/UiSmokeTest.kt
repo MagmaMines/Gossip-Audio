@@ -203,6 +203,10 @@ class UiSmokeTest {
         val height = maxOf(view.height, 2000)
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = android.graphics.Canvas(bitmap)
+        // Robolectric hands back a reused native canvas: without an explicit fill the
+        // previous screen's pixels show through the gaps ("Choose a voice" appearing
+        // behind the voice list). Paint the app background first.
+        canvas.drawColor(0xFFFBF7EC.toInt())
         view.layout(0, 0, width, height)
         view.draw(canvas)
         return bitmap

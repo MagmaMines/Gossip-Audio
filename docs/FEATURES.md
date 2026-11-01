@@ -100,7 +100,7 @@ Being honest is part of “production grade”:
 
 ---
 
-## 1.0.3 additions — ten more, each with a proof
+## 1.0.4 additions — ten more, each with a proof
 
 | # | Feature | Where the code lives | Verify |
 |---|---|---|---|
