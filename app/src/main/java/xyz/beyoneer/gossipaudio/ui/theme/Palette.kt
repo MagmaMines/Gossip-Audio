@@ -75,7 +75,7 @@ data class Palette(
             onYellow = 0xFF0B0B0C.toInt(),
             danger = 0xFFFF6B6B.toInt(),
             success = 0xFF9BE15D.toInt(),
-            shadow = 0x99000000
+            shadow = 0x99000000.toInt()
         )
     }
 }
