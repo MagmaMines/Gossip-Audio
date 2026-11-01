@@ -53,6 +53,14 @@ object VoiceCatalog {
             engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
         ),
         VoiceProfile(
+            id = "ljspeech", name = "LJ Speech", gender = VoiceGender.FEMALE,
+            locale = "en-US", flag = "🇺🇸", region = "English (US)",
+            pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "American English · neural",
+            bio = "Full-precision Piper voice trained from scratch on the public-domain LJ Speech dataset. Download once for offline use.",
+            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
+        ),
+        VoiceProfile(
             id = "padmavathi", name = "Padmavathi", gender = VoiceGender.FEMALE,
             locale = "te-IN", flag = "🇮🇳", region = "Telugu (India)",
             pitch = 1f, rate = 1f, timbre = 1f,

@@ -36,7 +36,7 @@ class OnboardingScreen(activity: MainActivity) : Screen(activity) {
         ),
         Page(
             "More voices.\nNeural models.",
-            "Preview the bundled voice or download British English and Telugu. Speech generation runs on-device, without phone TTS.",
+            "Preview the bundled voice or download British English, American English and Telugu. Speech generation runs on-device, without phone TTS.",
             Icons.Kind.PERSON,
             palette.yellowBright
         ),

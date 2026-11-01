@@ -10,13 +10,15 @@ import java.security.MessageDigest
 /** Explicit, integrity-pinned downloads; text is never sent to these servers. */
 object VoiceDownloads {
     private const val CORI = "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_GB-cori-medium.tar.bz2"
+    private const val LJ = "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_US-ljspeech-medium.tar.bz2"
+    private const val LJ_HASH = "3dfb4b759d8be032a4903a9538d128b0fda2a06ab1de6cbc2d93a97e2dd83dba"
     private const val TELUGU = "https://github.com/jesusanswersapp/jesusanswers/releases/download/voices-v1/te_IN-padmavathi-medium--"
     private const val CORI_HASH = "49c9a5361bbdd95d7ca9687c4de11e5908481f65e7c7c368960df79949fdac2b"
     private const val TELUGU_HASH = "104d1d0b1d88bd243b3543a208bd98405c69e3d77f05a18055359ce867a5649b"
     private const val TOKENS_HASH = "ef3a7e4a8d1af0c9d4dc45aaae1a6242ebe24a7ed6f3d025a49eb29682784c6d"
 
     fun directory(context: Context, id: String): File {
-        require(id == "cori" || id == "padmavathi")
+        require(id == "cori" || id == "ljspeech" || id == "padmavathi")
         return File(context.filesDir, "voices/$id")
     }
     fun installed(context: Context, id: String): Boolean = id == "riya" || try {
@@ -31,9 +33,9 @@ object VoiceDownloads {
         tmp.deleteRecursively()
         check(tmp.mkdirs()) { "Cannot create voice directory." }
         try {
-            if (id == "cori") {
+            if (id == "cori" || id == "ljspeech") {
                 val archive = File(tmp, "voice.tar.bz2")
-                fetch(CORI, archive, CORI_HASH, 70_000_000)
+                fetch(if (id == "cori") CORI else LJ, archive, if (id == "cori") CORI_HASH else LJ_HASH, 70_000_000)
                 TarArchiveInputStream(BZip2CompressorInputStream(archive.inputStream().buffered())).use { tar ->
                     var model = false
                     var tokens = false
@@ -42,7 +44,7 @@ object VoiceDownloads {
                         if (!entry.isFile) continue
                         val leaf = entry.name.substringAfterLast('/')
                         val target = when (leaf) {
-                            "en_GB-cori-medium.onnx" -> { check(!model); model = true; File(tmp, "model.onnx") }
+                            "en_GB-cori-medium.onnx", "en_US-ljspeech-medium.onnx" -> { check(!model); model = true; File(tmp, "model.onnx") }
                             "tokens.txt" -> { check(!tokens); tokens = true; File(tmp, "tokens.txt") }
                             else -> null
                         }

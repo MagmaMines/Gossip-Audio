@@ -15,9 +15,10 @@ import java.util.concurrent.atomic.AtomicReference
 
 @RunWith(AndroidJUnit4::class)
 class ExtraVoicesTest {
-    @Test fun downloadAndSynthesizeBritishAndTelugu() {
+    @Test fun downloadAndSynthesizeAllExtraVoices() {
         val context = ApplicationProvider.getApplicationContext<GossipApp>()
         for ((id, text) in listOf("cori" to "Hello, welcome to Gossip Audio.",
+                                  "ljspeech" to "Hello, welcome to Gossip Audio.",
                                   "padmavathi" to "నమస్కారం! మీ మాటలకు స్వాగతం.")) {
             VoiceDownloads.download(context, id)
             assertTrue("Voice download not installed: $id", VoiceDownloads.installed(context, id))

@@ -8,7 +8,7 @@ An Android voice studio by **Beyoneer XYZ**.
 
 ## Neural voices
 
-GossipAudio runs neural Piper/VITS voices locally with sherpa-onnx; it does **not** use Android system TTS for speech generation. The bundled US English Lessac voice is **restricted to non-commercial/research use** based on its training recordings; the previous build failed to flag this restriction. Optional British English Cori and Telugu Padmavathi voices can be downloaded from the Voices tab, after which synthesis is offline. The Telugu model card cites CC BY 4.0 data but does not specify model-weight licensing or training initialization, so confirm those rights before commercial deployment. See [voice provenance and licensing](docs/VOICES.md), including separate eSpeak obligations.
+GossipAudio runs neural Piper/VITS voices locally with sherpa-onnx; it does **not** use Android system TTS for speech generation. The bundled US English Lessac voice is **restricted to non-commercial/research use** based on its training recordings; the previous build failed to flag this restriction. Optional British English Cori, American English LJ Speech and Telugu Padmavathi voices can be downloaded from the Voices tab, after which synthesis is offline. The Telugu model card cites CC BY 4.0 data but does not specify model-weight licensing or training initialization, so confirm those rights before commercial deployment. See [voice provenance and licensing](docs/VOICES.md), including separate eSpeak obligations.
 
 Dictation uses a separate Android recognition service and may use the network. The APK targets ARM64 Android 7+ and is a debug build, not a commercial release. Voice quality varies with language and device; no subjective quality guarantee is implied.
 
@@ -17,7 +17,7 @@ Dictation uses a separate Android recognition service and may use the network. T
 - [GossipAudio 1.3.0 neural debug APK](dist/GossipAudio-1.3.0-neural-debug.apk) (ARM64, Android 7+)
 - [Neural voice sample (WAV)](dist/GossipAudio-1.3.0-neural-sample.wav), generated through the app's speech pipeline on an Android 10 emulator
 
-The build and selected JVM tests passed, and the emulator test checked synthesis, WAV round-trip, MP3 encoding and absence of hard-clipped samples. This is not a listening-quality certification or a substitute for testing physical devices.
+See the CI workflow for build and test results; tests are not a substitute for listening to the voices. This is not a listening-quality certification or a substitute for testing physical devices.
 
 ## Studio features
 

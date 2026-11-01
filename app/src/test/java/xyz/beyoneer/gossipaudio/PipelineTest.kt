@@ -29,8 +29,9 @@ class PipelineTest {
     private val line = "Btw we're not gossiping inreal, but your face is funny tho."
 
     @Test
-    fun catalogHasOneNeuralVoiceAndEightStyles() {
-        assertEquals(1, VoiceCatalog.all.size)
+    fun catalogHasNeuralVoicesAndEightStyles() {
+        assertEquals(4, VoiceCatalog.all.size)
+        assertTrue(VoiceCatalog.all.all { it.engine == xyz.beyoneer.gossipaudio.core.VoiceEngine.NEURAL })
         assertEquals(xyz.beyoneer.gossipaudio.core.VoiceEngine.NEURAL, VoiceCatalog.all[0].engine)
         assertEquals(8, StyleCatalog.all.size)
     }
