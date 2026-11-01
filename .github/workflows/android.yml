@@ -269,6 +269,8 @@ jobs:
           # measured instead of guessed at
           cp app/build/test-samples/voice-quality.wav ci-logs/failing-audio.wav 2>/dev/null || true
           cp app/build/test-samples/layout.txt ci-logs/layout.txt 2>/dev/null || true
+          # and the screenshots, so a failing UI test can actually be looked at
+          cp app/build/ui-shots/*.png ci-logs/ 2>/dev/null || true
           rm -f ci-logs/*.log
           git add -f ci-logs/failure.txt ci-logs/sdk.txt 2>/dev/null || true
           git rm -r --cached --ignore-unmatch ci-logs > /dev/null 2>&1 || true

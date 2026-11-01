@@ -84,7 +84,7 @@ class UiSmokeTest {
         assertTrue("decor view should have a size", bitmap.width > 200 && bitmap.height > 200)
         val yellow = countYellowPixels(bitmap)
         val colors = distinctColors(bitmap)
-        println("yellow-ish pixels: $yellow · distinct sampled colours: $colors")
+        println("yellow-ish pixels: $yellow · distinct sampled colours: $colors · bounds: ${yellowBounds(bitmap)}")
         if (colors > 4) {
             assertTrue("brand yellow should appear in the rendered UI ($yellow px)", yellow > 200)
         } else {
@@ -224,6 +224,33 @@ class UiSmokeTest {
             x += 7
         }
         return count
+    }
+
+    /** Where the brand yellow actually landed, in bitmap coordinates. */
+    private fun yellowBounds(bitmap: Bitmap): String {
+        var minX = Int.MAX_VALUE
+        var maxX = -1
+        var minY = Int.MAX_VALUE
+        var maxY = -1
+        var x = 0
+        while (x < bitmap.width) {
+            var y = 0
+            while (y < bitmap.height) {
+                val c = bitmap.getPixel(x, y)
+                val r = (c shr 16) and 0xFF
+                val g = (c shr 8) and 0xFF
+                val b = c and 0xFF
+                if (r > 190 && g > 150 && b < 130) {
+                    if (x < minX) minX = x
+                    if (x > maxX) maxX = x
+                    if (y < minY) minY = y
+                    if (y > maxY) maxY = y
+                }
+                y += 7
+            }
+            x += 7
+        }
+        return if (maxX < 0) "none" else "x=$minX..$maxX y=$minY..$maxY in ${bitmap.width}x${bitmap.height}"
     }
 
     private fun distinctColors(bitmap: Bitmap): Int {
