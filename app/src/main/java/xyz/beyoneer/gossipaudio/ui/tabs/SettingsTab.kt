@@ -127,8 +127,8 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
                 },
                 bitrateRow(),
                 toggleRow(
-                    Icons.Kind.FX, "Audio polish",
-                    "Equalizer + bass boost during playback",
+                    Icons.Kind.FX, "Voice clarity",
+                    "Cuts the boom. No bass boost, no clipping.",
                     activity.prefs.effectsEnabled
                 ) {
                     activity.prefs.effectsEnabled = it
@@ -159,7 +159,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
                 ) { activity.prefs.autoTrim = it },
                 toggleRow(
                     Icons.Kind.FX, "Auto-normalise",
-                    "Even loudness at -1.5 dBFS, every time",
+                    "Even loudness at -3 dBFS, with headroom to spare",
                     activity.prefs.autoNormalize
                 ) { activity.prefs.autoNormalize = it },
                 toggleRow(

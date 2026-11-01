@@ -177,7 +177,7 @@ object Exporter {
     fun writeMaster(context: Context, pcm: Pcm, id: String): File {
         val dir = File(context.filesDir, "clips").apply { mkdirs() }
         val file = File(dir, "$id.wav")
-        file.writeBytes(Wav.write(AudioFx.fade(AudioFx.normalize(pcm, -1.5), 8, 40)))
+        file.writeBytes(Wav.write(AudioFx.fade(AudioFx.normalize(pcm, -3.0), 8, 40)))
         return file
     }
 

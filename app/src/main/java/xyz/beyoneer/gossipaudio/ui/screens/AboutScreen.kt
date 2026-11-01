@@ -47,7 +47,7 @@ class AboutScreen(activity: MainActivity) : Screen(activity) {
         "\uD83C\uDFA7 Background playback",
         "\uD83D\uDD14 Playback notification",
         "\u23F0 Sleep timer",
-        "\uD83D\uDD0A Bass boost + EQ",
+        "\uD83C\uDF9A Clarity EQ (no bass boost)",
         "\uD83D\uDCCA Live CPU/RAM monitor",
         "\uD83E\uDDEA Built-in self-test",
         "\uD83C\uDF19 Light / dark / system theme",

@@ -5,7 +5,6 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.PlaybackParams
-import android.media.audiofx.BassBoost
 import android.media.audiofx.Equalizer
 import android.media.audiofx.PresetReverb
 import android.os.Build
@@ -43,7 +42,6 @@ object PlaybackHub {
     private var queue: List<Item> = emptyList()
     private var index = 0
     private var equalizer: Equalizer? = null
-    private var bass: BassBoost? = null
     private var reverb: PresetReverb? = null
     private var sleepStopAt: Long = 0L
     private var speed = 1f
@@ -296,11 +294,27 @@ object PlaybackHub {
         try {
             releaseEffects()
             val session = p.audioSessionId
+            // Voice clarity, not "make it thump". An Equalizer is neutral until you
+            // set band levels, but BassBoost(320) is not: on most devices that is
+            // +8..+12 dB below 200 Hz on a signal that is already peak-normalised,
+            // which is exactly the distorted, boomy playback people complained about.
+            // So: cut the mud, leave the mids alone, tiny lift on consonant presence.
             equalizer = Equalizer(0, session).apply {
-                enabled = true
-            }
-            bass = BassBoost(0, session).apply {
-                setStrength(320.toShort())
+                val limits = bandLevelRange
+                val low = limits[0].toInt()
+                val high = limits[1].toInt()
+                for (band in 0 until numberOfBands.toInt()) {
+                    val centreHz = getCenterFreq(band.toShort()) / 1000.0
+                    val level = when {
+                        centreHz < 400.0 -> -1200
+                        centreHz < 2000.0 -> 0
+                        else -> 250
+                    }.coerceIn(low, high)
+                    try {
+                        setBandLevel(band.toShort(), level.toShort())
+                    } catch (_: Throwable) {
+                    }
+                }
                 enabled = true
             }
             reverb = PresetReverb(0, session).apply {
@@ -325,15 +339,10 @@ object PlaybackHub {
         } catch (_: Throwable) {
         }
         try {
-            bass?.release()
-        } catch (_: Throwable) {
-        }
-        try {
             reverb?.release()
         } catch (_: Throwable) {
         }
         equalizer = null
-        bass = null
         reverb = null
     }
 

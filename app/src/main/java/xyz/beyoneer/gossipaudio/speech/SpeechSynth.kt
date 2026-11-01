@@ -426,7 +426,7 @@ class SpeechSynth(private val context: Context) {
             val prefs = xyz.beyoneer.gossipaudio.data.Prefs(context)
             var polished = pcm
             if (prefs.autoTrim) polished = AudioFx.trimSilence(polished, 180, 40)
-            if (prefs.autoNormalize) polished = AudioFx.normalize(polished, -1.5)
+            if (prefs.autoNormalize) polished = AudioFx.normalize(polished, -3.0)
             polished = AudioFx.fade(polished, 10, 40)
             val outcome = Outcome(
                 pcm = polished,

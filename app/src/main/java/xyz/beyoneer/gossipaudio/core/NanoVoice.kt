@@ -159,6 +159,9 @@ object NanoVoice {
      */
     private const val FRIC_GAIN = 0.12
 
+    /** Low-shelf cut that removes the 100-400 Hz mud band ("too much bass"). */
+    private const val LOW_SHELF_DB = -6.0
+
     // -------------------------------------------------------------- public API
 
     /**
@@ -344,7 +347,46 @@ object NanoVoice {
         var lp1 = 0.0
         var lp2 = 0.0
         val lpCoeff = exp(-2.0 * PI * 4200.0 / fs)
-        val dcCoeff = exp(-2.0 * PI * 90.0 / fs)
+        // DC blocker only. The musical low end is handled by the high-pass below.
+        val dcCoeff = exp(-2.0 * PI * 30.0 / fs)
+
+        // ---- low end: a 2-pole 130 Hz high-pass and a -6 dB shelf at 320 Hz --------
+        //
+        // "Too much bass, sounds distorted" is what a formant synthesiser does when it
+        // is left alone: 73 % of the energy sat under 800 Hz and 14 % under 300 Hz. On a
+        // phone that reads as mud, and the moment the system equaliser (or a BassBoost
+        // effect) touches it, as clipping. Speech wants the fundamental kept and the
+        // 100-300 Hz boom gone, so: cut steeply below 130 Hz, shelf down the mud band,
+        // and leave everything above 400 Hz alone.
+        val hpW = 2.0 * PI * 130.0 / fs
+        val hpCos = cos(hpW)
+        val hpAlpha = sin(hpW) / (2.0 * 0.7071)
+        val hpfB0 = (1.0 + hpCos) / 2.0
+        val hpfB1 = -(1.0 + hpCos)
+        val hpfB2 = (1.0 + hpCos) / 2.0
+        val hpfA0 = 1.0 + hpAlpha
+        val hpfA1 = -2.0 * hpCos
+        val hpfA2 = 1.0 - hpAlpha
+        var hpX1 = 0.0
+        var hpX2 = 0.0
+        var hpY1 = 0.0
+        var hpY2 = 0.0
+
+        val lsA = Math.pow(10.0, LOW_SHELF_DB / 40.0)
+        val lsW = 2.0 * PI * 320.0 / fs
+        val lsCos = cos(lsW)
+        val lsAlpha = sin(lsW) / 2.0 * sqrt(2.0)
+        val lsRoot = sqrt(lsA)
+        val lsB0 = lsA * ((lsA + 1.0) - (lsA - 1.0) * lsCos + 2.0 * lsRoot * lsAlpha)
+        val lsB1 = 2.0 * lsA * ((lsA - 1.0) - (lsA + 1.0) * lsCos)
+        val lsB2 = lsA * ((lsA + 1.0) - (lsA - 1.0) * lsCos - 2.0 * lsRoot * lsAlpha)
+        val lsA0 = (lsA + 1.0) + (lsA - 1.0) * lsCos + 2.0 * lsRoot * lsAlpha
+        val lsA1 = -2.0 * ((lsA - 1.0) + (lsA + 1.0) * lsCos)
+        val lsA2 = (lsA + 1.0) + (lsA - 1.0) * lsCos - 2.0 * lsRoot * lsAlpha
+        var lsX1 = 0.0
+        var lsX2 = 0.0
+        var lsY1 = 0.0
+        var lsY2 = 0.0
         val nyq = fs / 2.0
         val oq = 0.62
 
@@ -419,8 +461,6 @@ object NanoVoice {
                         p3.run(src) * tilt[2] +
                         p4.run(src) * tilt[3]
                 }
-                // 90 Hz rumble filter: keeps F0, drops the thump that makes a formant
-                // voice sound like it is in a bucket
                 dcLp = dcCoeff * dcLp + (1.0 - dcCoeff) * y
                 y -= dcLp
                 // Two-pole 4.2 kHz roll-off on the *voiced* path only. Pre-emphasis
@@ -429,6 +469,21 @@ object NanoVoice {
                 lp1 += (1.0 - lpCoeff) * (y - lp1)
                 lp2 += (1.0 - lpCoeff) * (lp1 - lp2)
                 y = lp2
+                // low end, in order: rumble out, mud down, nothing else touched
+                val hpIn = y
+                val hpOut = (hpfB0 * hpIn + hpfB1 * hpX1 + hpfB2 * hpX2 -
+                    hpfA1 * hpY1 - hpfA2 * hpY2) / hpfA0
+                hpX2 = hpX1
+                hpX1 = hpIn
+                hpY2 = hpY1
+                hpY1 = hpOut
+                val lsOut = (lsB0 * hpOut + lsB1 * lsX1 + lsB2 * lsX2 -
+                    lsA1 * lsY1 - lsA2 * lsY2) / lsA0
+                lsX2 = lsX1
+                lsX1 = hpOut
+                lsY2 = lsY1
+                lsY1 = lsOut
+                y = lsOut
                 if (aNasal > 0.01) {
                     val zx = y - nzB * zeroX1 - nzC * zeroX2
                     zeroX2 = zeroX1
@@ -456,7 +511,7 @@ object NanoVoice {
         sorted.sort()
         val p999 = sorted[((sorted.size - 1) * 0.999).toInt()]
         val peak = max(abs(p999), 1e-9)
-        val gain = 0.92 / peak
+        val gain = 0.72 / peak
         val samples = ShortArray(total)
         for (i in 0 until total) {
             var v = out[i] * gain
