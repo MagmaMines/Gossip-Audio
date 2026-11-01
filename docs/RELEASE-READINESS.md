@@ -1,4 +1,4 @@
-> **Update:** Lessac is research/non-commercial restricted. Cori and Padmavathi have separate provenance; Padmavathi model license and initialization require confirmation. The 1.3.0 downloads and startup layout changes require testing; see [VOICES.md](VOICES.md).
+> **Update:** Lessac is research/non-commercial restricted. Cori and Padmavathi have separate provenance; Padmavathi model license and initialization require confirmation. The 1.3.0 downloads, synthesis and cold-start/theme layout passed Android emulator checks; physical-device and listening tests remain necessary; see [VOICES.md](VOICES.md).
 
 # Release readiness
 

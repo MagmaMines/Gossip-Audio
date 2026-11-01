@@ -65,7 +65,7 @@ object VoiceCatalog {
             locale = "te-IN", flag = "🇮🇳", region = "Telugu (India)",
             pitch = 1f, rate = 1f, timbre = 1f,
             vibe = "Telugu · neural",
-            bio = "Piper voice trained on AI4Bharat IndicVoices-R (CC BY 4.0). Download once, then synthesize Telugu offline. Attribution required.",
+            bio = "Piper voice using AI4Bharat IndicVoices-R (CC BY 4.0). Attribution required; confirm model licensing and training lineage before commercial use.",
             engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
         )
     )

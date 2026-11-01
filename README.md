@@ -17,7 +17,7 @@ Dictation uses a separate Android recognition service and may use the network. T
 - [GossipAudio 1.3.0 neural debug APK](dist/GossipAudio-1.3.0-neural-debug.apk) (ARM64, Android 7+)
 - [Neural voice sample (WAV)](dist/GossipAudio-1.3.0-neural-sample.wav), generated through the app's speech pipeline on an Android 10 emulator
 
-See the CI workflow for build and test results; tests are not a substitute for listening to the voices. This is not a listening-quality certification or a substitute for testing physical devices.
+The 1.3.0 CI build ran JVM tests and Android-emulator tests for all four neural voices, voice downloads, WAV/MP3 export, and cold-start/theme layout. Tests are not a substitute for listening or physical-device testing. This is not a listening-quality certification or a substitute for testing physical devices.
 
 ## Studio features
 
