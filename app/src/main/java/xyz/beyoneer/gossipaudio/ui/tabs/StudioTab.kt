@@ -187,14 +187,15 @@ class StudioTab(private val shell: ShellScreen) : Tab {
     }
 
     private fun heroCard(): View {
-        val onInk = 0xFFF7F6F1.toInt()
-        val dimInk = 0xB8F7F6F1.toInt()
+        // Palette-driven so the card works on the black canvas *and* in light mode.
+        val onInk = palette.text
+        val dimInk = palette.textDim
         val card = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
             background = Ui.gradient(
-                intArrayOf(0xFF202024.toInt(), 0xFF0E0E10.toInt()),
+                intArrayOf(palette.cardAlt, palette.card),
                 Ui.dpf(activity, 30f),
-                strokeColor = Ui.withAlpha(palette.yellow, 0.40f), strokeWidth = Ui.dp(activity, 1.2f)
+                strokeColor = Ui.withAlpha(palette.yellow, 0.55f), strokeWidth = Ui.dp(activity, 1.4f)
             )
             elevation = Ui.dpf(activity, 8f)
             setPadding(Ui.dp(activity, 16f), Ui.dp(activity, 14f), Ui.dp(activity, 16f), Ui.dp(activity, 14f))
@@ -229,12 +230,12 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         // the text well: a translucent page inside the ink card
         val well = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
-            background = Ui.rounded(0x16FFFFFF, Ui.dpf(activity, 18f), 0x26FFFFFF, Ui.dp(activity, 1f))
+            background = Ui.rounded(Ui.withAlpha(palette.bg, 0.55f), Ui.dpf(activity, 18f), Ui.withAlpha(palette.outline, 1f), Ui.dp(activity, 1f))
             setPadding(Ui.dp(activity, 13f), Ui.dp(activity, 10f), Ui.dp(activity, 13f), Ui.dp(activity, 7f))
         }
         input = EditText(activity).apply {
             hint = "Type the tea\u2026 e.g. \"She said she was five minutes away forty minutes ago.\""
-            setHintTextColor(0x8AF7F6F1.toInt())
+            setHintTextColor(Ui.withAlpha(palette.textDim, 0.85f))
             setTextColor(onInk)
             setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15.5f * Ui.textScale)
             typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.NORMAL)
@@ -278,7 +279,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
 
         // The tagline lives at the bottom of the card: the action comes first, the
         // joke still ships verbatim.
-        val tagline = Ui.text(activity, Brand.TAGLINE, 10.5f, 0x80F7F6F1.toInt(), font = "sans-serif-condensed")
+        val tagline = Ui.text(activity, Brand.TAGLINE, 10.5f, Ui.withAlpha(palette.textDim, 0.9f), font = "sans-serif-condensed")
         tagline.setLineSpacing(Ui.dpf(activity, 2.5f), 1f)
         tagline.maxLines = 2
         tagline.ellipsize = android.text.TextUtils.TruncateAt.END

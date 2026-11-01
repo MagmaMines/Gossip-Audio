@@ -52,23 +52,30 @@ data class Palette(
             shadow = 0x14000000
         )
 
+        /**
+         * The house look: true black canvas, surfaces one step above it, one loud yellow.
+         *
+         * The old dark palette was a warm grey (#17171A) on near-black with a dull olive
+         * outline, which read as "unfinished". Deep neutral surfaces make the yellow the
+         * only colour in the room, which is the whole brand.
+         */
         val DARK = Palette(
             dark = true,
-            bg = INK,
-            bgAlt = 0xFF121214.toInt(),
-            card = 0xFF17171A.toInt(),
-            cardAlt = 0xFF1F1D14.toInt(),
-            text = 0xFFFFFFFF.toInt(),
-            textDim = 0xFF9A968A.toInt(),
-            outline = 0xFF2C2A22.toInt(),
+            bg = 0xFF070708.toInt(),
+            bgAlt = 0xFF0E0E10.toInt(),
+            card = 0xFF141416.toInt(),
+            cardAlt = 0xFF1B1B1E.toInt(),
+            text = 0xFFF7F7F4.toInt(),
+            textDim = 0xFF9D9D96.toInt(),
+            outline = 0xFF26262A.toInt(),
             yellow = YELLOW,
             yellowBright = YELLOW_BRIGHT,
-            yellowDeep = YELLOW_DEEP,
-            yellowSoft = 0xFF3A3416.toInt(),
+            yellowDeep = 0xFFB08A00.toInt(),
+            yellowSoft = 0xFF2A2410.toInt(),
             onYellow = 0xFF0B0B0C.toInt(),
             danger = 0xFFFF6B6B.toInt(),
             success = 0xFF9BE15D.toInt(),
-            shadow = 0x66000000
+            shadow = 0x99000000
         )
     }
 }
@@ -77,7 +84,9 @@ object ThemeController {
 
     fun isDark(context: Context): Boolean {
         val app = context.applicationContext as? GossipApp
-        return when (app?.prefs?.themeMode ?: "system") {
+        // Dark is the house style: black canvas, yellow buttons, white text. "system"
+        // is still respected for anyone who had it before 2.0.
+        return when (app?.prefs?.themeMode ?: "dark") {
             "light" -> false
             "dark" -> true
             else -> (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==

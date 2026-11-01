@@ -219,9 +219,9 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         val dockView = FrameLayout(activity)
         dock = dockView
         dockView.background = Ui.gradient(
-            intArrayOf(Ui.blend(INK_DOCK, 0xFFFFFFFF.toInt(), 0.10f), INK_DOCK),
+            intArrayOf(palette.cardAlt, palette.card),
             Ui.dpf(activity, 32f),
-            strokeColor = Ui.withAlpha(palette.yellow, 0.30f), strokeWidth = Ui.dp(activity, 1f)
+            strokeColor = Ui.withAlpha(palette.outline, 1f), strokeWidth = Ui.dp(activity, 1f)
         )
         dockView.elevation = Ui.dpf(activity, 14f)
         dockView.setPadding(Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f), Ui.dp(activity, 6f))
@@ -258,8 +258,8 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
                 isClickable = true
                 setPadding(0, Ui.dp(activity, 9f), 0, Ui.dp(activity, 9f))
             }
-            val iconView = IconView(activity, icon, NAV_IDLE, 21f)
-            val labelView = Ui.text(activity, label, 9.5f, NAV_IDLE, bold = true, font = "sans-serif-medium", gravity = Gravity.CENTER)
+            val iconView = IconView(activity, icon, palette.textDim, 21f)
+            val labelView = Ui.text(activity, label, 9.5f, palette.textDim, bold = true, font = "sans-serif-medium", gravity = Gravity.CENTER)
             labelView.letterSpacing = 0.04f
             labelView.setPadding(0, Ui.dp(activity, 4f), 0, 0)
             cell.addView(iconView, LinearLayout.LayoutParams(Ui.dp(activity, 21f), Ui.dp(activity, 21f)))
@@ -312,8 +312,8 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         navCells.forEachIndexed { index, cell ->
             val selected = index == current
             cell.isSelected = selected
-            navIcons[index].setTintColor(if (selected) palette.onYellow else NAV_IDLE)
-            navLabels[index].setTextColor(if (selected) palette.onYellow else NAV_IDLE)
+            navIcons[index].setTintColor(if (selected) palette.onYellow else palette.textDim)
+            navLabels[index].setTextColor(if (selected) palette.onYellow else palette.textDim)
             // A 6 % lift on the active icon, animated: enough to feel deliberate, small
             // enough not to look like a toy.
             val target = if (selected) 1.06f else 1f
@@ -325,14 +325,6 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
             }
         }
         positionPill(animate = true)
-    }
-
-    private companion object {
-        /** The dock is always ink; the yellow pill is what moves. */
-        const val INK_DOCK = 0xFF0B0B0C.toInt()
-
-        /** Idle colour on that dark dock: warm grey, readable in both themes. */
-        const val NAV_IDLE = 0xFFB4B4AC.toInt()
     }
 
     fun selectTab(index: Int, animate: Boolean = true) {

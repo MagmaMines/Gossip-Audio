@@ -8,7 +8,7 @@ class Prefs(context: Context) {
     private val sp = context.getSharedPreferences("gossipaudio_prefs", Context.MODE_PRIVATE)
 
     var themeMode: String
-        get() = sp.getString("theme_mode", "system") ?: "system"
+        get() = sp.getString("theme_mode", "dark") ?: "dark"
         set(value) = sp.edit().putString("theme_mode", value).apply()
 
     var defaultFormat: String

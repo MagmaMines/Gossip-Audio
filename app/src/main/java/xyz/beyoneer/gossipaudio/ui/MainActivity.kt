@@ -120,6 +120,10 @@ class MainActivity : Activity() {
     }
 
     private fun applySystemBars() {
+        runCatching { applySystemBarsInternal() }
+    }
+
+    private fun applySystemBarsInternal() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // API 35 forces edge-to-edge, so the bar colours are ignored there; the icon
             // colour is still ours to set, and it has to follow the theme.
@@ -160,6 +164,11 @@ class MainActivity : Activity() {
      * the navigation dock is not under the gesture handle.
      */
     private fun applyWindowFit() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return
+        runCatching { applyWindowFitInternal() }
+    }
+
+    private fun applyWindowFitInternal() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) return
         val container = router.container
         window.setDecorFitsSystemWindows(false)

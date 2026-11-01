@@ -98,7 +98,14 @@ class SpeechSynth(private val context: Context) {
                 if (usable) {
                     finish(pcm!!, "system", note, startedAt, sampler, callback)
                 } else {
-                    nanoPath(clean, voice, style, finalPitch, finalRate, callback, startedAt, sampler)
+                    // Do NOT silently swap in the formant synthesiser. That is how this
+                    // app ended up "sounding like it is not even audio": the good engine
+                    // failed quietly, a robot took over, and nothing said so. The caller
+                    // gets an error and offers the fallback as a choice.
+                    callback.onError(
+                        note ?: "The phone's voice engine returned nothing usable. " +
+                            "Install a free voice in Settings \u2192 System \u2192 Text-to-speech."
+                    )
                 }
             }
         } else {
@@ -379,8 +386,11 @@ class SpeechSynth(private val context: Context) {
         }
         val voicedRatio = loud.toDouble() / (pcm.samples.size / window).coerceAtLeast(1)
         // plausible speech: some real level, and enough of it for the amount of text
+        // Speak-rate varies wildly between engines (a "slow" voice can be 2.5x longer),
+        // so only the *lower* bound is checked, and generously: the failure we are
+        // guarding against is silence or clicks, not a fast narrator.
         val expectedSeconds = words / 4.0
-        return peak > 2500 && voicedRatio > 0.15 && seconds > expectedSeconds * 0.25
+        return peak > 1200 && voicedRatio > 0.08 && seconds > expectedSeconds * 0.12
     }
 
     private fun readPcm(file: File): Pcm? {

@@ -130,17 +130,20 @@ object Ui {
         layoutParams = LinearLayout.LayoutParams(1, heightPx)
     }
 
-    fun card(context: Context, palette: Palette, radiusDp: Float = 24f, fill: Int? = null): LinearLayout {
+    /**
+     * The one card shape used everywhere: flat surface, 1 px hairline, no gradients.
+     *
+     * 2.0 drops the yellow-tinted gradient wash each card used to carry. On a black
+     * canvas a hint of olive over every card looks like a rendering bug; a flat surface
+     * with a hairline looks deliberate.
+     */
+    fun card(context: Context, palette: Palette, radiusDp: Float = 22f, fill: Int? = null): LinearLayout {
+        val surface = fill ?: palette.card
         val c = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            background = gradient(
-                intArrayOf(fill ?: palette.card, blend(fill ?: palette.card, palette.yellowSoft, if (palette.dark) 0.18f else 0.10f)),
-                dpf(context, radiusDp),
-                strokeColor = palette.outline,
-                strokeWidth = dp(context, 1f)
-            )
-            elevation = dpf(context, 1.5f)
-            setPadding(dp(context, 18f), dp(context, 18f), dp(context, 18f), dp(context, 18f))
+            background = rounded(surface, dpf(context, radiusDp), palette.outline, dp(context, 1f))
+            elevation = dpf(context, if (palette.dark) 0f else 1.5f)
+            setPadding(dp(context, 16f), dp(context, 16f), dp(context, 16f), dp(context, 16f))
         }
         return c
     }
