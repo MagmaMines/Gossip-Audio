@@ -1,17 +1,45 @@
-run: 41272099577
-commit: b688e6fa93e560f07e664a90b9a46d752bba7e3d
-time: Sun Nov  1 04:12:41 UTC 2026
+run: 41276801778
+commit: 07e9aee66cda5538a3e7ec588c5b790b40885b03
+time: Sun Nov  1 05:26:53 UTC 2026
 ====== kotlin errors (test.log) ======
 ====== kotlin errors (assemble.log) ======
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:178:25 Unresolved reference 'finish'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:183:25 Unresolved reference 'finish'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:178:25 Unresolved reference 'finish'.
-e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:183:25 Unresolved reference 'finish'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:7:19 Conflicting import: imported name 'Build' is ambiguous.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:8:19 Conflicting import: imported name 'Build' is ambiguous.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:219:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:224:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:225:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:238:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:241:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:298:24 Unresolved reference 'Motion'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:318:17 Unresolved reference 'Motion'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:7:19 Conflicting import: imported name 'Build' is ambiguous.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:8:19 Conflicting import: imported name 'Build' is ambiguous.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:219:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:224:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:225:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:238:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:241:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:298:24 Unresolved reference 'Motion'.
+e: src/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:318:17 Unresolved reference 'Motion'.
 ====== warnings that matter ======
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:178:25 Unresolved reference 'finish'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:183:25 Unresolved reference 'finish'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:178:25 Unresolved reference 'finish'.
-ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/VoiceCompare.kt:183:25 Unresolved reference 'finish'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:7:19 Conflicting import: imported name 'Build' is ambiguous.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:8:19 Conflicting import: imported name 'Build' is ambiguous.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:219:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:224:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:225:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:238:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:241:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:298:24 Unresolved reference 'Motion'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:318:17 Unresolved reference 'Motion'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:7:19 Conflicting import: imported name 'Build' is ambiguous.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/MainActivity.kt:8:19 Conflicting import: imported name 'Build' is ambiguous.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:219:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:224:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:225:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:238:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:241:13 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'android.widget.FrameLayout?'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:298:24 Unresolved reference 'Motion'.
+ci-logs/assemble.log:e: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/ui/screens/ShellScreen.kt:318:17 Unresolved reference 'Motion'.
 ====== test output (layout + audio quality) ======
 ====== failing tests ======
 ====== what went wrong ======
@@ -45,7 +73,36 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:com
 ====== compiled files (last lines) ======
 ====== test.log (tail) ======
 ====== assemble.log (tail) ======
-ution$3.run(TaskExecution.java:252)
+nRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: org.gradle.workers.internal.DefaultWorkerExecutor$WorkExecutionException: A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+	at org.gradle.workers.internal.DefaultWorkerExecutor$WorkItemExecution.waitForCompletion(DefaultWorkerExecutor.java:287)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.lambda$waitForItemsAndGatherFailures$2(DefaultAsyncWorkTracker.java:130)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:335)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLocks(DefaultWorkerLeaseService.java:318)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withoutLock(DefaultWorkerLeaseService.java:323)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:126)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForItemsAndGatherFailures(DefaultAsyncWorkTracker.java:92)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForAll(DefaultAsyncWorkTracker.java:78)
+	at org.gradle.internal.work.DefaultAsyncWorkTracker.waitForCompletion(DefaultAsyncWorkTracker.java:66)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:252)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
 	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
@@ -164,37 +221,6 @@ ution$3.run(TaskExecution.java:252)
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
-	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
-	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
-	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
-	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
-	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
-	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
-	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
-	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
-	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
-	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
-	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
-	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
-	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
-	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
-	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
-	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
-	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
-	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
-	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
-	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
-	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
@@ -231,18 +257,20 @@ Caused by: org.jetbrains.kotlin.gradle.tasks.CompilationErrorException: Compilat
 	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:132)
 	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.runBatch(DefaultConditionalExecutionQueue.java:164)
 	at org.gradle.internal.work.DefaultConditionalExecutionQueue$ExecutionRunner.run(DefaultConditionalExecutionQueue.java:133)
-	... 7 more
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	... 5 more
 
 ==============================================================================
 
-BUILD FAILED in 37s
-64 actionable tasks: 49 executed, 15 from cache
+BUILD FAILED in 1m 24s
+64 actionable tasks: 51 executed, 13 from cache
 ====== verification report ======
-=== APK verification: dist/GossipAudio-1.0.4-release.apk
+=== APK verification: dist/GossipAudio-1.0.6-release.apk
 {
   "package": "xyz.beyoneer.gossipaudio",
-  "versionName": "1.0.4",
-  "versionCode": "5",
+  "versionName": "1.0.6",
+  "versionCode": "7",
   "minSdk": "24",
   "targetSdk": "35",
   "appClass": "xyz.beyoneer.gossipaudio.GossipApp",
@@ -279,9 +307,9 @@ BUILD FAILED in 37s
     "certificate_sha256": "ead721ae71700b02481477a9033cb5e7"
   },
   "entries": 33,
-  "uncompressed_bytes": 3264798,
-  "dex_bytes": 2879376,
-  "apk_sha256": "df0160370db8893f303c5e384e989162a973d16f4cdd1c4e56cdc530ba966e79"
+  "uncompressed_bytes": 3277354,
+  "dex_bytes": 2891932,
+  "apk_sha256": "3e21f3fdf3ab48f7ace08eed8bb1c8dea6b341719121d494d6932005fd687c70"
 }
 
 --- notes
@@ -290,7 +318,7 @@ BUILD FAILED in 37s
  * signature schemes: v2 (block ids: 0x7109871a, 0x504b4453, 0x42726577)
  * v1 signature files: none (fine for minSdk 24+)
  * signature VERIFIED: RSA-PKCS1/SHA-512 / RSA-4096, certificate sha256 ead721ae71700b02481477a9033cb5e7..., 4088-byte signed block, 4 chunks
- * dex files: classes.dex (2879376 bytes uncompressed)
+ * dex files: classes.dex (2891932 bytes uncompressed)
 
 --- problems
  none — APK structure, manifest, signing and dex contents check out
