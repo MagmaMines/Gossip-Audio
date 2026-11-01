@@ -99,7 +99,7 @@ The 1.0.1 implementation restarted the voice for every phoneme (own attack/relea
 recomputed per sample), which produced the "ticks/hiss" users reported: only 31–52 % of the energy
 landed on harmonics of F0. 1.0.1's replacement was still wrong, for a reason worth writing down: every
 vowel was declared without `av`, which defaults to 0.0, so the voiced path was multiplied by zero and the
-only audible content was consonant noise — normalised up to full scale. 1.0.4 fixes that (`av = 1.0` on
+only audible content was consonant noise — normalised up to full scale. 1.0.5 fixes that (`av = 1.0` on
 all 19 vowels) and rebuilds the tract around what the measurements said:
 
 1. **Phonemise** — English letter-to-sound rules plus a lexicon of irregular common words and

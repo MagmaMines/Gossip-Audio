@@ -1,6 +1,6 @@
 # Play Store listing pack
 
-Copy-paste ready. Everything here matches the shipped APK (`dist/GossipAudio-1.0.4-release.apk`).
+Copy-paste ready. Everything here matches the shipped APK (`dist/GossipAudio-1.0.5-release.apk`).
 
 ---
 
@@ -100,7 +100,7 @@ GossipAudio by Beyoneer XYZ. Made with an unreasonable amount of yellow.
 | 7-inch tablet | optional | same renders, letterboxed |
 | Promo video | optional | screen-record the Studio → Download flow |
 
-## Release notes (v1.0.4)
+## Release notes (v1.0.5)
 
 ```
 Second build — accessibility, haptics and back-gesture release.

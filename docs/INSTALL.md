@@ -1,13 +1,13 @@
 # Install GossipAudio (the APK, not a zip)
 
-> Short version: the download is **`GossipAudio-1.0.4-release.apk`** — one file, tap it, install it.
+> Short version: the download is **`GossipAudio-1.0.5-release.apk`** — one file, tap it, install it.
 > You do **not** need to unzip anything, and you should not rename it to `.zip`.
 
 ## 0. One link, one file
 
-**[⬇ `GossipAudio-1.0.4-release.apk`](https://github.com/MagmaMines/Gossip-Audio/releases/download/v1.0.4/GossipAudio-1.0.4-release.apk)** — tap it on the phone and install.
-The same file is attached to the [v1.0.4 release](https://github.com/MagmaMines/Gossip-Audio/releases/tag/v1.0.4)
-and committed at [`dist/GossipAudio-1.0.4-release.apk`](../dist/GossipAudio-1.0.4-release.apk).
+**[⬇ `GossipAudio-1.0.5-release.apk`](https://github.com/MagmaMines/Gossip-Audio/releases/download/v1.0.5/GossipAudio-1.0.5-release.apk)** — tap it on the phone and install.
+The same file is attached to the [v1.0.5 release](https://github.com/MagmaMines/Gossip-Audio/releases/tag/v1.0.5)
+and committed at [`dist/GossipAudio-1.0.5-release.apk`](../dist/GossipAudio-1.0.5-release.apk).
 
 ### "I got `gossipaudio-apk.zip` instead" — that was GitHub, not us
 
@@ -21,9 +21,9 @@ page or an old download — ignore it and use the `.apk`.
 
 | File | What it is | Use it? |
 |---|---|---|
-| [`dist/GossipAudio-1.0.4-release.apk`](../dist/GossipAudio-1.0.4-release.apk) | Signed release build (RSA-4096, APK Signature Scheme v2) | **Yes — this is the app** |
-| [`dist/GossipAudio-1.0.4-debug.apk`](../dist/GossipAudio-1.0.4-debug.apk) | Same code, debug signature, app id ends in `.debug` | Only if you develop |
-| [`dist/GossipAudio-1.0.4.aab`](../dist/GossipAudio-1.0.4.aab) | Play-Store bundle, **not installable by hand** | Upload to Play Console only |
+| [`dist/GossipAudio-1.0.5-release.apk`](../dist/GossipAudio-1.0.5-release.apk) | Signed release build (RSA-4096, APK Signature Scheme v2) | **Yes — this is the app** |
+| [`dist/GossipAudio-1.0.5-debug.apk`](../dist/GossipAudio-1.0.5-debug.apk) | Same code, debug signature, app id ends in `.debug` | Only if you develop |
+| [`dist/GossipAudio-1.0.5.aab`](../dist/GossipAudio-1.0.5.aab) | Play-Store bundle, **not installable by hand** | Upload to Play Console only |
 
 Both APKs are built by CI from the exact commit in [`dist/BUILD_INFO.txt`](../dist/BUILD_INFO.txt)
 and re-verified on every run by `tools/verify_apk.py`.
@@ -44,7 +44,7 @@ source archive from GitHub's green "Code" button, not the app.
 You can prove the file is a signed, installable app yourself:
 
 ```bash
-python3 tools/verify_apk.py dist/GossipAudio-1.0.4-release.apk
+python3 tools/verify_apk.py dist/GossipAudio-1.0.5-release.apk
 ```
 
 ```
@@ -61,7 +61,7 @@ archive and it fails. Try it:
 
 ```bash
 python3 - <<'PY'
-data = bytearray(open("dist/GossipAudio-1.0.4-release.apk", "rb").read())
+data = bytearray(open("dist/GossipAudio-1.0.5-release.apk", "rb").read())
 data[700000] ^= 1
 open("/tmp/tampered.apk", "wb").write(data)
 PY
@@ -84,7 +84,7 @@ you use dictation or turn on reminders.
 ## 4. Install over USB / ADB
 
 ```bash
-adb install -r dist/GossipAudio-1.0.4-release.apk
+adb install -r dist/GossipAudio-1.0.5-release.apk
 ```
 
 `-r` reinstalls over an older build. If you previously installed the debug build, uninstall it first —
