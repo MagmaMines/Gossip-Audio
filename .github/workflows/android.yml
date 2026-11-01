@@ -42,17 +42,7 @@ jobs:
           arch: x86_64
           target: google_apis
           disable-animations: true
-          script: |
-            set +e
-            gradle --no-daemon --stacktrace -PneuralTestEmulator=true connectedDebugAndroidTest > "$RUNNER_TEMP/neural-test.log" 2>&1
-            code=$?
-            adb logcat -d -s TestRunner:E AndroidRuntime:E DEBUG:E > "$RUNNER_TEMP/neural-logcat.log" 2>&1
-            if [ "$code" -eq 0 ]; then
-              adb pull /sdcard/Download/gossipaudio-neural-sample.wav "$RUNNER_TEMP/neural-sample.wav" >> "$RUNNER_TEMP/neural-test.log" 2>&1
-              code=$?
-            fi
-            tail -n 60 "$RUNNER_TEMP/neural-test.log"
-            exit "$code"
+          script: tools/run_emulator_test.sh
       - name: Record emulator failure details
         if: failure() && github.ref_name == 'arena/4b4d4c7a-gossip-audio'
         run: |
