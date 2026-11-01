@@ -161,7 +161,16 @@ object VoiceCompare {
         var note: String? = null
         val handler = Handler(Looper.getMainLooper())
 
-        fun step(index: Int, engine: VoiceEngine) {
+        // Declared as a val, not a local fun: a local function cannot be referenced
+        // before its declaration, and the two render calls below both need it.
+        val finish: () -> Unit = {
+            remaining--
+            if (remaining <= 0) {
+                handler.post { done(out[0], out[1], note) }
+            }
+        }
+
+        val step: (Int, VoiceEngine) -> Unit = { index, engine ->
             val profile = if (engine == VoiceEngine.NANO_VOICE) {
                 voice.copy(engine = VoiceEngine.NANO_VOICE)
             } else {
@@ -186,16 +195,9 @@ object VoiceCompare {
             )
         }
 
-        fun finish() {
-            remaining--
-            if (remaining <= 0) {
-                handler.post { done(out[0], out[1], note) }
-            }
-        }
-
-        step(0, VoiceEngine.SYSTEM_TTS)
         // NanoVoice is CPU-only and fast; the device voice can take a second to spin up,
         // so they run in parallel instead of queueing behind each other.
+        step(0, VoiceEngine.SYSTEM_TTS)
         step(1, VoiceEngine.NANO_VOICE)
     }
 }
