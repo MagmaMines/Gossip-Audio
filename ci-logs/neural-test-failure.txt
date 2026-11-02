@@ -1,0 +1,323 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.11.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
+The current default is 'false'.
+It will be removed in version 9.0 of the Android Gradle plugin.
+To keep using this feature, add the following to your module-level build.gradle files:
+    android.buildFeatures.buildConfig = true
+or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:packageDebugUnitTestForUnitTest
+> Task :app:generateDebugUnitTestConfig
+> Task :app:processDebugJavaRes UP-TO-DATE
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:83:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:91:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:100:42 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
+
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:testDebugUnitTest
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1793596710833.json
+
+BUILD SUCCESSFUL in 28s
+28 actionable tasks: 7 executed, 1 from cache, 20 up-to-date
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: org.gradle.api.GradleException: There were failing tests. See the report at: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/build/reports/androidTests/connected/debug/index.html
+	at com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask.run(DeviceProviderInstrumentTestTask.java:445)
+	at com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask.doTaskAction(DeviceProviderInstrumentTestTask.java:305)
+	at com.android.build.gradle.internal.tasks.NonIncrementalTask$taskAction$$inlined$recordTaskAction$1.invoke(BaseTask.kt:79)
+	at com.android.build.gradle.internal.tasks.Blocks.recordSpan(Blocks.java:51)
+	at com.android.build.gradle.internal.tasks.NonIncrementalTask.taskAction(NonIncrementalTask.kt:78)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTaskAction.java:58)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:29)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:26)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:47)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:209)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:204)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:66)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:166)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:59)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:53)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+
+
+BUILD FAILED in 2m 3s
+67 actionable tasks: 24 executed, 6 from cache, 37 up-to-date
+--------- beginning of main
+--------- beginning of system
+--------- beginning of crash
+11-02 05:22:07.958  5174  5174 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+11-02 05:22:07.958  5174  5174 F DEBUG   : Build fingerprint: 'google/sdk_gphone_x86_64/generic_x86_64:10/QSR1.211112.011/13135432:userdebug/dev-keys'
+11-02 05:22:07.958  5174  5174 F DEBUG   : Revision: '0'
+11-02 05:22:07.958  5174  5174 F DEBUG   : ABI: 'x86_64'
+11-02 05:22:07.965  5174  5174 F DEBUG   : Timestamp: 2026-11-02 05:22:07+0000
+11-02 05:22:07.965  5174  5174 F DEBUG   : pid: 4728, tid: 5169, name: Thread-3  >>> xyz.beyoneer.gossipaudio.debug <<<
+11-02 05:22:07.965  5174  5174 F DEBUG   : uid: 10146
+11-02 05:22:07.965  5174  5174 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0xdd0
+11-02 05:22:07.965  5174  5174 F DEBUG   : Cause: null pointer dereference
+11-02 05:22:07.965  5174  5174 F DEBUG   :     rax 0000000000000000  rbx 0000723f68be80c0  rcx 0000000000000000  rdx 0000723f660f0060
+11-02 05:22:07.966  5174  5174 F DEBUG   :     r8  0000723f660ef6f8  r9  0000723fbe2f4a17  r10 0000723fbe2f4a1a  r11 0000723f660eecc4
+11-02 05:22:07.966  5174  5174 F DEBUG   :     r12 0000723f660eecc0  r13 0000723fbe2f4a17  r14 0000000000000004  r15 0000723f660ef6f8
+11-02 05:22:07.966  5174  5174 F DEBUG   :     rdi 0000000000001f01  rsi 0000723f660eea94
+11-02 05:22:07.966  5174  5174 F DEBUG   :     rbp 0000723f660eeb18  rsp 0000723f660eea48  rip 0000724043d6c27f
+11-02 05:22:08.677  5174  5174 F DEBUG   : 
+11-02 05:22:08.677  5174  5174 F DEBUG   : backtrace:
+11-02 05:22:08.677  5174  5174 F DEBUG   :       #00 pc 000000000000827f  /system/lib64/libGLESv1_CM.so (glGetString+31) (BuildId: 5f5a497134b1f72a180c1a310b555d4b)
+11-02 05:22:08.677  5174  5174 F DEBUG   :       #01 pc 00000000000fe0ea  /system/lib64/libandroid_runtime.so (android_glGetString(_JNIEnv*, _jobject*, int)+10) (BuildId: 42de2a6ec7d307e7401625e2a3f3eb95)
+11-02 05:22:08.677  5174  5174 F DEBUG   :       #02 pc 00000000002b71d8  /system/framework/x86_64/boot-framework.oat (art_jni_trampoline+200) (BuildId: 2b9c4317d2722c1beacc598126db4bd30baa2895)
+11-02 05:22:08.677  5174  5174 F DEBUG   :       #03 pc 00000000001696b6  /apex/com.android.runtime/lib64/libart.so (art_quick_invoke_static_stub+806) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.677  5174  5174 F DEBUG   :       #04 pc 0000000000179c61  /apex/com.android.runtime/lib64/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+305) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #05 pc 000000000034101c  /apex/com.android.runtime/lib64/libart.so (art::interpreter::ArtInterpreterToCompiledCodeBridge(art::Thread*, art::ArtMethod*, art::ShadowFrame*, unsigned short, art::JValue*)+380) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #06 pc 000000000033b22f  /apex/com.android.runtime/lib64/libart.so (bool art::interpreter::DoCall<false, false>(art::ArtMethod*, art::Thread*, art::ShadowFrame&, art::Instruction const*, unsigned short, art::JValue*)+1151) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #07 pc 000000000066c555  /apex/com.android.runtime/lib64/libart.so (MterpInvokeStatic+677) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #08 pc 0000000000162999  /apex/com.android.runtime/lib64/libart.so (mterp_op_invoke_static+25) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #09 pc 000000000000914a  [anon:dalvik-classes5.dex extracted in memory from /data/app/xyz.beyoneer.gossipaudio.debug-YP-WBeCApH3Bz4RlFYZygw==/base.apk!classes5.dex] (xyz.beyoneer.gossipaudio.util.Telemetry.detectGpu+166)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #10 pc 000000000066f7d2  /apex/com.android.runtime/lib64/libart.so (MterpInvokeDirectRange+1090) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #11 pc 0000000000162c19  /apex/com.android.runtime/lib64/libart.so (mterp_op_invoke_direct_range+25) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #12 pc 000000000000956c  [anon:dalvik-classes5.dex extracted in memory from /data/app/xyz.beyoneer.gossipaudio.debug-YP-WBeCApH3Bz4RlFYZygw==/base.apk!classes5.dex] (xyz.beyoneer.gossipaudio.util.Telemetry.snapshot+204)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #13 pc 00000000006692ed  /apex/com.android.runtime/lib64/libart.so (MterpInvokeVirtual+1789) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #14 pc 0000000000162819  /apex/com.android.runtime/lib64/libart.so (mterp_op_invoke_virtual+25) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #15 pc 0000000000008508  [anon:dalvik-classes5.dex extracted in memory from /data/app/xyz.beyoneer.gossipaudio.debug-YP-WBeCApH3Bz4RlFYZygw==/base.apk!classes5.dex] (xyz.beyoneer.gossipaudio.util.Telemetry$Sampler.start$lambda$1+16)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #16 pc 000000000066c87d  /apex/com.android.runtime/lib64/libart.so (MterpInvokeStatic+1485) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #17 pc 0000000000162999  /apex/com.android.runtime/lib64/libart.so (mterp_op_invoke_static+25) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #18 pc 0000000000008484  [anon:dalvik-classes5.dex extracted in memory from /data/app/xyz.beyoneer.gossipaudio.debug-YP-WBeCApH3Bz4RlFYZygw==/base.apk!classes5.dex] (xyz.beyoneer.gossipaudio.util.Telemetry$Sampler.$r8$lambda$zso30QPbx53leAI_34tEdr6pDig)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #19 pc 000000000066c87d  /apex/com.android.runtime/lib64/libart.so (MterpInvokeStatic+1485) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #20 pc 0000000000162999  /apex/com.android.runtime/lib64/libart.so (mterp_op_invoke_static+25) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #21 pc 00000000000082dc  [anon:dalvik-classes5.dex extracted in memory from /data/app/xyz.beyoneer.gossipaudio.debug-YP-WBeCApH3Bz4RlFYZygw==/base.apk!classes5.dex] (xyz.beyoneer.gossipaudio.util.Telemetry$Sampler$$ExternalSyntheticLambda0.run+4)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #22 pc 000000000066b07d  /apex/com.android.runtime/lib64/libart.so (MterpInvokeInterface+2253) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.756  5174  5174 F DEBUG   :       #23 pc 0000000000162a19  /apex/com.android.runtime/lib64/libart.so (mterp_op_invoke_interface+25) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #24 pc 00000000000ea918  /apex/com.android.runtime/javalib/core-oj.jar (java.lang.Thread.run+8)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #25 pc 000000000030dccd  /apex/com.android.runtime/lib64/libart.so (_ZN3art11interpreterL7ExecuteEPNS_6ThreadERKNS_20CodeItemDataAccessorERNS_11ShadowFrameENS_6JValueEbb.llvm.7016904451726766706+253) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #26 pc 000000000065855a  /apex/com.android.runtime/lib64/libart.so (artQuickToInterpreterBridge+1210) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #27 pc 00000000001747cc  /apex/com.android.runtime/lib64/libart.so (art_quick_to_interpreter_bridge+140) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #28 pc 0000000000169354  /apex/com.android.runtime/lib64/libart.so (art_quick_invoke_stub+756) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #29 pc 0000000000179c50  /apex/com.android.runtime/lib64/libart.so (art::ArtMethod::Invoke(art::Thread*, unsigned int*, unsigned int, art::JValue*, char const*)+288) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #30 pc 0000000000549d29  /apex/com.android.runtime/lib64/libart.so (art::(anonymous namespace)::InvokeWithArgArray(art::ScopedObjectAccessAlreadyRunnable const&, art::ArtMethod*, art::(anonymous namespace)::ArgArray*, art::JValue*, char const*)+89) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #31 pc 000000000054afc5  /apex/com.android.runtime/lib64/libart.so (art::InvokeVirtualOrInterfaceWithJValues(art::ScopedObjectAccessAlreadyRunnable const&, _jobject*, _jmethodID*, jvalue const*)+437) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #32 pc 00000000005a0a8e  /apex/com.android.runtime/lib64/libart.so (art::Thread::CreateCallback(void*)+1438) (BuildId: 07c1a2774578f1e2358fb54658aa19df)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #33 pc 0000000000100fce  /apex/com.android.runtime/lib64/bionic/libc.so (__pthread_start(void*)+30) (BuildId: b5c6019a3b4ea61b5e9a2f56319b584e)
+11-02 05:22:08.757  5174  5174 F DEBUG   :       #34 pc 0000000000098fe7  /apex/com.android.runtime/lib64/bionic/libc.so (__start_thread+55) (BuildId: b5c6019a3b4ea61b5e9a2f56319b584e)
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="xyz.beyoneer.gossipaudio.AutoVoiceUiTest" tests="2" failures="1" errors="0" skipped="0" time="56.712" timestamp="2026-11-02T05:22:24" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 10" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="autoVoiceAndLicenseControlsAreVisible" classname="xyz.beyoneer.gossipaudio.AutoVoiceUiTest" time="5.101" />
+  <testcase name="downloadAndSynthesizeAllExtraVoices" classname="xyz.beyoneer.gossipaudio.ExtraVoicesTest" time="39.109">
+    <failure></failure>
+  </testcase>
+  <system-err>Test run failed to complete. Instrumentation run failed due to Process crashed.
+</system-err>
+</testsuite>
