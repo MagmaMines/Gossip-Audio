@@ -54,8 +54,11 @@ object VoiceDownloads {
         notifyChanged()
         val dir = directory(context, id)
         val tmp = File(dir.parentFile, "$pack.pending")
-        tmp.deleteRecursively()
         try {
+            // The previous installer may have completed between the initial check
+            // and acquiring the pack slot. Do not replace a completed install.
+            if (installed(context, id)) return
+            tmp.deleteRecursively()
             check(tmp.mkdirs()) { "Cannot create voice directory." }
             when (pack) {
                 "cori" -> installArchive(tmp, CORI, CORI_HASH, 70_000_000,

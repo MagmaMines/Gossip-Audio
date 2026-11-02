@@ -2,9 +2,6 @@ package xyz.beyoneer.gossipaudio.util
 
 import android.app.ActivityManager
 import android.content.Context
-import android.opengl.EGL14
-import android.opengl.EGLConfig
-import android.opengl.GLES20
 import android.os.Build
 import android.os.StatFs
 import java.io.File
@@ -12,7 +9,7 @@ import java.io.RandomAccessFile
 
 /**
  * Real device telemetry — no fake numbers. Everything shown on the
- * "Neural Load" panel comes from /proc, ActivityManager or EGL.
+ * "Neural Load" panel comes from /proc and ActivityManager.
  */
 class Telemetry(private val context: Context) {
 
@@ -51,7 +48,7 @@ class Telemetry(private val context: Context) {
             appMemMb = (rt.totalMemory() - rt.freeMemory()) / (1024 * 1024),
             maxHeapMb = rt.maxMemory() / (1024 * 1024),
             freeStorageMb = freeMb,
-            gpu = GPU_RENDERER ?: detectGpu(),
+            gpu = "not queried (CPU synthesis)",
             gles = deviceConfig.glEsVersion ?: "2.0",
             nnapi = Build.VERSION.SDK_INT >= 27 && context.packageManager.hasSystemFeature("android.hardware.neuralnetworks"),
             soc = if (Build.VERSION.SDK_INT >= 31) (Build.SOC_MODEL ?: Build.HARDWARE) else Build.HARDWARE,
@@ -69,7 +66,7 @@ class Telemetry(private val context: Context) {
             "RAM" to "${s.usedMemMb} / ${s.totalMemMb} MB",
             "GPU" to s.gpu,
             "OpenGL ES" to s.gles,
-            "NN API" to if (s.nnapi) "available (accelerated voices)" else "not advertised",
+            "NN API" to if (s.nnapi) "available (not used for synthesis)" else "not advertised",
             "Free storage" to "${s.freeStorageMb} MB",
             "App heap" to "${s.appMemMb} / ${s.maxHeapMb} MB"
         )
@@ -94,33 +91,6 @@ class Telemetry(private val context: Context) {
         } catch (_: Throwable) {
             return 0f
         }
-    }
-
-    private fun detectGpu(): String {
-        val detected = try {
-            val display = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY) ?: return "not reported"
-            val version = IntArray(2)
-            if (!EGL14.eglInitialize(display, version, 0, version, 1)) return "not reported"
-            val attribs = intArrayOf(EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT, EGL14.EGL_NONE)
-            val configs = arrayOfNulls<EGLConfig>(1)
-            val num = IntArray(1)
-            if (!EGL14.eglChooseConfig(display, attribs, 0, configs, 0, 1, num, 0)) return "not reported"
-            val ctx = EGL14.eglCreateContext(
-                display, configs[0], EGL14.EGL_NO_CONTEXT,
-                intArrayOf(EGL14.EGL_CONTEXT_CLIENT_VERSION, 2, EGL14.EGL_NONE), 0
-            )
-            if (ctx == null || ctx == EGL14.EGL_NO_CONTEXT) return "not reported"
-            EGL14.eglMakeCurrent(display, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, ctx)
-            val renderer = GLES20.glGetString(GLES20.GL_RENDERER) ?: "not reported"
-            EGL14.eglMakeCurrent(display, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_SURFACE, EGL14.EGL_NO_CONTEXT)
-            EGL14.eglDestroyContext(display, ctx)
-            EGL14.eglTerminate(display)
-            renderer
-        } catch (_: Throwable) {
-            "not reported"
-        }
-        GPU_RENDERER = detected
-        return detected
     }
 
     /** Samples CPU + RAM once per interval while a synthesis job runs. */
@@ -164,8 +134,6 @@ class Telemetry(private val context: Context) {
     }
 
     companion object {
-        @Volatile private var GPU_RENDERER: String? = null
-
         fun cacheDirSize(dir: File): Long {
             var total = 0L
             dir.listFiles()?.forEach { total += if (it.isDirectory) cacheDirSize(it) else it.length() }
