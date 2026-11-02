@@ -18,11 +18,15 @@ class ExtraVoicesTest {
     @Test fun downloadAndSynthesizeAllExtraVoices() {
         val context = ApplicationProvider.getApplicationContext<GossipApp>()
         for ((id, text) in listOf("cori" to "Hello, welcome to Gossip Audio.",
-                                  "ljspeech" to "Hello, welcome to Gossip Audio.",
-                                  "padmavathi" to "నమస్కారం! మీ మాటలకు స్వాగతం.",
                                   "hi_super" to "नमस्ते! आपका स्वागत है।",
                                   "ja_super" to "こんにちは。今日はいい天気です。",
                                   "fr_super" to "Bonjour et bienvenue à tous.",
+                                  "es_super" to "Hola y bienvenidos a todos.",
+                                  "de_super" to "Hallo und willkommen bei uns.",
+                                  "it_super" to "Ciao e benvenuti a tutti.",
+                                  "pt_super" to "Olá e bem-vindos a todos.",
+                                  "ko_super" to "안녕하세요. 오늘도 반갑습니다.",
+                                  "ar_super" to "مرحبا بكم في استوديو الصوت.",
                                   "zh_kokoro" to "你好，欢迎来到语音工作室。")) {
             VoiceDownloads.download(context, id)
             assertTrue("Voice download not installed: $id", VoiceDownloads.installed(context, id))

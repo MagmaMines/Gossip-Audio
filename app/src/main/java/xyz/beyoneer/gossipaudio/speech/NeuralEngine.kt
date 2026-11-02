@@ -22,8 +22,8 @@ object NeuralEngine {
     } catch (_: Exception) { false }
 
     @Synchronized
-    fun render(context: Context, chunks: List<String>, speaker: Int, speed: Float, voiceId: String = "riya", progress: (Int, Int) -> Unit): Pcm {
-        val bundled = voiceId == "riya"
+    fun render(context: Context, chunks: List<String>, speaker: Int, speed: Float, voiceId: String = "ljspeech", progress: (Int, Int) -> Unit): Pcm {
+        val bundled = voiceId == "ljspeech"
         check(if (bundled) available(context) else VoiceDownloads.installed(context, voiceId)) {
             "Download this voice from the Voices tab first."
         }
@@ -32,7 +32,7 @@ object NeuralEngine {
             copyAssetTree(context, "$ASSET/espeak-ng-data", data)
             File(data, ".complete").writeText("ok")
         }
-        val supertonic = voiceId in setOf("hi_super", "ja_super", "fr_super")
+        val supertonic = voiceId.endsWith("_super")
         val chinese = voiceId == "zh_kokoro"
         val dir = if (!bundled) VoiceDownloads.directory(context, voiceId) else null
         fun path(name: String): String = File(dir!!, name).absolutePath

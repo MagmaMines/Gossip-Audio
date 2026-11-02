@@ -34,55 +34,51 @@ data class VoiceProfile(
 
 object VoiceCatalog {
 
-    // One full-precision pretrained Piper voice; riya preserves older clip IDs.
     val all: List<VoiceProfile> = listOf(
-        VoiceProfile(
-            id = "riya", name = "Lessac", gender = VoiceGender.FEMALE,
-            locale = "en-US", flag = "🇺🇸", region = "English (US)",
-            pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "Full-precision neural voice",
-            bio = "Bundled for evaluation only: its training recordings have non-commercial restrictions. Do not use commercially without permission.",
-            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
-        ),
-        VoiceProfile(
-            id = "cori", name = "Cori", gender = VoiceGender.FEMALE,
-            locale = "en-GB", flag = "🇬🇧", region = "English (UK)",
-            pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "British English · neural",
-            bio = "Full-precision Piper voice trained from scratch on LibriVox recordings. Download once, then synthesize offline.",
-            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
-        ),
-        VoiceProfile(
-            id = "ljspeech", name = "LJ Speech", gender = VoiceGender.FEMALE,
-            locale = "en-US", flag = "🇺🇸", region = "English (US)",
-            pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "American English · neural",
-            bio = "Full-precision Piper voice trained from scratch on the public-domain LJ Speech dataset. Download once for offline use.",
-            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
-        ),
+        VoiceProfile(id = "ljspeech", name = "LJ Speech", gender = VoiceGender.FEMALE,
+            locale = "en-US", flag = "🇺🇸", region = "English (US)", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Bundled · full-precision Piper", bio = "Public-domain model, trained from scratch on LJ Speech. Ready offline.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "cori", name = "Cori", gender = VoiceGender.FEMALE,
+            locale = "en-GB", flag = "🇬🇧", region = "English (UK)", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "British English · Piper", bio = "Public-domain model trained from scratch on LibriVox recordings.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
         VoiceProfile(id = "hi_super", name = "Hindi", gender = VoiceGender.FEMALE,
             locale = "hi-IN", flag = "🇮🇳", region = "Hindi", pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "Supertonic 3 · shared pack", bio = "Hindi neural voice. One shared download unlocks Hindi, Japanese and French. OpenRAIL-M use restrictions apply.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
         VoiceProfile(id = "ja_super", name = "Japanese", gender = VoiceGender.FEMALE,
             locale = "ja-JP", flag = "🇯🇵", region = "Japanese", pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "Supertonic 3 · shared pack", bio = "Japanese neural voice. Shared pack with Hindi and French. OpenRAIL-M use restrictions apply.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
         VoiceProfile(id = "fr_super", name = "French", gender = VoiceGender.FEMALE,
             locale = "fr-FR", flag = "🇫🇷", region = "French", pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "Supertonic 3 · shared pack", bio = "French neural voice. Shared pack with Hindi and Japanese. OpenRAIL-M use restrictions apply.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "es_super", name = "Spanish", gender = VoiceGender.FEMALE,
+            locale = "es-ES", flag = "🇪🇸", region = "Spanish", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "de_super", name = "German", gender = VoiceGender.FEMALE,
+            locale = "de-DE", flag = "🇩🇪", region = "German", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "it_super", name = "Italian", gender = VoiceGender.FEMALE,
+            locale = "it-IT", flag = "🇮🇹", region = "Italian", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "pt_super", name = "Portuguese", gender = VoiceGender.FEMALE,
+            locale = "pt-PT", flag = "🇵🇹", region = "Portuguese", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "ko_super", name = "Korean", gender = VoiceGender.FEMALE,
+            locale = "ko-KR", flag = "🇰🇷", region = "Korean", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
+        VoiceProfile(id = "ar_super", name = "Arabic", gender = VoiceGender.FEMALE,
+            locale = "ar", flag = "🇸🇦", region = "Arabic", pitch = 1f, rate = 1f, timbre = 1f,
+            vibe = "Supertonic 3 · shared pack", bio = "Commercial use permitted under OpenRAIL-M, with restrictions and disclosure requirements.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
         VoiceProfile(id = "zh_kokoro", name = "Mandarin", gender = VoiceGender.FEMALE,
             locale = "zh-CN", flag = "🇨🇳", region = "Mandarin Chinese", pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "Kokoro 1.1 · full precision", bio = "Mandarin Chinese neural voice. Apache 2.0 model; a separate large download is required.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()),
-        VoiceProfile(
-            id = "padmavathi", name = "Padmavathi", gender = VoiceGender.FEMALE,
-            locale = "te-IN", flag = "🇮🇳", region = "Telugu (India)",
-            pitch = 1f, rate = 1f, timbre = 1f,
-            vibe = "Telugu · neural",
-            bio = "Piper voice using AI4Bharat IndicVoices-R (CC BY 4.0). Attribution required; confirm model licensing and training lineage before commercial use.",
-            engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt()
-        )
+            vibe = "Kokoro 1.1 · full precision", bio = "Apache 2.0 model; a separate large download is required.", engine = VoiceEngine.NEURAL, accent = 0xFFF5C518.toInt())
     )
 
-    fun byId(id: String?): VoiceProfile = all.firstOrNull { it.id == id } ?: all[0]
+    // Retain names/terms on old saved clips without making these models selectable.
+    private val legacy = listOf(
+        all[0].copy(id = "riya", name = "Legacy Riya / Lessac", bio = "Old clips may use non-commercial Lessac; review original terms."),
+        all[0].copy(id = "padmavathi", name = "Padmavathi (legacy)", locale = "te-IN", region = "Telugu", flag = "🇮🇳", bio = "Old model rights require verification.")
+    )
+    fun byId(id: String?): VoiceProfile = all.firstOrNull { it.id == id } ?: legacy.firstOrNull { it.id == id } ?: all[0]
 
     val femaleCount: Int get() = all.count { it.gender == VoiceGender.FEMALE }
     val maleCount: Int get() = all.count { it.gender == VoiceGender.MALE }

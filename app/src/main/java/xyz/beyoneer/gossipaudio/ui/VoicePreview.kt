@@ -21,16 +21,21 @@ object VoicePreview {
 
     private fun sampleFor(voice: VoiceProfile): String =
         when (voice.id) {
-            "padmavathi" -> "నమస్కారం! మీ మాటలకు స్వాగతం."
             "hi_super" -> "नमस्ते! गॉसिप ऑडियो में आपका स्वागत है।"
             "ja_super" -> "こんにちは。ゴシップオーディオへようこそ。"
             "fr_super" -> "Bonjour et bienvenue sur Gossip Audio."
+            "es_super" -> "Hola, bienvenidos a Gossip Audio."
+            "de_super" -> "Hallo und willkommen bei Gossip Audio."
+            "it_super" -> "Ciao e benvenuti su Gossip Audio."
+            "pt_super" -> "Olá, bem-vindos ao Gossip Audio."
+            "ko_super" -> "안녕하세요. 가십 오디오에 오신 것을 환영합니다."
+            "ar_super" -> "مرحباً بكم في استوديو الصوت."
             "zh_kokoro" -> "你好，欢迎来到语音工作室。"
             else -> "Hello! This is ${voice.name}. Your words, their wings."
         }
 
     fun preview(activity: MainActivity, voice: VoiceProfile, onState: (State) -> Unit) {
-        val key = "preview-lessac-fp32-v2-${voice.id}-${activity.prefs.selectedStyleId}-${activity.prefs.pitch}-${activity.prefs.speed}"
+        val key = "preview-commercial-v3-${voice.id}-${activity.prefs.selectedStyleId}-${activity.prefs.pitch}-${activity.prefs.speed}"
         val cacheDir = File(activity.cacheDir, "previews").apply { mkdirs() }
         val file = File(cacheDir, "$key.wav")
         if (file.exists() && file.length() > 2048) {

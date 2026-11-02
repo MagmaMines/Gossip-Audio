@@ -11,8 +11,8 @@ android {
         applicationId = "xyz.beyoneer.gossipaudio"
         minSdk = 24
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.4.0"
+        versionCode = 8
+        versionName = "1.5.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resourceConfigurations += listOf("en", "hi")
         // The public APK targets 64-bit ARM; CI builds x86_64 separately for emulator testing.
@@ -85,6 +85,7 @@ dependencies {
     implementation("org.apache.commons:commons-compress:1.26.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     testImplementation("junit:junit:4.13.2")
     // Robolectric boots the real activity + views on the JVM so CI can prove the UI renders.
     testImplementation("org.robolectric:robolectric:4.14.1")

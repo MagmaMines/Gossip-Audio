@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import xyz.beyoneer.gossipaudio.audio.PlaybackHub
+import xyz.beyoneer.gossipaudio.core.AutoVoice
 import xyz.beyoneer.gossipaudio.core.StyleCatalog
 import xyz.beyoneer.gossipaudio.core.TextKit
 import xyz.beyoneer.gossipaudio.core.VoiceCatalog
@@ -69,6 +70,8 @@ class StudioTab(private val shell: ShellScreen) : Tab {
     @Volatile private var generationToken = 0
     private val telemetryHistory = ArrayList<Pair<Float, Float>>()
     private var composerVoiceName: TextView? = null
+    private var autoStatus: TextView? = null
+    private var autoButton: BrandButton? = null
     private var speedSliderRef: NeonSlider? = null
     private var pitchSliderRef: NeonSlider? = null
     private var speedLabelRef: TextView? = null
@@ -84,6 +87,8 @@ class StudioTab(private val shell: ShellScreen) : Tab {
 
     override fun onShow() {
         refreshVoiceStrip()
+        refreshVoiceChipLabel()
+        refreshAutoVoice()
         refreshStyleStrip()
         refreshRecent()
         startTelemetry()
@@ -283,6 +288,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                 counter.text = "$length / 2000"
                 counter.setTextColor(if (length > 1800) palette.danger else palette.textDim)
                 updateEstimate()
+                refreshAutoVoice()
             }
         })
         card.addView(input)
@@ -371,7 +377,36 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply { topMargin = Ui.dp(activity, 8f) })
         }
+        val autoRow = Ui.row(activity)
+        val auto = BrandButton(activity, palette, "Auto voice: off", BrandButton.Variant.GHOST, Icons.Kind.SPARKLE, compact = true)
+        autoButton = auto
+        auto.setOnClick {
+            activity.app.prefs.autoVoice = !activity.app.prefs.autoVoice
+            refreshAutoVoice()
+            updateEstimate()
+        }
+        autoRow.addView(auto)
+        val status = Ui.text(activity, "", 11f, palette.textDim)
+        status.setPadding(Ui.dp(activity, 8f), 0, 0, 0)
+        autoStatus = status
+        autoRow.addView(status, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+        card.addView(autoRow, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply { topMargin = Ui.dp(activity, 8f) })
+        refreshAutoVoice()
         return card
+    }
+
+    private fun refreshAutoVoice() {
+        val enabled = activity.app.prefs.autoVoice
+        autoButton?.setText(if (enabled) "Auto voice: on" else "Auto voice: off")
+        autoButton?.contentDescription = if (enabled) "Automatic voice selection on" else "Automatic voice selection off"
+        val id = if (enabled && ::input.isInitialized) AutoVoice.detect(input.text?.toString().orEmpty()) else null
+        autoStatus?.text = when {
+            !enabled -> "Choose a voice manually"
+            input.text.isNullOrBlank() -> "Type to detect language"
+            id == null -> "Not sure — choose a voice manually"
+            !xyz.beyoneer.gossipaudio.speech.VoiceDownloads.installed(activity, id) -> "${VoiceCatalog.byId(id).name} · download needed"
+            else -> "Detected: ${VoiceCatalog.byId(id).name}"
+        }
     }
 
     private fun miniAction(icon: Icons.Kind, label: String, action: () -> Unit): View {
@@ -563,6 +598,8 @@ class StudioTab(private val shell: ShellScreen) : Tab {
                     return@pressable
                 }
                 activity.app.prefs.selectedVoiceId = voice.id
+                activity.app.prefs.autoVoice = false
+                refreshAutoVoice()
                 refreshVoiceStrip()
                 refreshVoiceChipLabel()
                 updateEstimate()
@@ -601,14 +638,14 @@ class StudioTab(private val shell: ShellScreen) : Tab {
     private fun updateEstimate() {
         if (!::estimate.isInitialized) return
         val text = input.text?.toString().orEmpty()
-        val voice = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId)
+        val voiceName = if (activity.app.prefs.autoVoice) AutoVoice.detect(text)?.let { VoiceCatalog.byId(it).name } ?: "Choose language" else VoiceCatalog.byId(activity.app.prefs.selectedVoiceId).name
         val style = StyleCatalog.byId(activity.app.prefs.selectedStyleId)
         val ms = TextKit.estimateDurationMs(text, activity.app.prefs.speed * style.rateFactor)
         val words = TextKit.wordCount(text)
         estimate.text = if (words == 0) {
             "Tap a dice if you need inspiration \uD83C\uDFB2"
         } else {
-            "\u2248 ${TextKit.formatDuration(ms)} \u00B7 $words words \u00B7 ${voice.name} \u00B7 ${style.label}"
+            "\u2248 ${TextKit.formatDuration(ms)} \u00B7 $words words \u00B7 ${voiceName} \u00B7 ${style.label}"
         }
     }
 
@@ -674,7 +711,21 @@ class StudioTab(private val shell: ShellScreen) : Tab {
             activity.toast("Give me at least a few words to work with \uD83D\uDC40")
             return
         }
-        val voice = VoiceCatalog.byId(activity.app.prefs.selectedVoiceId)
+        val id = if (activity.app.prefs.autoVoice) {
+            AutoVoice.detect(text) ?: run {
+                android.app.AlertDialog.Builder(activity).setTitle("Choose a voice")
+                    .setMessage("Language could not be identified confidently (for example, Chinese and Japanese can share characters). Turn off Auto voice and choose a language manually.")
+                    .setPositiveButton("OK", null).show()
+                return
+            }
+        } else VoiceCatalog.byId(activity.app.prefs.selectedVoiceId).id
+        val voice = VoiceCatalog.byId(id)
+        if (!xyz.beyoneer.gossipaudio.speech.VoiceDownloads.installed(activity, id)) {
+            android.app.AlertDialog.Builder(activity).setTitle("Download ${voice.name}")
+                .setMessage("Auto voice needs the ${voice.name} model. Download it in Voices, then return to generate.")
+                .setNegativeButton("Cancel", null).setPositiveButton("Voices") { _, _ -> shell.selectTab(1) }.show()
+            return
+        }
         val style = StyleCatalog.byId(activity.app.prefs.selectedStyleId)
         runSynthesis(text, voice, style)
     }
@@ -683,7 +734,7 @@ class StudioTab(private val shell: ShellScreen) : Tab {
         busy = true
         val token = ++generationToken
         generateButton.setLoading(true)
-        overlay.show("Waking ${voice.name}\u2026", "Running the bundled neural model on CPU")
+        overlay.show("Waking ${voice.name}\u2026", "Running the on-device neural model on CPU")
         val job = SpeechSynth(activity)
         synthJob = job
         job.synthesize(text, voice, style, activity.app.prefs.pitch, activity.app.prefs.speed, object : SpeechSynth.Callback {

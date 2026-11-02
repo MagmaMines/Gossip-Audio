@@ -20,8 +20,12 @@ class Prefs(context: Context) {
         set(value) = sp.edit().putInt("default_bitrate", value).apply()
 
     var selectedVoiceId: String
-        get() = sp.getString("selected_voice", "riya") ?: "riya"
+        get() = when (val id = sp.getString("selected_voice", "ljspeech")) { null, "riya", "padmavathi" -> "ljspeech"; else -> id }
         set(value) = sp.edit().putString("selected_voice", value).apply()
+
+    var autoVoice: Boolean
+        get() = sp.getBoolean("auto_voice", false)
+        set(value) = sp.edit().putBoolean("auto_voice", value).apply()
 
     var selectedStyleId: String
         get() = sp.getString("selected_style", "gossip") ?: "gossip"

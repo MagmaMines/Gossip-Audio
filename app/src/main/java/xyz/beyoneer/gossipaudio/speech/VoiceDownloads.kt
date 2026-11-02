@@ -10,12 +10,7 @@ import java.security.MessageDigest
 /** Explicit, integrity-pinned downloads; text is never sent to these servers. */
 object VoiceDownloads {
     private const val CORI = "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_GB-cori-medium.tar.bz2"
-    private const val LJ = "https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_US-ljspeech-medium.tar.bz2"
-    private const val LJ_HASH = "3dfb4b759d8be032a4903a9538d128b0fda2a06ab1de6cbc2d93a97e2dd83dba"
-    private const val TELUGU = "https://github.com/jesusanswersapp/jesusanswers/releases/download/voices-v1/te_IN-padmavathi-medium--"
     private const val CORI_HASH = "49c9a5361bbdd95d7ca9687c4de11e5908481f65e7c7c368960df79949fdac2b"
-    private const val TELUGU_HASH = "104d1d0b1d88bd243b3543a208bd98405c69e3d77f05a18055359ce867a5649b"
-    private const val TOKENS_HASH = "ef3a7e4a8d1af0c9d4dc45aaae1a6242ebe24a7ed6f3d025a49eb29682784c6d"
 
     private const val SUPER_HASH = "82fa96f91c4ef8abaae3a14a3f4153facf88bed821d1f7331cec2700f432c427"
     private const val ZH_HASH = "b78e1ac42b852e839cceaafbe88f66806bf5860992d1d7b9a3f2ad1198427aed"
@@ -27,9 +22,9 @@ object VoiceDownloads {
     private val main = android.os.Handler(android.os.Looper.getMainLooper())
 
     fun packId(id: String): String = when (id) {
-        "hi_super", "ja_super", "fr_super" -> "supertonic3"
+        "hi_super", "ja_super", "fr_super", "es_super", "de_super", "it_super", "pt_super", "ko_super", "ar_super" -> "supertonic3"
         "zh_kokoro" -> "kokoro11"
-        "riya", "cori", "ljspeech", "padmavathi" -> id
+        "cori", "ljspeech" -> id
         else -> throw IllegalArgumentException("Unknown voice")
     }
     fun addListener(listener: () -> Unit) { listeners.add(listener) }
@@ -37,12 +32,12 @@ object VoiceDownloads {
     private fun notifyChanged() { main.post { listeners.forEach { it() } } }
     fun downloading(id: String): Boolean = active.contains(packId(id))
     fun downloadDescription(id: String): String = when (packId(id)) {
-        "supertonic3" -> "One shared download (~129 MB) unlocks Hindi, Japanese and French. OpenRAIL-M use restrictions apply."
+        "supertonic3" -> "One shared download (~129 MB) unlocks Hindi, Japanese, French, Spanish, German, Italian, Portuguese, Korean and Arabic. OpenRAIL-M use restrictions apply."
         "kokoro11" -> "The full-precision Mandarin voice download is ~365 MB."
         else -> "This voice download is approximately 65–70 MB."
     }
     fun directory(context: Context, id: String): File = File(context.filesDir, "voices/${packId(id)}")
-    fun installed(context: Context, id: String): Boolean = id == "riya" || try {
+    fun installed(context: Context, id: String): Boolean = id == "ljspeech" || try {
         val dir = directory(context, id)
         val required = when (packId(id)) {
             "supertonic3" -> superFiles
@@ -52,10 +47,10 @@ object VoiceDownloads {
         File(dir, ".complete").isFile && required.all { File(dir, it).isFile && File(dir, it).length() > 0 }
     } catch (_: IllegalArgumentException) { false }
 
-    @Synchronized fun download(context: Context, id: String) {
+    fun download(context: Context, id: String) {
         if (installed(context, id)) { notifyChanged(); return }
         val pack = packId(id)
-        active.add(pack)
+        check(active.add(pack)) { "Download already in progress." }
         notifyChanged()
         val dir = directory(context, id)
         val tmp = File(dir.parentFile, "$pack.pending")
@@ -63,17 +58,10 @@ object VoiceDownloads {
         try {
             check(tmp.mkdirs()) { "Cannot create voice directory." }
             when (pack) {
-                "cori", "ljspeech" -> {
-                    val files = if (pack == "cori") mapOf("en_GB-cori-medium.onnx" to "model.onnx", "tokens.txt" to "tokens.txt")
-                        else mapOf("en_US-ljspeech-medium.onnx" to "model.onnx", "tokens.txt" to "tokens.txt")
-                    installArchive(tmp, if (pack == "cori") CORI else LJ, if (pack == "cori") CORI_HASH else LJ_HASH, 70_000_000, files)
-                }
+                "cori" -> installArchive(tmp, CORI, CORI_HASH, 70_000_000,
+                    mapOf("en_GB-cori-medium.onnx" to "model.onnx", "tokens.txt" to "tokens.txt"))
                 "supertonic3" -> installArchive(tmp, RELEASES + "sherpa-onnx-supertonic-3-tts-int8-2026-05-11.tar.bz2", SUPER_HASH, 140_000_000, superFiles.associateWith { it })
                 "kokoro11" -> installArchive(tmp, RELEASES + "kokoro-multi-lang-v1_1.tar.bz2", ZH_HASH, 380_000_000, chineseFiles.associateWith { it })
-                "padmavathi" -> {
-                    fetch(TELUGU + "te_IN-padmavathi-medium.onnx", File(tmp, "model.onnx"), TELUGU_HASH, 70_000_000)
-                    fetch(TELUGU + "tokens.txt", File(tmp, "tokens.txt"), TOKENS_HASH, 100_000)
-                }
                 else -> error("Unsupported voice")
             }
             File(tmp, ".complete").writeText("1")

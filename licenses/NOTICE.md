@@ -30,3 +30,7 @@ The algorithms are derived from LAME (LGPL-2.1), © the LAME project authors.
 ## Everything else
 
 © 2025 Beyoneer XYZ. All rights reserved for the original code and brand assets.
+
+## Neural models and runtime
+
+The bundled LJ Speech voice is stated by its creator to be public domain. Optional Supertonic 3 by Supertone Inc. uses BigScience Open RAIL-M; the int8 conversion is by sherpa-onnx. See `app/src/main/assets/licenses/supertonic-openrail-m.txt` and its use restrictions. Optional Kokoro 1.1-zh is Apache 2.0; see `app/src/main/assets/licenses/apache-2.0.txt`. For model provenance, obligations and separate sherpa-onnx/eSpeak NG licensing, see `docs/VOICES.md`.

@@ -24,9 +24,10 @@ class SpeechSynth(private val context: Context) {
         if (clean.isEmpty()) { callback.onError("Type some text first."); return }
         // Guard against selecting a voice for an unrelated writing system.
         val allowed = when (voice.id) {
-            "padmavathi" -> setOf(Character.UnicodeScript.TELUGU)
             "hi_super" -> setOf(Character.UnicodeScript.DEVANAGARI, Character.UnicodeScript.LATIN)
             "ja_super" -> setOf(Character.UnicodeScript.HAN, Character.UnicodeScript.HIRAGANA, Character.UnicodeScript.KATAKANA, Character.UnicodeScript.LATIN)
+            "ko_super" -> setOf(Character.UnicodeScript.HANGUL, Character.UnicodeScript.LATIN)
+            "ar_super" -> setOf(Character.UnicodeScript.ARABIC, Character.UnicodeScript.LATIN)
             "zh_kokoro" -> setOf(Character.UnicodeScript.HAN, Character.UnicodeScript.LATIN)
             else -> setOf(Character.UnicodeScript.LATIN)
         }

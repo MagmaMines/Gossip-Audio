@@ -56,7 +56,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         column.addView(
             Ui.text(
                 activity,
-                "Download extra voices once, then generate offline. Lessac is for non-commercial evaluation only.",
+                "Download extra voices once, then generate offline. Tap ⓘ for commercial-use terms.",
                 12.5f, palette.textDim, font = "sans-serif-medium"
             ),
             LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
@@ -80,6 +80,31 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             ).apply { bottomMargin = Ui.dp(activity, 12f) })
         }
+    }
+
+    private fun showLicense(voice: VoiceProfile) {
+        val (summary, url) = when (VoiceDownloads.packId(voice.id)) {
+            "supertonic3" -> Pair("Supertonic 3 model: BigScience Open RAIL-M. Commercial use and generated audio distribution are permitted at no charge, subject to use restrictions. Disclose that generated content is machine-generated where required. Model redistribution requires the license and notices. Other rights may apply.", "https://huggingface.co/Supertone/supertonic-3/blob/main/LICENSE")
+            "kokoro11" -> Pair("Kokoro 1.1-zh model: Apache 2.0. Commercial use is permitted; retain required license and notices when redistributing the model. Other rights may apply to your audio.", "https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh/blob/main/LICENSE")
+            else -> Pair("${voice.name}: the model creator states this voice model is public domain and trained from scratch on public-domain recordings. Commercial use is permitted; other rights may apply to your text or audio. Runtime and eSpeak have separate licenses.", "https://brycebeattie.com/files/tts/")
+        }
+        android.app.AlertDialog.Builder(activity).setTitle("${voice.name} · license")
+            .setMessage(summary)
+            .setPositiveButton("OK", null)
+            .setNeutralButton("Full terms") { _, _ ->
+                val file = when (VoiceDownloads.packId(voice.id)) {
+                    "supertonic3" -> "licenses/supertonic-openrail-m.txt"
+                    "kokoro11" -> "licenses/apache-2.0.txt"
+                    else -> null
+                }
+                if (file == null) {
+                    runCatching { activity.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(url))) }
+                        .onFailure { activity.toast("Could not open the license link.") }
+                } else {
+                    val text = activity.assets.open(file).bufferedReader().use { it.readText() }
+                    android.app.AlertDialog.Builder(activity).setTitle("Model license").setMessage(text).setPositiveButton("OK", null).show()
+                }
+            }.show()
     }
 
     private fun voiceCard(voice: VoiceProfile): View {
@@ -113,6 +138,13 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         val flag = Ui.text(activity, "  ${voice.flag} ${voice.region}", 11.5f, palette.textDim, bold = true, font = "sans-serif-medium")
         flag.setPadding(0, Ui.dp(activity, 3f), 0, 0)
         nameRow.addView(flag)
+        val licence = FrameLayout(activity).apply {
+            contentDescription = "${voice.name} license information"
+            background = Ui.rounded(palette.bg, Ui.dpf(activity, 100f), palette.outline, Ui.dp(activity, 1f))
+        }
+        licence.addView(IconView(activity, Icons.Kind.INFO, palette.text, 18f), FrameLayout.LayoutParams(
+            Ui.dp(activity, 18f), Ui.dp(activity, 18f), Gravity.CENTER))
+        Ui.pressable(licence, 0.9f) { showLicense(voice) }
         info.addView(nameRow)
         val metaRow = Ui.row(activity)
         val genderChip = Ui.text(activity, voice.genderLabel, 9.5f, palette.onYellow, bold = true, font = "sans-serif-black")
@@ -131,15 +163,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
             }
         )
         header.addView(info, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-        if (selected) {
-            val check = FrameLayout(activity).apply {
-                background = Ui.rounded(palette.yellow, Ui.dpf(activity, 100f))
-            }
-            check.addView(IconView(activity, Icons.Kind.CHECK, palette.onYellow, 15f), FrameLayout.LayoutParams(
-                Ui.dp(activity, 15f), Ui.dp(activity, 15f), Gravity.CENTER
-            ))
-            header.addView(check, LinearLayout.LayoutParams(Ui.dp(activity, 26f), Ui.dp(activity, 26f)))
-        }
+        header.addView(licence, LinearLayout.LayoutParams(Ui.dp(activity, 40f), Ui.dp(activity, 40f)))
         card.addView(header)
 
         val bio = Ui.text(activity, voice.bio, 11.5f, palette.textDim, font = "sans-serif")
@@ -168,6 +192,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
         card.setOnClickListener {
             if (!VoiceDownloads.installed(activity, voice.id)) { activity.toast("Download ${voice.name} first."); return@setOnClickListener }
             activity.app.prefs.selectedVoiceId = voice.id
+            activity.app.prefs.autoVoice = false
             render()
             activity.toast("${voice.name} is now your gossip voice.")
         }
@@ -228,6 +253,7 @@ class VoicesTab(private val shell: ShellScreen) : Tab {
                 return@setOnClick
             }
             activity.app.prefs.selectedVoiceId = voice.id
+            activity.app.prefs.autoVoice = false
             render()
             activity.toast("${voice.name} is now your gossip voice.")
         }

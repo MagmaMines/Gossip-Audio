@@ -1,5 +1,9 @@
 package xyz.beyoneer.gossipaudio
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -25,7 +29,7 @@ class VoiceStatusTest {
         // Use the real installer; a previous test may already have installed it.
         VoiceDownloads.download(app, "hi_super")
         assertTrue(VoiceDownloads.installed(app, "hi_super"))
-        app.prefs.selectedVoiceId = "riya"
+        app.prefs.selectedVoiceId = "ljspeech"
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             scenario.onActivity { activity ->
                 val shell = ShellScreen(activity)
@@ -46,4 +50,34 @@ class VoiceStatusTest {
             }
         }
     }
+    @Test fun downloadButtonUpdatesSharedCardsAfterLeavingAndReturning() {
+        val app = ApplicationProvider.getApplicationContext<GossipApp>()
+        VoiceDownloads.directory(app, "hi_super").deleteRecursively()
+        assertTrue(!VoiceDownloads.installed(app, "hi_super"))
+        ActivityScenario.launch(MainActivity::class.java).use { scenario ->
+            lateinit var shell: ShellScreen
+            scenario.onActivity { activity ->
+                shell = ShellScreen(activity)
+                activity.router.start(shell)
+                shell.selectTab(1, animate = false)
+                val hindi = descendants(shell.voices.root).filterIsInstance<ViewGroup>()
+                    .filter { group -> descendants(group).any { it is TextView && it.text == "Hindi" } && descendants(group).any { it is BrandButton && it.text() == "Download" } }
+                    .minByOrNull { descendants(it).size } ?: error("Hindi card not found")
+                descendants(hindi).filterIsInstance<BrandButton>().first { it.text() == "Download" }.performClick()
+            }
+            onView(withText("Download")).inRoot(isDialog()).perform(click())
+            scenario.onActivity { shell.selectTab(0, animate = false) }
+            val deadline = System.currentTimeMillis() + 300_000
+            while (!VoiceDownloads.installed(app, "hi_super") && System.currentTimeMillis() < deadline) Thread.sleep(500)
+            assertTrue("Download did not complete", VoiceDownloads.installed(app, "hi_super"))
+            scenario.onActivity {
+                shell.selectTab(1, animate = false)
+                val french = descendants(shell.voices.root).filterIsInstance<ViewGroup>()
+                    .filter { group -> descendants(group).any { it is TextView && it.text == "French" } && descendants(group).any { it is BrandButton && it.text() == "Use this voice" } }
+                assertTrue("Shared French voice did not show installed", french.isNotEmpty())
+                assertTrue(VoiceDownloads.installed(app, "fr_super"))
+            }
+        }
+    }
+
 }
