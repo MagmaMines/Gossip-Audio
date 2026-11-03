@@ -1,0 +1,9 @@
+# AdMob integration
+
+- App ID: `ca-app-pub-8913512225928716~8700905992`.
+- Production banner unit (release builds only): `ca-app-pub-8913512225928716/4570089297`.
+- Debug APKs use Google's sample banner `ca-app-pub-3940256099942544/6300978111`. They are for testing only and **do not earn revenue**. Never click production ads to test. Emulator neural instrumentation explicitly disables ad requests to keep tests deterministic.
+- The app requests UMP consent information on each launch and initializes Mobile Ads only after UMP permits ad requests. If unavailable, it shows no banner. When UMP requires privacy options, users can open them in Settings. Configure and publish appropriate messages in AdMob **Privacy & messaging** for the relevant regions; code integration alone is not a guarantee of legal or policy compliance.
+- One adaptive banner is positioned under the top bar on the main Studio, Voices and Library tabs, separated from the main controls. It is hidden while editing text, on Settings, on full-screen screens, while the app is backgrounded, or if no ad is available. No interstitials or rewarded ads are added.
+- Real ads, fill rate and earnings depend on AdMob account/app approval, the correct package registration, distribution, network, consent and advertiser demand. Ad serving cannot be guaranteed by the app.
+- Before release, register the production application ID `xyz.beyoneer.gossipaudio`, configure privacy messages, update and publish a privacy policy and Play Data safety disclosures, and set up app-ads.txt if applicable. Test consent geography and banner layout on real devices with Google test ads. Build a release with a privately held signing key as described in [BUILD.md](BUILD.md). The CI release artifact is unsigned unless signing secrets are supplied; do not distribute it unsigned. Keep the keystore secure for future updates.

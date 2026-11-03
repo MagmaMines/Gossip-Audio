@@ -26,8 +26,10 @@ jobs:
         run: tools/prepare_neural.sh
       - name: Build debug APK
         run: gradle --no-daemon --stacktrace assembleDebug
+      - name: Build unsigned production APK (live ad unit)
+        run: gradle --no-daemon --stacktrace assembleRelease
       - name: Preserve ARM64 APK before emulator build
-        run: cp app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/GossipAudio-1.5.0-neural-debug.apk"
+        run: cp app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/GossipAudio-1.6.0-neural-debug.apk"
       - name: Unit tests (neural inference requires an Android device)
         run: set -o pipefail; gradle --no-daemon --stacktrace testDebugUnitTest --tests '*PipelineTest' --tests '*SpeechChunkTest' --tests '*AutoVoiceTest' 2>&1 | tee "$RUNNER_TEMP/unit-test.log"
       - name: Enable emulator acceleration
@@ -59,6 +61,7 @@ jobs:
           name: GossipAudio-neural-debug
           path: |
             app/build/outputs/apk/debug/*.apk
+            app/build/outputs/apk/release/*.apk
             app/build/reports/tests/
             app/build/reports/androidTests/
           if-no-files-found: warn
@@ -71,10 +74,17 @@ jobs:
           git config user.name "GossipAudio CI"
           git config user.email "ci@beyoneer.xyz"
           mkdir -p dist
-          cp "$RUNNER_TEMP/GossipAudio-1.5.0-neural-debug.apk" dist/GossipAudio-1.5.0-neural-debug.apk
-          cp "$RUNNER_TEMP/neural-sample.wav" dist/GossipAudio-1.5.0-neural-sample.wav
-          sha256sum dist/GossipAudio-1.5.0-neural-debug.apk > dist/GossipAudio-1.5.0-neural-debug.sha256
-          git rm -f --ignore-unmatch dist/GossipAudio-1.1.0-neural-debug.apk dist/GossipAudio-1.1.0-neural-debug.sha256 dist/GossipAudio-1.2.0-neural-debug.apk dist/GossipAudio-1.2.0-neural-debug.sha256 dist/GossipAudio-1.2.0-neural-sample.wav dist/GossipAudio-1.3.0-neural-debug.apk dist/GossipAudio-1.3.0-neural-debug.sha256 dist/GossipAudio-1.3.0-neural-sample.wav dist/GossipAudio-1.4.0-neural-debug.apk dist/GossipAudio-1.4.0-neural-debug.sha256 dist/GossipAudio-1.4.0-neural-sample.wav
-          git add dist/GossipAudio-1.5.0-neural-debug.apk dist/GossipAudio-1.5.0-neural-debug.sha256 dist/GossipAudio-1.5.0-neural-sample.wav
+          cp "$RUNNER_TEMP/GossipAudio-1.6.0-neural-debug.apk" dist/GossipAudio-1.6.0-neural-debug.apk
+          cp "$RUNNER_TEMP/neural-sample.wav" dist/GossipAudio-1.6.0-neural-sample.wav
+          sha256sum dist/GossipAudio-1.6.0-neural-debug.apk > dist/GossipAudio-1.6.0-neural-debug.sha256
+          git rm -f --ignore-unmatch dist/GossipAudio-1.1.0-neural-debug.apk dist/GossipAudio-1.1.0-neural-debug.sha256 dist/GossipAudio-1.2.0-neural-debug.apk dist/GossipAudio-1.2.0-neural-debug.sha256 dist/GossipAudio-1.2.0-neural-sample.wav dist/GossipAudio-1.3.0-neural-debug.apk dist/GossipAudio-1.3.0-neural-debug.sha256 dist/GossipAudio-1.3.0-neural-sample.wav dist/GossipAudio-1.4.0-neural-debug.apk dist/GossipAudio-1.4.0-neural-debug.sha256 dist/GossipAudio-1.4.0-neural-sample.wav dist/GossipAudio-1.5.0-neural-debug.apk dist/GossipAudio-1.5.0-neural-debug.sha256 dist/GossipAudio-1.5.0-neural-sample.wav
+          if [ "$(stat -c %s dist/GossipAudio-1.6.0-neural-debug.apk)" -gt 104857600 ]; then
+            split -b 90m dist/GossipAudio-1.6.0-neural-debug.apk dist/GossipAudio-1.6.0-neural-debug.apk.part-
+            rm dist/GossipAudio-1.6.0-neural-debug.apk
+            git add dist/GossipAudio-1.6.0-neural-debug.apk.part-*
+          else
+            git add dist/GossipAudio-1.6.0-neural-debug.apk
+          fi
+          git add dist/GossipAudio-1.6.0-neural-debug.sha256 dist/GossipAudio-1.6.0-neural-sample.wav
           git commit -m 'build: add neural debug APK' || exit 0
           git push origin "HEAD:${GITHUB_REF_NAME}"

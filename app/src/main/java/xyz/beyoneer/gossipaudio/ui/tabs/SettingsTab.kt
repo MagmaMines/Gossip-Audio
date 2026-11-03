@@ -33,6 +33,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
     private val activity get() = shell.act
     private val palette get() = shell.colors
     private lateinit var scroll: ScrollView
+    private var privacyOptionsSection: View? = null
     private var reminderRow: View? = null
     private var notificationsRow: View? = null
     private var reminderTimeValue: TextView? = null
@@ -41,6 +42,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
 
     override fun onShow() {
         if (::scroll.isInitialized) Ui.fadeInUp(scroll, 0, 10f)
+        refreshPrivacyOption()
     }
 
     override fun onHide() = Unit
@@ -214,6 +216,16 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
             )
         )
 
+        // UMP requires this entry point when a privacy-options form is available.
+        val privacySection = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
+        privacySection.addView(sectionLabel("Advertising privacy"), topMargin())
+        privacySection.addView(card(actionRow(Icons.Kind.INFO, "Ad privacy choices", "Manage your advertising consent") {
+            activity.adConsent.showPrivacyOptions()
+        }))
+        privacyOptionsSection = privacySection
+        column.addView(privacySection)
+        refreshPrivacyOption()
+
         // --- storage
         column.addView(sectionLabel("Storage & privacy"), topMargin())
         val usage = "${activity.app.store.all().size} clips \u00B7 ${TextKit.formatBytes(activity.app.store.totalBytes())}"
@@ -270,7 +282,7 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
 
         val footer = Ui.text(
             activity,
-            "${Brand.NAME} v${Brand.VERSION}\n${Brand.TAGLINE}\n\nMade with \u2764 and absolutely no cloud.",
+            "${Brand.NAME} v${Brand.VERSION}\n${Brand.TAGLINE}\n\nOn-device speech \u00B7 ads require internet.",
             10.5f, palette.textDim, gravity = Gravity.CENTER, font = "sans-serif"
         )
         footer.setLineSpacing(Ui.dpf(activity, 3f), 1f)
@@ -279,6 +291,10 @@ class SettingsTab(private val shell: ShellScreen) : Tab {
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
         ))
         return scroll
+    }
+
+    fun refreshPrivacyOption() {
+        privacyOptionsSection?.visibility = if (activity.adConsent.privacyOptionsRequired) View.VISIBLE else View.GONE
     }
 
     private fun topMargin(): LinearLayout.LayoutParams =

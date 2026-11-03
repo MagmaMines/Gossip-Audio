@@ -1,3 +1,5 @@
+> **Historical documentation:** This page describes an older build and may contain outdated claims about models, network access and advertising. For current information see [README](../README.md), [privacy](PRIVACY.md) and [advertising](ADVERTISING.md).
+
 # Architecture — how GossipAudio actually works
 
 > If you only remember one thing: **text goes in, PCM comes out, PCM becomes files, and no byte of it

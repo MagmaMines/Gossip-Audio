@@ -29,6 +29,11 @@ class MainActivity : Activity() {
     lateinit var app: GossipApp
         private set
 
+    lateinit var adConsent: xyz.beyoneer.gossipaudio.ads.AdConsent
+        private set
+    var inForeground = false
+        private set
+
     private var micCallback: ((Boolean) -> Unit)? = null
     private var notificationCallback: ((Boolean) -> Unit)? = null
     private var storageCallback: ((Boolean) -> Unit)? = null
@@ -40,6 +45,7 @@ class MainActivity : Activity() {
         app = application as GossipApp
         prefs = app.prefs
         palette = ThemeController.palette(this)
+        adConsent = xyz.beyoneer.gossipaudio.ads.AdConsent(this)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         applySystemBars()
         Haptics.enabled = prefs.haptics
@@ -51,6 +57,24 @@ class MainActivity : Activity() {
             router.start(SplashScreen(this))
         }
         registerBackHandler()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        inForeground = true
+        (router.current() as? xyz.beyoneer.gossipaudio.ui.screens.ShellScreen)?.refreshAd()
+    }
+
+    override fun onPause() {
+        inForeground = false
+        (router.current() as? xyz.beyoneer.gossipaudio.ui.screens.ShellScreen)?.refreshAd()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        if (::router.isInitialized) router.destroy()
+        adConsent.onChanged = null
+        super.onDestroy()
     }
 
     /**

@@ -119,5 +119,11 @@ class Router(private val activity: MainActivity) {
         return if (stack.size > 1) pop() else false
     }
 
+    fun destroy() {
+        stack.forEach { it.onHidden(); it.onDestroyed() }
+        stack.clear()
+        container.removeAllViews()
+    }
+
     fun current(): Screen? = stack.lastOrNull()
 }

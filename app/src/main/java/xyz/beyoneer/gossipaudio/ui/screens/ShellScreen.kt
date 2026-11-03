@@ -50,6 +50,8 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
     private val navCells = ArrayList<View>()
     private lateinit var mini: MiniPlayerView
     private lateinit var miniHost: FrameLayout
+    private lateinit var banner: xyz.beyoneer.gossipaudio.ads.BannerSlot
+    private var shown = false
 
     private val hubListener: (PlaybackHub.State) -> Unit = { state -> mini.update(state) }
 
@@ -73,6 +75,8 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
 
         val column = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
         column.addView(buildTopBar())
+        banner = xyz.beyoneer.gossipaudio.ads.BannerSlot(activity)
+        column.addView(banner.view, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         val hostWrap = FrameLayout(activity)
         hostWrap.addView(host, FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
@@ -248,6 +252,7 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         }
         tabs[index].onShow()
         updateNav()
+        refreshAd()
     }
 
     fun openPlayer(clip: Clip) {
@@ -281,18 +286,34 @@ class ShellScreen(activity: MainActivity) : Screen(activity) {
         if (activity.prefs.notifications) activity.requestNotifications()
     }
 
+    fun refreshAd() {
+        if (::banner.isInitialized) banner.update(activity.adConsent.ready, shown && activity.inForeground && current != 3)
+    }
+
     override fun onShown() {
+        shown = true
+        activity.adConsent.onChanged = {
+            refreshAd()
+            if (::settings.isInitialized) settings.refreshPrivacyOption()
+        }
+        activity.adConsent.start()
+        refreshAd()
         PlaybackHub.addListener(hubListener)
         hubListener(PlaybackHub.state)
         if (current >= 0) tabs[current].onShow()
     }
 
     override fun onHidden() {
+        shown = false
+        refreshAd()
         if (current >= 0) tabs[current].onHide()
         PlaybackHub.removeListener(hubListener)
     }
 
     override fun onDestroyed() {
+        shown = false
+        if (::banner.isInitialized) banner.destroy()
+        activity.adConsent.onChanged = null
         if (current >= 0) tabs[current].onHide()
         PlaybackHub.removeListener(hubListener)
     }

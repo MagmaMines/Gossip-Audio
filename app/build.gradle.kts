@@ -11,10 +11,9 @@ android {
         applicationId = "xyz.beyoneer.gossipaudio"
         minSdk = 24
         targetSdk = 35
-        versionCode = 8
-        versionName = "1.5.0"
+        versionCode = 9
+        versionName = "1.6.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        resourceConfigurations += listOf("en", "hi")
         // The public APK targets 64-bit ARM; CI builds x86_64 separately for emulator testing.
         ndk { abiFilters += if (project.hasProperty("neuralTestEmulator")) listOf("x86_64") else listOf("arm64-v8a") }
     }
@@ -39,11 +38,15 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField("String", "ADMOB_BANNER_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("boolean", "ADS_ENABLED", if (project.hasProperty("neuralTestEmulator")) "false" else "true")
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
             isMinifyEnabled = false
         }
         release {
+            buildConfigField("String", "ADMOB_BANNER_ID", "\"ca-app-pub-8913512225928716/4570089297\"")
+            buildConfigField("boolean", "ADS_ENABLED", "true")
             isMinifyEnabled = false
             isShrinkResources = false
             if (hasReleaseKey) signingConfig = signingConfigs.getByName("releasePrivate")
@@ -83,6 +86,8 @@ android {
 dependencies {
     implementation(files("libs/sherpa-onnx.aar"))
     implementation("org.apache.commons:commons-compress:1.26.2")
+    implementation("com.google.android.gms:play-services-ads:25.5.0")
+    implementation("com.google.android.ump:user-messaging-platform:4.0.0")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:runner:1.6.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")

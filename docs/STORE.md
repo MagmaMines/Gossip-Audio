@@ -1,3 +1,5 @@
+> **Historical documentation:** This page describes an older build and may contain outdated claims about models, network access and advertising. For current information see [README](../README.md), [privacy](PRIVACY.md) and [advertising](ADVERTISING.md).
+
 # Play Store listing pack
 
 Copy-paste ready. Everything here matches the shipped APK (`dist/GossipAudio-1.0.2-release.apk`).

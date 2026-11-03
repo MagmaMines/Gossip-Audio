@@ -1,3 +1,5 @@
+> **Historical documentation:** This page describes an older build and may contain outdated claims about models, network access and advertising. For current information see [README](../README.md), [privacy](PRIVACY.md) and [advertising](ADVERTISING.md).
+
 # Install GossipAudio (the APK, not a zip)
 
 > Short version: the download is **`GossipAudio-1.0.2-release.apk`** — one file, tap it, install it.

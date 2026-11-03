@@ -1,3 +1,5 @@
+> **Historical documentation:** This page describes an older build and may contain outdated claims about models, network access and advertising. For current information see [README](../README.md), [privacy](PRIVACY.md) and [advertising](ADVERTISING.md).
+
 # Feature catalogue — 28 features, each with proof
 
 Every row below is wired to code that ships in the APK. The **Verify** column tells you how to see it
