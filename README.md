@@ -14,7 +14,7 @@ Ads, consent checks, optional voice downloads and dictation use the network. Dic
 
 ## Download and listen
 
-- GossipAudio 1.6.0 neural debug APK (see [build instructions](docs/BUILD.md) if the artifact is split) (ARM64, Android 7+)
+- GossipAudio 1.6.0 neural debug APK — [part 1](dist/GossipAudio-1.6.0-neural-debug.apk.part-aa), [part 2](dist/GossipAudio-1.6.0-neural-debug.apk.part-ab); combine and verify as described in [build instructions](docs/BUILD.md) (ARM64, Android 7+)
 - [Neural voice sample (WAV)](dist/GossipAudio-1.6.0-neural-sample.wav), generated through the app's speech pipeline on an Android 10 emulator
 
 The debug APK may not update an earlier build signed with a different key. Back up exports and app data first; if Android rejects the update, uninstalling the old app will remove its app-private data and downloaded voices.
@@ -25,7 +25,7 @@ CI runs JVM and Android-emulator tests for model downloads, neural synthesis, WA
 
 One banner appears below the top bar on the main tabs, separated from controls; it is hidden while editing text and on Settings and full-screen pages. Consent information is updated via Google's UMP before the ad SDK is initialized. Privacy options appear in Settings when required. If consent or an ad is unavailable, the banner area collapses. See [privacy](docs/PRIVACY.md) and [ad setup](docs/ADVERTISING.md).
 
-**The downloadable debug build uses Google's test banner and does not earn revenue.** The release build is configured with the supplied production AdMob IDs, but requires your private signing key and AdMob account setup before distribution.
+**The downloadable debug build uses Google's test banner and does not earn revenue.** The release build is configured with the supplied production AdMob IDs, but requires your private signing key and AdMob account setup before distribution. The unsigned ARM64 release is available in the [CI artifact](https://github.com/MagmaMines/Gossip-Audio/actions/runs/41650821315).
 
 ## Automatic voice selection
 
