@@ -1,6 +1,6 @@
 # Build GossipAudio
 
-Requirements: JDK 17, Gradle 8.11.1, Android SDK platform 35 and build tools 35.0.0, and network access to GitHub releases, Google Maven and Maven Central. No Gradle wrapper is checked in.
+Requirements: JDK 17, Gradle 8.13, Android SDK platform 35 and build tools 35.0.0, and network access to GitHub releases, Google Maven and Maven Central. No Gradle wrapper is checked in.
 
 ```sh
 ./tools/prepare_neural.sh  # downloads checksum-pinned runtime and full-precision model
