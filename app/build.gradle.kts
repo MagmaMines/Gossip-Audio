@@ -59,11 +59,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs += listOf("-opt-in=kotlin.RequiresOptIn")
-    }
-
     buildFeatures {
         buildConfig = true
     }
@@ -80,6 +75,13 @@ android {
 
     packaging {
         resources.excludes += setOf("META-INF/*.kotlin_module", "DebugProbesKt.bin")
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
     }
 }
 
