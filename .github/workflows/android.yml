@@ -25,9 +25,9 @@ jobs:
       - name: Fetch pinned neural model and runtime
         run: tools/prepare_neural.sh
       - name: Build debug APK
-        run: gradle --no-daemon --stacktrace assembleDebug
+        run: set -o pipefail; gradle --no-daemon --stacktrace assembleDebug 2>&1 | tee "$RUNNER_TEMP/build.log"
       - name: Build unsigned production APK (live ad unit)
-        run: gradle --no-daemon --stacktrace assembleRelease
+        run: set -o pipefail; gradle --no-daemon --stacktrace assembleRelease 2>&1 | tee -a "$RUNNER_TEMP/build.log"
       - name: Preserve ARM64 APK before emulator build
         run: cp app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/GossipAudio-1.6.0-neural-debug.apk"
       - name: Unit tests (neural inference requires an Android device)
@@ -51,7 +51,7 @@ jobs:
           git config user.name "GossipAudio CI"
           git config user.email "ci@beyoneer.xyz"
           mkdir -p ci-logs
-          { tail -n 200 "$RUNNER_TEMP/unit-test.log" 2>/dev/null || true; tail -n 200 "$RUNNER_TEMP/neural-test.log" 2>/dev/null || true; tail -n 200 "$RUNNER_TEMP/neural-logcat.log" 2>/dev/null || true; find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} \; 2>/dev/null || true; } > ci-logs/neural-test-failure.txt
+          { tail -n 300 "$RUNNER_TEMP/build.log" 2>/dev/null || true; tail -n 200 "$RUNNER_TEMP/unit-test.log" 2>/dev/null || true; tail -n 200 "$RUNNER_TEMP/neural-test.log" 2>/dev/null || true; tail -n 200 "$RUNNER_TEMP/neural-logcat.log" 2>/dev/null || true; find app/build/outputs/androidTest-results -name '*.xml' -exec cat {} \; 2>/dev/null || true; } > ci-logs/neural-test-failure.txt
           git add ci-logs/neural-test-failure.txt
           git commit -m 'ci: capture neural test failure' && git push origin "HEAD:${GITHUB_REF_NAME}"
       - name: Upload APK and reports
