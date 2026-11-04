@@ -1,3 +1,5 @@
+> **1.6.1 release:** [CI](https://github.com/MagmaMines/Gossip-Audio/actions/runs/41846459994) verified the release APK signature, package and live AdMob identifiers, and passed JVM and emulator instrumentation on the debug build with ad requests disabled. Live ad delivery and consent forms remain unverified; check them on real devices and configure AdMob before distribution.
+
 > **1.6.0 advertising update:** The Android build, JVM tests and emulator instrumentation passed in [CI](https://github.com/MagmaMines/Gossip-Audio/actions/runs/41650821315). Emulator tests disable ad requests; actual AdMob test-ad delivery, privacy-message configuration and physical-device layout have not been verified. The production APK is unsigned and must be privately signed before distribution.
 
 # Release readiness

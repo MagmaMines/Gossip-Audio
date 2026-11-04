@@ -26,30 +26,10 @@ jobs:
         run: tools/prepare_neural.sh
       - name: Build debug APK
         run: set -o pipefail; gradle --no-daemon --stacktrace assembleDebug 2>&1 | tee "$RUNNER_TEMP/build.log"
-      # One-time user-requested signing key: only the certificate below is public.
-      # The key/password are encrypted for retrieval by the session owner, not logged.
-      - name: Build signed production APK (live ad unit)
-        run: |
-          set -euo pipefail
-          umask 077
-          openssl rand -hex 32 > "$RUNNER_TEMP/signing-password.txt"
-          export GA_STORE_FILE="$RUNNER_TEMP/gossipaudio-release.p12"
-          export GA_STORE_PASSWORD="$(cat "$RUNNER_TEMP/signing-password.txt")"
-          export GA_KEY_ALIAS="gossipaudio"
-          export GA_KEY_PASSWORD="$GA_STORE_PASSWORD"
-          keytool -genkeypair -noprompt -keystore "$GA_STORE_FILE" -storetype PKCS12 \
-            -storepass "$GA_STORE_PASSWORD" -keypass "$GA_KEY_PASSWORD" -alias "$GA_KEY_ALIAS" \
-            -keyalg RSA -keysize 3072 -validity 10000 -dname "CN=GossipAudio, O=Beyoneer XYZ"
-          gradle --no-daemon --stacktrace assembleRelease 2>&1 | tee -a "$RUNNER_TEMP/build.log"
-          cp app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/GossipAudio-1.6.1-release.apk"
-          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$RUNNER_TEMP/GossipAudio-1.6.1-release.apk" > "$RUNNER_TEMP/signature-check.txt"
-          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$RUNNER_TEMP/GossipAudio-1.6.1-release.apk" | grep -F "package: name='xyz.beyoneer.gossipaudio'"
-          unzip -p "$RUNNER_TEMP/GossipAudio-1.6.1-release.apk" 'classes*.dex' | strings | grep -F "ca-app-pub-8913512225928716/4570089297"
-          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump xmltree "$RUNNER_TEMP/GossipAudio-1.6.1-release.apk" AndroidManifest.xml | grep -F "ca-app-pub-8913512225928716~8700905992"
-          tar -C "$RUNNER_TEMP" -cf "$RUNNER_TEMP/signing-material.tar" gossipaudio-release.p12 signing-password.txt signature-check.txt
-          openssl cms -encrypt -aes256 -binary -in "$RUNNER_TEMP/signing-material.tar" \
-            -out "$RUNNER_TEMP/signing-material.enc" -outform DER tools/ci/transfer-certificate.pem
-          rm -f "$RUNNER_TEMP/signing-material.tar" "$RUNNER_TEMP/gossipaudio-release.p12" "$RUNNER_TEMP/signing-password.txt"
+      - name: Build unsigned production APK (live ad unit)
+        run: set -o pipefail; gradle --no-daemon --stacktrace assembleRelease 2>&1 | tee -a "$RUNNER_TEMP/build.log"
+      - name: Preserve ARM64 APK before emulator build
+        run: cp app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/GossipAudio-1.6.1-neural-debug.apk"
       - name: Unit tests (neural inference requires an Android device)
         run: set -o pipefail; gradle --no-daemon --stacktrace testDebugUnitTest --tests '*PipelineTest' --tests '*SpeechChunkTest' --tests '*AutoVoiceTest' 2>&1 | tee "$RUNNER_TEMP/unit-test.log"
       - name: Enable emulator acceleration
@@ -85,7 +65,8 @@ jobs:
             app/build/reports/tests/
             app/build/reports/androidTests/
           if-no-files-found: warn
-      # The encrypted key transfer is readable only with the session owner's private key.
+      # User-requested build: publish only to the session branch so the APK can
+      # be retrieved without relying on GitHub's artifact download host.
       - name: Publish requested APK to session branch
         if: success() && github.ref_name == 'arena/4b4d4c7a-gossip-audio'
         run: |
@@ -93,11 +74,17 @@ jobs:
           git config user.name "GossipAudio CI"
           git config user.email "ci@beyoneer.xyz"
           mkdir -p dist
-          cp "$RUNNER_TEMP/GossipAudio-1.6.1-release.apk" dist/GossipAudio-1.6.1-release.apk
-          sha256sum dist/GossipAudio-1.6.1-release.apk > dist/GossipAudio-1.6.1-release.sha256
-          split -b 90m dist/GossipAudio-1.6.1-release.apk dist/GossipAudio-1.6.1-release.apk.part-
-          rm dist/GossipAudio-1.6.1-release.apk
-          cp "$RUNNER_TEMP/signing-material.enc" dist/signing-material.enc
-          git add dist/GossipAudio-1.6.1-release.apk.part-* dist/GossipAudio-1.6.1-release.sha256 dist/signing-material.enc
-          git commit -m 'build: add signed AdMob release APK'
+          cp "$RUNNER_TEMP/GossipAudio-1.6.1-neural-debug.apk" dist/GossipAudio-1.6.1-neural-debug.apk
+          cp "$RUNNER_TEMP/neural-sample.wav" dist/GossipAudio-1.6.1-neural-sample.wav
+          sha256sum dist/GossipAudio-1.6.1-neural-debug.apk > dist/GossipAudio-1.6.1-neural-debug.sha256
+          git rm -f --ignore-unmatch dist/GossipAudio-1.1.0-neural-debug.apk dist/GossipAudio-1.1.0-neural-debug.sha256 dist/GossipAudio-1.2.0-neural-debug.apk dist/GossipAudio-1.2.0-neural-debug.sha256 dist/GossipAudio-1.2.0-neural-sample.wav dist/GossipAudio-1.3.0-neural-debug.apk dist/GossipAudio-1.3.0-neural-debug.sha256 dist/GossipAudio-1.3.0-neural-sample.wav dist/GossipAudio-1.4.0-neural-debug.apk dist/GossipAudio-1.4.0-neural-debug.sha256 dist/GossipAudio-1.4.0-neural-sample.wav dist/GossipAudio-1.5.0-neural-debug.apk dist/GossipAudio-1.5.0-neural-debug.sha256 dist/GossipAudio-1.5.0-neural-sample.wav
+          if [ "$(stat -c %s dist/GossipAudio-1.6.1-neural-debug.apk)" -gt 104857600 ]; then
+            split -b 90m dist/GossipAudio-1.6.1-neural-debug.apk dist/GossipAudio-1.6.1-neural-debug.apk.part-
+            rm dist/GossipAudio-1.6.1-neural-debug.apk
+            git add dist/GossipAudio-1.6.1-neural-debug.apk.part-*
+          else
+            git add dist/GossipAudio-1.6.1-neural-debug.apk
+          fi
+          git add dist/GossipAudio-1.6.1-neural-debug.sha256 dist/GossipAudio-1.6.1-neural-sample.wav
+          git commit -m 'build: add neural debug APK' || exit 0
           git push origin "HEAD:${GITHUB_REF_NAME}"

@@ -14,18 +14,17 @@ Ads, consent checks, optional voice downloads and dictation use the network. Dic
 
 ## Download and listen
 
-- GossipAudio 1.6.0 neural debug APK — [part 1](dist/GossipAudio-1.6.0-neural-debug.apk.part-aa), [part 2](dist/GossipAudio-1.6.0-neural-debug.apk.part-ab); combine and verify as described in [build instructions](docs/BUILD.md) (ARM64, Android 7+)
-- [Neural voice sample (WAV)](dist/GossipAudio-1.6.0-neural-sample.wav), generated through the app's speech pipeline on an Android 10 emulator
+GossipAudio 1.6.1 is a signed ARM64 Android 7+ release with the supplied live AdMob banner ID. The complete APK was provided in the session; the repository stores [part 1](dist/GossipAudio-1.6.1-release.apk.part-aa) and [part 2](dist/GossipAudio-1.6.1-release.apk.part-ab) because of GitHub's file-size limit. To reconstruct it after cloning, run `cat dist/GossipAudio-1.6.1-release.apk.part-* > dist/GossipAudio-1.6.1-release.apk`, then `sha256sum -c dist/GossipAudio-1.6.1-release.sha256`.
 
-The debug APK may not update an earlier build signed with a different key. Back up exports and app data first; if Android rejects the update, uninstalling the old app will remove its app-private data and downloaded voices.
+CI verified the release signature and embedded ad IDs, and ran unit and Android-emulator neural/UI tests on a debug build with ad requests disabled. Actual ad serving, consent messaging, physical-device behavior and listening quality have not been verified.
 
-CI runs JVM and Android-emulator tests for model downloads, neural synthesis, WAV/MP3 export, and cold-start/theme layout. Tests are not a substitute for listening or physical-device testing. This is not a listening-quality certification or a substitute for testing physical devices.
+If updating an app signed with another key, Android will reject the update. Back up app data before uninstalling. Keep the separately supplied signing-key archive safe; it is required to sign updates with this new key.
 
 ## Advertising
 
 One banner appears below the top bar on the main tabs, separated from controls; it is hidden while editing text and on Settings and full-screen pages. Consent information is updated via Google's UMP before the ad SDK is initialized. Privacy options appear in Settings when required. If consent or an ad is unavailable, the banner area collapses. See [privacy](docs/PRIVACY.md) and [ad setup](docs/ADVERTISING.md).
 
-**The downloadable debug build uses Google's test banner and does not earn revenue.** The release build is configured with the supplied production AdMob IDs, but requires your private signing key and AdMob account setup before distribution. The unsigned ARM64 release is available in the [CI artifact](https://github.com/MagmaMines/Gossip-Audio/actions/runs/41650821315).
+**The 1.6.1 release uses the supplied live banner unit.** Debug builds use Google test ads and do not earn revenue. Actual serving and earnings depend on AdMob account status, consent setup, demand and compliance.
 
 ## Automatic voice selection
 
