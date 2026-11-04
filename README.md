@@ -10,7 +10,7 @@ An Android voice studio by **Beyoneer XYZ**.
 
 GossipAudio runs Piper/VITS, Supertonic and Kokoro neural voices locally, without Android system TTS. The bundled LJ Speech and optional Cori models are described by their creator as public domain. Optional Supertonic voices include Hindi, Japanese, French, Spanish, German, Italian, Portuguese, Korean and Arabic; OpenRAIL-M permits commercial use but has use restrictions and generated-content disclosure requirements. Optional Mandarin Kokoro is Apache 2.0. Tap ⓘ beside each voice to see terms. Read [voice provenance and licensing](docs/VOICES.md): model licenses do not remove rights in your input, output, or third-party software. Earlier Lessac and Padmavathi voices are no longer offered; any old audio retains its original obligations.
 
-Ads, consent checks, optional voice downloads and dictation use the network. Dictation uses a separate Android recognition service. The APK targets ARM64 Android 7+ and is a debug build, not a commercial release. Voice quality varies with language and device; no subjective quality guarantee is implied.
+Ads, consent checks, optional voice downloads and dictation use the network. Dictation uses a separate Android recognition service. The signed release targets ARM64 Android 7+; physical-device, ad-serving and policy checks are still needed before distribution. Voice quality varies with language and device; no subjective quality guarantee is implied.
 
 ## Download and listen
 
