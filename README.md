@@ -16,7 +16,7 @@ Ads, consent checks, optional voice downloads and dictation use the network. Dic
 
 [Download GossipAudio 1.6.2 release APK](dist/GossipAudio-1.6.2-release.apk) — one signed ARM64 Android 7+ APK with the supplied live AdMob banner ID.
 
-CI verified the release signature and embedded ad IDs, and ran unit and Android-emulator neural/UI tests on a debug build with ad requests disabled. Actual ad serving, consent messaging, physical-device behavior and listening quality have not been verified.
+[CI](https://github.com/MagmaMines/Gossip-Audio/actions/runs/41873588058) verified the release signature and embedded ad IDs, and ran unit and Android-emulator neural/UI tests on a debug build with ad requests disabled. Actual ad serving, consent messaging, physical-device behavior and listening quality have not been verified.
 
 If updating an app signed with another key, Android will reject the update. Back up app data before uninstalling. Keep the separately supplied signing-key archive safe; it is required to sign updates with this new key.
 
