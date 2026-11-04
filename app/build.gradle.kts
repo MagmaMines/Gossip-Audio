@@ -11,8 +11,8 @@ android {
         applicationId = "xyz.beyoneer.gossipaudio"
         minSdk = 24
         targetSdk = 35
-        versionCode = 10
-        versionName = "1.6.1"
+        versionCode = 11
+        versionName = "1.6.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // The public APK targets 64-bit ARM; CI builds x86_64 separately for emulator testing.
         ndk { abiFilters += if (project.hasProperty("neuralTestEmulator")) listOf("x86_64") else listOf("arm64-v8a") }

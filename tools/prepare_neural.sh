@@ -21,6 +21,10 @@ cp "$model_file" app/src/main/assets/neural/model.onnx
 cp "$tokens" app/src/main/assets/neural/tokens.txt
 rm -rf app/src/main/assets/neural/espeak-ng-data
 cp -a "$data" app/src/main/assets/neural/espeak-ng-data
+# The catalog has no Russian eSpeak voice. Removing its 8.5 MB dictionary
+# keeps the signed full-precision English APK under GitHub's per-file limit.
+# English and Mandarin phonemization data remain available.
+rm -f app/src/main/assets/neural/espeak-ng-data/ru_dict
 # Keep the model archive's license / provenance files for review.
 find "$work/unpacked" -maxdepth 2 -type f ! -name '*.onnx' ! -name 'tokens.txt' -printf '%p\n'
 echo 'Neural runtime and English model prepared.'

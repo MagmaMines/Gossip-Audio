@@ -14,7 +14,7 @@ Ads, consent checks, optional voice downloads and dictation use the network. Dic
 
 ## Download and listen
 
-GossipAudio 1.6.1 is a signed ARM64 Android 7+ release with the supplied live AdMob banner ID. The complete APK was provided in the session; the repository stores [part 1](dist/GossipAudio-1.6.1-release.apk.part-aa) and [part 2](dist/GossipAudio-1.6.1-release.apk.part-ab) because of GitHub's file-size limit. To reconstruct it after cloning, run `cat dist/GossipAudio-1.6.1-release.apk.part-* > dist/GossipAudio-1.6.1-release.apk`, then `sha256sum -c dist/GossipAudio-1.6.1-release.sha256`.
+[Download GossipAudio 1.6.2 release APK](dist/GossipAudio-1.6.2-release.apk) — one signed ARM64 Android 7+ APK with the supplied live AdMob banner ID.
 
 CI verified the release signature and embedded ad IDs, and ran unit and Android-emulator neural/UI tests on a debug build with ad requests disabled. Actual ad serving, consent messaging, physical-device behavior and listening quality have not been verified.
 
@@ -24,7 +24,7 @@ If updating an app signed with another key, Android will reject the update. Back
 
 One banner appears below the top bar on the main tabs, separated from controls; it is hidden while editing text and on Settings and full-screen pages. Consent information is updated via Google's UMP before the ad SDK is initialized. Privacy options appear in Settings when required. If consent or an ad is unavailable, the banner area collapses. See [privacy](docs/PRIVACY.md) and [ad setup](docs/ADVERTISING.md).
 
-**The 1.6.1 release uses the supplied live banner unit.** Debug builds use Google test ads and do not earn revenue. Actual serving and earnings depend on AdMob account status, consent setup, demand and compliance.
+**The 1.6.2 release uses the supplied live banner unit.** Debug builds use Google test ads and do not earn revenue. Actual serving and earnings depend on AdMob account status, consent setup, demand and compliance.
 
 ## Automatic voice selection
 
