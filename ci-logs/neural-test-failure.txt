@@ -37,24 +37,26 @@ or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build
 > Task :app:parseDebugLocalResources
 > Task :app:processDebugMainManifest
 > Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
 > Task :app:javaPreCompileDebug
 > Task :app:mergeDebugShaders
 > Task :app:compileDebugShaders NO-SOURCE
 > Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAssets
-> Task :app:processDebugManifestForPackage
 > Task :app:processDebugResources
+> Task :app:mergeDebugAssets
 > Task :app:checkDebugDuplicateClasses
+> Task :app:mergeLibDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeDebugNativeLibs
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libonnxruntime.so, libsherpa-onnx-c-api.so, libsherpa-onnx-cxx-api.so, libsherpa-onnx-jni.so. Run with --info option to learn more.
+
 > Task :app:desugarDebugFileDependencies
+> Task :app:validateSigningDebug
 > Task :app:compressDebugAssets
 > Task :app:compileDebugKotlin
 > Task :app:mergeExtDexDebug
-> Task :app:mergeDebugJniLibFolders
-> Task :app:mergeLibDexDebug
-> Task :app:mergeDebugNativeLibs
-> Task :app:validateSigningDebug
-> Task :app:writeDebugAppMetadata
-> Task :app:writeDebugSigningConfigVersions
 
 > Task :app:compileDebugKotlin
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/core/Audio.kt:147:43 Redundant call of conversion method.
@@ -83,21 +85,20 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/util/Artwork.kt:88:63 Redundant call of conversion method.
 w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyoneer/gossipaudio/util/Telemetry.kt:54:69 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
 
-> Task :app:stripDebugDebugSymbols
-Unable to strip the following libraries, packaging them as they are: libonnxruntime.so, libsherpa-onnx-c-api.so, libsherpa-onnx-cxx-api.so, libsherpa-onnx-jni.so. Run with --info option to learn more.
-
 > Task :app:compileDebugJavaWithJavac
 > Task :app:dexBuilderDebug
 > Task :app:mergeDebugGlobalSynthetics
 > Task :app:processDebugJavaRes
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
 > Task :app:mergeProjectDexDebug
 > Task :app:mergeDebugJavaResource
 > Task :app:packageDebug
 > Task :app:createDebugApkListingFileRedirect
 > Task :app:assembleDebug
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793801743189.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793811321998.json
 
-BUILD SUCCESSFUL in 1m 54s
+BUILD SUCCESSFUL in 1m 49s
 39 actionable tasks: 39 executed
 To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
 Daemon will be stopped at the end of the build 
@@ -135,12 +136,12 @@ Unable to strip the following libraries, packaging them as they are: libonnxrunt
 > Task :app:createReleaseCompatibleScreenManifests
 > Task :app:extractDeepLinksRelease
 > Task :app:processReleaseMainManifest
+> Task :app:mergeReleaseResources
 > Task :app:processReleaseManifest
 > Task :app:javaPreCompileRelease FROM-CACHE
-> Task :app:mergeReleaseStartupProfile
-> Task :app:mergeReleaseResources
-> Task :app:mergeReleaseArtProfile
 > Task :app:processReleaseManifestForPackage
+> Task :app:mergeReleaseStartupProfile
+> Task :app:mergeReleaseArtProfile
 > Task :app:mergeReleaseShaders
 > Task :app:compileReleaseShaders NO-SOURCE
 > Task :app:generateReleaseAssets UP-TO-DATE
@@ -195,63 +196,68 @@ w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/main/java/xyz/beyo
 > Task :app:packageRelease
 > Task :app:createReleaseApkListingFileRedirect
 > Task :app:assembleRelease
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793801855762.json
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1793811431839.json
 
-BUILD SUCCESSFUL in 1m 9s
+BUILD SUCCESSFUL in 1m 13s
 47 actionable tasks: 42 executed, 5 from cache
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :app
+WARNING: The option setting 'android.defaults.buildfeatures.buildconfig=true' is deprecated.
+The current default is 'false'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+To keep using this feature, add the following to your module-level build.gradle files:
+    android.buildFeatures.buildConfig = true
+or from Android Studio, click: `Refactor` > `Migrate BuildConfig to Gradle Build Files`.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:javaPreCompileDebugUnitTest FROM-CACHE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:packageDebugUnitTestForUnitTest
+> Task :app:processDebugUnitTestManifest
+> Task :app:generateDebugUnitTestConfig
+> Task :app:processDebugJavaRes UP-TO-DATE
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:83:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:91:46 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
+w: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/src/test/java/xyz/beyoneer/gossipaudio/AccessibilityTest.kt:100:42 'static fun obtain(): AccessibilityNodeInfo!' is deprecated. Deprecated in Java.
 
 > Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
 > Task :app:processDebugUnitTestJavaRes
-
 > Task :app:testDebugUnitTest
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1793811506853.json
 
-SpeechChunkTest > emojiIsNotSplitAtBoundary FAILED
-    java.lang.AssertionError at MavenArtifactFetcher.java:129
-        Caused by: java.util.concurrent.ExecutionException at AbstractFuture.java:596
-            Caused by: java.io.IOException at HttpURLConnection.java:2059
-
-SpeechChunkTest > longUnbrokenTextStaysWithinLimit FAILED
-    java.lang.AssertionError at MavenArtifactFetcher.java:129
-        Caused by: java.util.concurrent.ExecutionException at AbstractFuture.java:596
-            Caused by: java.io.IOException at HttpURLConnection.java:2059
-
-13 tests completed, 2 failed
-
-> Task :app:testDebugUnitTest FAILED
-gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_4-1793801926298.json
-
-FAILURE: Build failed with an exception.
-
-* What went wrong:
-Execution failed for task ':app:testDebugUnitTest'.
-> There were failing tests. See the report at: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/build/reports/tests/testDebugUnitTest/index.html
-
-* Try:
-> Run with --scan to get full insights.
-
-* Exception is:
-org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:testDebugUnitTest'.
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
-	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
-	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
-	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
-	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
-	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
-	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
-	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
-	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
-	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
-	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+BUILD SUCCESSFUL in 21s
+31 actionable tasks: 8 executed, 1 from cache, 22 up-to-date
 	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
@@ -261,14 +267,43 @@ org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:tes
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
-Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There were failing tests. See the report at: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/build/reports/tests/testDebugUnitTest/index.html
-	at org.gradle.api.tasks.testing.AbstractTestTask.handleTestFailures(AbstractTestTask.java:714)
-	at org.gradle.api.tasks.testing.AbstractTestTask.handleCollectedResults(AbstractTestTask.java:545)
-	at org.gradle.api.tasks.testing.AbstractTestTask.executeTests(AbstractTestTask.java:540)
-	at org.gradle.api.tasks.testing.Test.executeTests(Test.java:719)
-	at com.android.build.gradle.tasks.factory.AndroidUnitTest.executeTests(AndroidUnitTest.java:172)
+Caused by: org.gradle.api.GradleException: There were failing tests. See the report at: file:///home/runner/work/Gossip-Audio/Gossip-Audio/app/build/reports/androidTests/connected/debug/index.html
+	at com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask.run(DeviceProviderInstrumentTestTask.java:461)
+	at com.android.build.gradle.internal.tasks.DeviceProviderInstrumentTestTask.doTaskAction(DeviceProviderInstrumentTestTask.java:320)
+	at com.android.build.gradle.internal.tasks.NonIncrementalTask$taskAction$$inlined$recordTaskAction$1.invoke(BaseTask.kt:79)
+	at com.android.build.gradle.internal.tasks.Blocks.recordSpan(Blocks.java:51)
+	at com.android.build.gradle.internal.tasks.NonIncrementalTask.taskAction(NonIncrementalTask.kt:78)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -315,13 +350,8 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
 	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
 	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
-	at org.gradle.internal.execution.steps.BuildCacheStep.executeAndStoreInCache(BuildCacheStep.java:145)
-	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$executeWithCache$4(BuildCacheStep.java:101)
-	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$executeWithCache$5(BuildCacheStep.java:101)
-	at org.gradle.internal.Try$Success.map(Try.java:175)
-	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithCache(BuildCacheStep.java:85)
-	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$0(BuildCacheStep.java:74)
-	at org.gradle.internal.Either$Left.fold(Either.java:115)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
 	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
 	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
 	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
@@ -344,7 +374,7 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
 	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
-	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:61)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:56)
 	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
 	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
 	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
@@ -393,9 +423,99 @@ Caused by: org.gradle.api.internal.exceptions.MarkedVerificationException: There
 	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
 	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
 	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
 	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
 
 
-BUILD FAILED in 23s
-31 actionable tasks: 8 executed, 1 from cache, 22 up-to-date
+BUILD FAILED in 1m 54s
+71 actionable tasks: 33 executed, 5 from cache, 33 up-to-date
+--------- beginning of main
+--------- beginning of system
+--------- beginning of crash
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: *** FATAL EXCEPTION IN SYSTEM PROCESS: Thread-114
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: java.lang.OutOfMemoryError: Failed to allocate a 4194320 byte allocation with 4023448 free bytes and 3929KB until OOM, target footprint 16777216, growth limit 16777216
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at java.util.Arrays.copyOf(Arrays.java:3161)
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at java.io.ByteArrayOutputStream.grow(ByteArrayOutputStream.java:118)
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at java.io.ByteArrayOutputStream.ensureCapacity(ByteArrayOutputStream.java:93)
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at java.io.ByteArrayOutputStream.write(ByteArrayOutputStream.java:153)
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at libcore.io.Streams.readFullyNoClose(Streams.java:122)
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at com.android.server.updates.ConfigUpdateInstallReceiver.getAltContent(ConfigUpdateInstallReceiver.java:137)
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at com.android.server.updates.ConfigUpdateInstallReceiver.access$000(ConfigUpdateInstallReceiver.java:39)
+11-04 17:01:41.285  1913  6542 E AndroidRuntime: 	at com.android.server.updates.ConfigUpdateInstallReceiver$1.run(ConfigUpdateInstallReceiver.java:65)
+11-04 17:01:41.341  2058  2058 E AndroidRuntime: FATAL EXCEPTION: main
+11-04 17:01:41.341  2058  2058 E AndroidRuntime: Process: com.google.android.gms.persistent, PID: 2058
+11-04 17:01:41.341  2058  2058 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.383  2058  3753 E AndroidRuntime: FATAL EXCEPTION: GoogleLocationService
+11-04 17:01:41.383  2058  3753 E AndroidRuntime: Process: com.google.android.gms.persistent, PID: 2058
+11-04 17:01:41.383  2058  3753 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.539  2776  3387 E AndroidRuntime: FATAL EXCEPTION: GcoreGoogleApiClient
+11-04 17:01:41.539  2776  3387 E AndroidRuntime: Process: com.google.android.googlequicksearchbox:search, PID: 2776
+11-04 17:01:41.539  2776  3387 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.548  6192  6192 E AndroidRuntime: FATAL EXCEPTION: main
+11-04 17:01:41.548  6192  6192 E AndroidRuntime: Process: com.google.android.apps.messaging:rcs, PID: 6192
+11-04 17:01:41.548  6192  6192 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.556  3937  3937 E AndroidRuntime: FATAL EXCEPTION: main
+11-04 17:01:41.556  3937  3937 E AndroidRuntime: Process: com.google.android.apps.messaging, PID: 3937
+11-04 17:01:41.556  3937  3937 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.574  2394  2394 E AndroidRuntime: FATAL EXCEPTION: main
+11-04 17:01:41.574  2394  2394 E AndroidRuntime: Process: com.android.phone, PID: 2394
+11-04 17:01:41.574  2394  2394 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.586  5084  5084 E AndroidRuntime: FATAL EXCEPTION: main
+11-04 17:01:41.586  5084  5084 E AndroidRuntime: Process: com.google.android.gm, PID: 5084
+11-04 17:01:41.586  5084  5084 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.679  3821  3821 E AndroidRuntime: FATAL EXCEPTION: main
+11-04 17:01:41.679  3821  3821 E AndroidRuntime: Process: com.google.android.ims, PID: 3821
+11-04 17:01:41.679  3821  3821 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:41.757  3821  3873 E AndroidRuntime: FATAL EXCEPTION: GoogleApiHandler
+11-04 17:01:41.757  3821  3873 E AndroidRuntime: Process: com.google.android.ims, PID: 3821
+11-04 17:01:41.757  3821  3873 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:42.128  3821  3980 E AndroidRuntime: FATAL EXCEPTION: WebRtcVolumeLevelLoggerThread
+11-04 17:01:42.128  3821  3980 E AndroidRuntime: Process: com.google.android.ims, PID: 3821
+11-04 17:01:42.128  3821  3980 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+11-04 17:01:42.622  2270  2270 E AndroidRuntime: FATAL EXCEPTION: main
+11-04 17:01:42.622  2270  2270 E AndroidRuntime: Process: com.google.android.gms, PID: 2270
+11-04 17:01:42.622  2270  2270 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="xyz.beyoneer.gossipaudio.AdsLayoutTest" tests="3" failures="1" errors="0" skipped="0" time="54.104" timestamp="2026-11-04T17:01:54" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 10" />
+    <property name="flavor" value="" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="disabledTestAdsLeaveNoBlankSpaceAndSurviveNavigation" classname="xyz.beyoneer.gossipaudio.AdsLayoutTest" time="4.281" />
+  <testcase name="autoVoiceAndLicenseControlsAreVisible" classname="xyz.beyoneer.gossipaudio.AutoVoiceUiTest" time="1.051" />
+  <testcase name="downloadAndSynthesizeAllExtraVoices" classname="xyz.beyoneer.gossipaudio.ExtraVoicesTest" time="36.146">
+    <failure></failure>
+  </testcase>
+  <system-err>Test run failed to complete. Expected 8 tests, received 2. onError: commandError=false message=INSTRUMENTATION_ABORTED: System has crashed.
+</system-err>
+</testsuite>
