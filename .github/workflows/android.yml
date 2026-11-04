@@ -62,7 +62,7 @@ jobs:
         with:
           api-level: 29
           arch: x86_64
-          target: google_apis
+          target: default
           disable-animations: true
           script: tools/run_emulator_test.sh
       - name: Record emulator failure details
